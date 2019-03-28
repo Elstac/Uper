@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApp.Data.Specifications;
 
 namespace WebApp.Data.Repositories
 {
@@ -45,9 +46,9 @@ namespace WebApp.Data.Repositories
             context.SaveChanges();
         }
 
-        private IQueryable<T> ApplySpecification(ISpecification<T> sepcification,IQueryable<T> query)
+        private IQueryable<T> ApplySpecification(ISpecification<T> specification,IQueryable<T> query)
         {
-            throw new NotImplementedException();
+            return SpecificationEvaluator<T>.EvaluateSpecification(query, specification);
         }
     }
 }
