@@ -26,7 +26,27 @@ namespace WebApp.Models
 
         public TripDetailsViewModel GetViewModel(int tripId, ViewerType type)
         {
-            throw new NotImplementedException();
+            var dataModel = detailsRepository.GetById(tripId);
+
+            var ret = new TripDetailsViewModel
+            {
+                Cost = dataModel.Cost,
+                Description = dataModel.Description,
+                VechicleModel = dataModel.VechicleModel,
+                Date = dataModel.Date,
+                DestinationAddress = dataModel.DestinationAddress,
+                StartingAddress = dataModel.StartingAddress
+            };
+
+            switch (type)
+            {
+                case ViewerType.Passanger:
+                    break;
+                case ViewerType.Driver:
+                    break;
+            }
+            
+            return ret;
         }
     }
 }
