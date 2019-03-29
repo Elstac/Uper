@@ -57,6 +57,11 @@ namespace WebApp
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapRoute(
+                    name: "tripDetails",
+                    template: "TripDetails/Test/{id}/{type}",
+                    defaults:new {controller = "TripDetails", action="Test" });
             });
         }
     }
