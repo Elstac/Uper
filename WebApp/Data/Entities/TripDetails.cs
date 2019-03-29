@@ -6,5 +6,7 @@
         public Address StartingAddress { get; set; }
         public int DriverId { get; set; }
         public float Cost { get; set; }
+        public string Description { get; set; }
+        public string VechicleModel { get; set; }
     }
 }
