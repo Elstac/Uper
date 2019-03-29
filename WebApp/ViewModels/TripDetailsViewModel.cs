@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using WebApp.Data;
 namespace WebApp.ViewModels
 {
@@ -12,5 +13,7 @@ namespace WebApp.ViewModels
         public DateTime Date { get; set; }
         public string DriverUsername { get; set; }
         public int Size { get; set; }
+        public List<string> PassangersUsernames { get; set; }
+        
     }
 }
