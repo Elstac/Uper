@@ -1,1 +1,9 @@
-﻿
+﻿@model WebApp.ViewModels.TripDetailsViewModel
+
+<div>
+    <h1>@Model.DestinationAddress.City @Model.DestinationAddress.Street</h1>
+</div>
+<div class="description">
+    <h2>Description</h2>
+    <p>@Model.Description</p>
+</div>

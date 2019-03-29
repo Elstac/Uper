@@ -22,6 +22,7 @@ namespace WebApp.Models
         public TripDetailsViewModelGenerator(ITripDetailsRepository detailsRepository)
         {
             this.detailsRepository = detailsRepository;
+            
         }
 
         public TripDetailsViewModel GetViewModel(int tripId, ViewerType type)

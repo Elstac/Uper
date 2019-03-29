@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WebApp.Data.Repositories;
+using WebApp.Models;
 
 namespace WebApp
 {
@@ -31,6 +33,8 @@ namespace WebApp
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddTransient<ITripDetailsViewModelGenerator, TripDetailsViewModelGenerator>();
+            services.AddTransient<ITripDetailsRepository, TripDetailsRepository>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -60,8 +64,8 @@ namespace WebApp
 
                 routes.MapRoute(
                     name: "tripDetails",
-                    template: "TripDetails/Test/{id}/{type}",
-                    defaults:new {controller = "TripDetails", action="Test" });
+                    template: "TripDetails/Index/{id}/{type}",
+                    defaults:new {controller = "TripDetails", action="Index" });
             });
         }
     }
