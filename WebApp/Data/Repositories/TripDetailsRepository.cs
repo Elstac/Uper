@@ -10,8 +10,8 @@
                     Id =1,
                     Description = "XDD",
                     DestinationAddress = new Address(){
-                        City = "Dziura w dupie",
-                        Street = "prokurator"
+                        City = "Miasto",
+                        Street = "Ulica"
                     }
                 }
         };
