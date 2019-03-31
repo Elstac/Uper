@@ -1,0 +1,34 @@
+﻿@model WebApp.ViewModels.TripDetailsViewModel
+@{var type = (ViewerType)ViewData["type"]; }
+<div>
+    <h1>@Model.StartingAddress.City @Model.StartingAddress.Street to @Model.DestinationAddress.City @Model.DestinationAddress.Street</h1>
+</div>
+<div class="description">
+    <h2>Description:</h2>
+    <p>@Model.Description</p>
+</div>
+
+<div class="details">
+    <h2>Details:</h2>
+    <p><b>Cost:</b> @Model.Cost</p>
+    <p><b>Driver:</b> @Model.DriverUsername</p>
+    <p><b>Date:</b> @Model.Date</p>
+    <p><b>Vechicle model:</b> @Model.VechicleModel</p>
+</div>
+
+@if (type != ViewerType.Guest)
+{
+<div>
+    <h2>Passangers</h2>
+    @if (type == ViewerType.Passanger)
+    {
+        <p>Hello passenger</p>
+        //TODO add passanger list
+    }
+    @if (type == ViewerType.Driver)
+    {
+        <p>Hello driver</p>
+        //TODO add passanger management panel
+    }
+</div>
+}

@@ -1,6 +1,6 @@
 ﻿namespace WebApp.Data.Repositories
 {
-    interface ITripDetailsRepository:IRepository<TripDetails>
+    public interface ITripDetailsRepository:IRepository<TripDetails>
     {
 
     }
