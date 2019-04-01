@@ -9,7 +9,7 @@ namespace WebApp.Data.Repositories
             dbContext = new System.Collections.Generic.List<TripDetails>()
             {
                 new TripDetails(){
-                    Id =1,
+                    Id = 0,
                     Description = "First Uper trip",
                     DestinationAddress = new Address(){
                         City = "CityDes",
