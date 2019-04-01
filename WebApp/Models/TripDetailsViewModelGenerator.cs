@@ -21,7 +21,7 @@ namespace WebApp.Models
         /// <param name="tripId">TripDetail dataclass id</param>
         /// <param name="viewerType">Type of viewer</param>
         /// <returns></returns>
-        TripDetailsViewModel GetViewModel(int tripId, ViewerType viewerType);
+        TripDetailsViewModel GetViewModel(int tripId, ViewerType viewerType, ITripDetailsCreator creator);
     }
 
     /// <summary>
@@ -30,11 +30,10 @@ namespace WebApp.Models
     public class TripDetailsViewModelGenerator : ITripDetailsViewModelGenerator
     {
         private ITripDetailsRepository detailsRepository;
-
+        
         public TripDetailsViewModelGenerator(ITripDetailsRepository detailsRepository)
         {
             this.detailsRepository = detailsRepository;
-            
         }
 
         /// <summary>
@@ -43,29 +42,14 @@ namespace WebApp.Models
         /// <param name="tripId">TripDetail id</param>
         /// <param name="viewerType">Type of viewer</param>
         /// <returns>viewmodel</returns>
-        public TripDetailsViewModel GetViewModel(int tripId, ViewerType viewerType)
+        public TripDetailsViewModel GetViewModel(int tripId, ViewerType viewerType,ITripDetailsCreator creator)
         {
             var dataModel = detailsRepository.GetById(tripId);
 
-            var ret = new TripDetailsViewModel
-            {
-                Cost = dataModel.Cost,
-                Description = dataModel.Description,
-                VechicleModel = dataModel.VechicleModel,
-                Date = dataModel.Date,
-                DestinationAddress = dataModel.DestinationAddress,
-                StartingAddress = dataModel.StartingAddress
-            };
-
-            switch (viewerType)
-            {
-                case ViewerType.Passanger:
-                    break;
-                case ViewerType.Driver:
-                    break;
-            }
+            if (viewerType != ViewerType.Guest)
+                creator = new PassengerListDecorator(creator);
             
-            return ret;
+            return creator.CreateViewModel(dataModel);
         }
     }
 }
