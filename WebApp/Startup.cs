@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WebApp.Data;
 using WebApp.Data.Repositories;
 using WebApp.Models;
 
@@ -35,6 +36,8 @@ namespace WebApp
 
             services.AddTransient<ITripDetailsViewModelGenerator, TripDetailsViewModelGenerator>();
             services.AddTransient<ITripDetailsRepository, TripDetailsRepository>();
+            services.AddTransient<IApplicationUserViewModelGenerator, ApplicationUserViewModelGenerator>();
+            services.AddTransient<IApplicationUserRepository<ApplicationUser>, ApplicationUserRepository>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -66,6 +69,11 @@ namespace WebApp
                     name: "tripDetails",
                     template: "TripDetails/Index/{id}/{type}",
                     defaults:new {controller = "TripDetails", action="Index" });
+
+                routes.MapRoute(
+                    name: "Profiles",
+                    template: "Profiles/Index/{id}/{type}",
+                    defaults:new { controller = "Profiles", action = "Index" });
             });
         }
     }

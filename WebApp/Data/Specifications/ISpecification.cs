@@ -7,7 +7,7 @@ namespace WebApp.Data
     /// Provides inteface for classes containing where expressions for bd queries
     /// </summary>
     /// <typeparam name="T">Type of entity</typeparam>
-    public interface ISpecification<T> where T:BaseEntity
+    public interface ISpecification<T> 
     {
         Expression<Func<T,bool>> Criteria { get; }
     }

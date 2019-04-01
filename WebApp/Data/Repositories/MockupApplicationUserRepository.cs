@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace WebApp.Data.Repositories
 {
-    /// <summary>
-    /// Base class for every mockup repository. Every mockupRepository implementation should inherit from this class.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public class MockupBaseRepository<T> : IRepository<T>
+    public class MockupApplicationUserRepository<T> : IApplicationUserRepository<T>
     {
         protected List<T> dbContext;
 
@@ -21,9 +19,16 @@ namespace WebApp.Data.Repositories
             return dbContext;
         }
 
-        public T GetById(int id)
+        public T GetById(string id)
         {
-            return dbContext[id];
+            if ( Int32.TryParse(id , out int intId) )
+            {
+                return dbContext[intId];
+            }
+            else
+            {
+                throw new Exception("Wrong Id");
+            }
         }
 
         public IEnumerable<T> GetList(ISpecification<T> specification)
