@@ -5,21 +5,21 @@ using System.Threading.Tasks;
 
 namespace WebApp.Data.Repositories
 {
-    public class MockupApplicationUserRepository<T> : IApplicationUserRepository<T>
+    public class MockupApplicationUserRepository : IApplicationUserRepository
     {
-        protected List<T> dbContext;
+        protected List<ApplicationUser> dbContext;
 
-        public void Add(T toAdd)
+        public void Add(ApplicationUser toAdd)
         {
             dbContext.Add(toAdd);
         }
 
-        public IEnumerable<T> GetAll()
+        public IEnumerable<ApplicationUser> GetAll()
         {
             return dbContext;
         }
 
-        public T GetById(string id)
+        public ApplicationUser GetById(string id)
         {
             if ( Int32.TryParse(id , out int intId) )
             {
@@ -31,12 +31,12 @@ namespace WebApp.Data.Repositories
             }
         }
 
-        public IEnumerable<T> GetList(ISpecification<T> specification)
+        public IEnumerable<ApplicationUser> GetList(ISpecification<ApplicationUser> specification)
         {
             return dbContext.AsQueryable().Where(specification.Criteria);
         }
 
-        public void Remove(T toRemove)
+        public void Remove(ApplicationUser toRemove)
         {
             dbContext.Remove(toRemove);
         }

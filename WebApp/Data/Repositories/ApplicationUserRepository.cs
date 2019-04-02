@@ -2,7 +2,7 @@
 
 namespace WebApp.Data.Repositories
 {
-    public class ApplicationUserRepository : MockupApplicationUserRepository<ApplicationUser>, IApplicationUserRepository<ApplicationUser>
+    public class ApplicationUserRepository : MockupApplicationUserRepository, IApplicationUserRepository
     {
         public ApplicationUserRepository()
         {

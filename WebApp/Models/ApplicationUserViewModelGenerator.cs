@@ -11,9 +11,9 @@ namespace WebApp.Models
     }
     public class ApplicationUserViewModelGenerator : IApplicationUserViewModelGenerator
     {
-        private IApplicationUserRepository<ApplicationUser> userRepository;
+        private IApplicationUserRepository userRepository;
 
-        public ApplicationUserViewModelGenerator(IApplicationUserRepository<ApplicationUser> userRepository)
+        public ApplicationUserViewModelGenerator(IApplicationUserRepository userRepository)
         {
             this.userRepository = userRepository;
 

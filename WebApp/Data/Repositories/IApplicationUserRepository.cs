@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace WebApp.Data
 {
-    public interface IApplicationUserRepository<T>
+    public interface IApplicationUserRepository
     {
-        IEnumerable<T> GetAll();
-        void Add(T toAdd);
-        void Remove(T toRemove);
-        T GetById(string id);
-        IEnumerable<T> GetList(ISpecification<T> specification);
+        IEnumerable<ApplicationUser> GetAll();
+        void Add(ApplicationUser toAdd);
+        void Remove(ApplicationUser toRemove);
+        ApplicationUser GetById(string id);
+        IEnumerable<ApplicationUser> GetList(ISpecification<ApplicationUser> specification);
     }
 }

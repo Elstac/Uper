@@ -37,7 +37,7 @@ namespace WebApp
             services.AddTransient<ITripDetailsViewModelGenerator, TripDetailsViewModelGenerator>();
             services.AddTransient<ITripDetailsRepository, TripDetailsRepository>();
             services.AddTransient<IApplicationUserViewModelGenerator, ApplicationUserViewModelGenerator>();
-            services.AddTransient<IApplicationUserRepository<ApplicationUser>, ApplicationUserRepository>();
+            services.AddTransient<IApplicationUserRepository, ApplicationUserRepository>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
