@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace WebApp.Data.Repositories
 {
@@ -22,7 +23,16 @@ namespace WebApp.Data.Repositories
                     Cost = 100,
                     Date = DateTime.Now,
                     VechicleModel = "???",    
-                    DriverId = 1
+                    DriverId = 1,
+                    Passangers = new List<ApplicationUser>
+                    {
+                        new ApplicationUser
+                        {
+                            Id = "1",
+                            Email ="pieciolot@gmail.com",
+                            UserName = "Piecia"
+                        }
+                    }
                 }
         };
         }

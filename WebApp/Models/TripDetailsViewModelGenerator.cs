@@ -21,7 +21,7 @@ namespace WebApp.Models
         /// <param name="tripId">TripDetail dataclass id</param>
         /// <param name="viewerType">Type of viewer</param>
         /// <returns></returns>
-        TripDetailsViewModel GetViewModel(int tripId, ViewerType viewerType, ITripDetailsCreator creator);
+        TripDetailsViewModel GetViewModel(int tripId, ViewerType viewerType);
     }
 
     /// <summary>
@@ -30,10 +30,13 @@ namespace WebApp.Models
     public class TripDetailsViewModelGenerator : ITripDetailsViewModelGenerator
     {
         private ITripDetailsRepository detailsRepository;
-        
-        public TripDetailsViewModelGenerator(ITripDetailsRepository detailsRepository)
+        private ITripDetailsCreator creator;
+
+
+        public TripDetailsViewModelGenerator(ITripDetailsRepository detailsRepository, ITripDetailsCreator creator)
         {
             this.detailsRepository = detailsRepository;
+            this.creator = creator;
         }
 
         /// <summary>
@@ -42,14 +45,11 @@ namespace WebApp.Models
         /// <param name="tripId">TripDetail id</param>
         /// <param name="viewerType">Type of viewer</param>
         /// <returns>viewmodel</returns>
-        public TripDetailsViewModel GetViewModel(int tripId, ViewerType viewerType,ITripDetailsCreator creator)
+        public TripDetailsViewModel GetViewModel(int tripId, ViewerType viewerType)
         {
             var dataModel = detailsRepository.GetById(tripId);
-
-            if (viewerType != ViewerType.Guest)
-                creator = new PassengerListDecorator(creator);
             
-            return creator.CreateViewModel(dataModel);
+            return creator.CreateViewModel(dataModel,viewerType);
         }
     }
 }

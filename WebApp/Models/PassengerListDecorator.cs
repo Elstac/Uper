@@ -12,11 +12,14 @@ namespace WebApp.Models
             this.wrape = wrape;
         }
 
-        public TripDetailsViewModel CreateViewModel(TripDetails tripDetails)
+        public TripDetailsViewModel CreateViewModel(TripDetails tripDetails, ViewerType viewerType)
         {
-            var vm = wrape.CreateViewModel(tripDetails);
+            var vm = wrape.CreateViewModel(tripDetails, viewerType);
 
-            //TODO: gnerate list of pssangers and add it to viewmodel
+            if(viewerType != ViewerType.Guest)
+            {
+                //TODO: gnerate list of pssangers and add it to viewmodel
+            }
 
             return vm;
         }

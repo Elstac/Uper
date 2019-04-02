@@ -39,6 +39,15 @@ namespace WebApp
             services.AddTransient<IApplicationUserViewModelGenerator, ApplicationUserViewModelGenerator>();
             services.AddTransient<IApplicationUserRepository, ApplicationUserRepository>();
 
+            services.AddTransient(fac =>
+            {
+                ITripDetailsCreator ret = fac.GetService<TripDetailsCreator>();
+
+                ret = new PassengerListDecorator(ret);
+
+                return ret;
+            });
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
