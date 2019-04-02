@@ -4,6 +4,7 @@ using WebApp.Models;
 using WebApp.Data.Repositories;
 using WebApp.Data;
 using System;
+using System.Collections.Generic;
 
 namespace Tests
 {
@@ -20,6 +21,7 @@ namespace Tests
             repoMock = new Mock<ITripDetailsRepository>();
 
             repoMock.Setup(e => e.GetById(4)).Returns(() => throw new IndexOutOfRangeException());
+            repoMock.Setup(e => e.GetById(-1)).Returns(() => throw new IndexOutOfRangeException());
 
             testModel = new TripDetails();
 
@@ -49,6 +51,8 @@ namespace Tests
 
             creatorMock.Verify(rep => rep.CreateViewModel(testModel, (ViewerType)type), Times.Once);
         }
+
+        
 
         [Theory]
         [InlineData(-1,0)]
