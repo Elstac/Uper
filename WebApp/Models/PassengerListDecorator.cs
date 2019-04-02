@@ -1,5 +1,6 @@
 ﻿using WebApp.Data;
 using WebApp.ViewModels;
+using System.Linq;
 
 namespace WebApp.Models
 {
@@ -18,7 +19,8 @@ namespace WebApp.Models
 
             if(viewerType != ViewerType.Guest)
             {
-                //TODO: gnerate list of pssangers and add it to viewmodel
+                vm.PassangersUsernames = (from user in tripDetails.Passangers
+                                         select user.UserName).ToList();
             }
 
             return vm;

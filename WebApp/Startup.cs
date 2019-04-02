@@ -38,6 +38,7 @@ namespace WebApp
             services.AddTransient<ITripDetailsRepository, TripDetailsRepository>();
             services.AddTransient<IApplicationUserViewModelGenerator, ApplicationUserViewModelGenerator>();
             services.AddTransient<IApplicationUserRepository, ApplicationUserRepository>();
+            services.AddTransient<TripDetailsCreator>();
 
             services.AddTransient(fac =>
             {
@@ -76,7 +77,7 @@ namespace WebApp
 
                 routes.MapRoute(
                     name: "tripDetails",
-                    template: "TripDetails/Index/{id}/{type}",
+                    template: "TripDetails/Index/{id}/{viewerType}",
                     defaults:new {controller = "TripDetails", action="Index" });
 
                 routes.MapRoute(

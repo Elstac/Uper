@@ -22,9 +22,6 @@ namespace WebApp.Controllers
         public IActionResult Index(int id, int viewerType)
         {
             var vm = generator.GetViewModel(id, (ViewerType)viewerType);
-
-            if (viewerType > 2)
-                return BadRequest();
             
             ViewData["type"] = viewerType;
             return View(vm);

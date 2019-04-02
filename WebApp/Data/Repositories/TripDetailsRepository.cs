@@ -7,7 +7,7 @@ namespace WebApp.Data.Repositories
     {
         public TripDetailsRepository()
         {
-            dbContext = new System.Collections.Generic.List<TripDetails>()
+            dbContext = new List<TripDetails>()
             {
                 new TripDetails(){
                     Id = 0,
