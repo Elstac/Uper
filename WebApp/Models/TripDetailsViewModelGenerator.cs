@@ -31,8 +31,7 @@ namespace WebApp.Models
     {
         private ITripDetailsRepository detailsRepository;
         private ITripDetailsCreator creator;
-
-
+        
         public TripDetailsViewModelGenerator(ITripDetailsRepository detailsRepository, ITripDetailsCreator creator)
         {
             this.detailsRepository = detailsRepository;
