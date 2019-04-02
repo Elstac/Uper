@@ -7,7 +7,7 @@ namespace WebApp.Data.Repositories
     /// Base class for every mockup repository. Every mockupRepository implementation should inherit from this class.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class MockupBaseRepository<T> : IRepository<T> where T:BaseEntity
+    public class MockupBaseRepository<T> : IRepository<T>
     {
         protected List<T> dbContext;
 

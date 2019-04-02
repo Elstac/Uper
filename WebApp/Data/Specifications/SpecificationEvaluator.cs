@@ -6,7 +6,7 @@ namespace WebApp.Data.Specifications
     /// Generic class for applaying specification to given queries
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class SpecificationEvaluator<T> where T:BaseEntity
+    public class SpecificationEvaluator<T>
     {
         /// <summary>
         /// Apply given specification to given query
