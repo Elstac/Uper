@@ -74,6 +74,11 @@ namespace WebApp
                     name: "Profiles",
                     template: "Profiles/Index/{id}/{type}",
                     defaults:new { controller = "Profiles", action = "Index" });
+
+                routes.MapRoute(
+                   name: "TripCreator",
+                   template: "TripCreator/Index/{id}/{type}",
+                   defaults: new { controller = "TripCreator", action = "Index" });
             });
         }
     }
