@@ -1,9 +1,8 @@
-﻿using Xunit;
-using Moq;
-using WebApp.Models;
-using WebApp.Data;
+﻿using System;
 using System.Collections.Generic;
-using System;
+using WebApp.Data;
+using WebApp.Models;
+using Xunit;
 
 namespace Tests
 {
