@@ -13,15 +13,12 @@ namespace WebApp.Models
             this.wrape = wrape;
         }
 
-        public TripDetailsViewModel CreateViewModel(TripDetails tripDetails, ViewerType viewerType)
+        public TripDetailsViewModel CreateViewModel(TripDetails tripDetails)
         {
-            var vm = wrape.CreateViewModel(tripDetails, viewerType);
-
-            if(viewerType != ViewerType.Guest)
-            {
-                vm.PassangersUsernames = (from user in tripDetails.Passangers
-                                         select user.UserName).ToList();
-            }
+            var vm = wrape.CreateViewModel(tripDetails);
+            
+            vm.PassangersUsernames = (from user in tripDetails.Passangers
+                                      select user.UserName).ToList();
 
             return vm;
         }

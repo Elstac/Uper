@@ -1,5 +1,6 @@
 ﻿using WebApp.Data.Repositories;
 using WebApp.ViewModels;
+using WebApp.Models.Factories;
 
 namespace WebApp.Models
 {
@@ -30,12 +31,12 @@ namespace WebApp.Models
     public class TripDetailsViewModelGenerator : ITripDetailsViewModelGenerator
     {
         private ITripDetailsRepository detailsRepository;
-        private ITripDetailsCreator creator;
+        private ITripDetailViewModelCreatorFactory factory;
         
-        public TripDetailsViewModelGenerator(ITripDetailsRepository detailsRepository, ITripDetailsCreator creator)
+        public TripDetailsViewModelGenerator(ITripDetailsRepository detailsRepository, ITripDetailViewModelCreatorFactory factory)
         {
             this.detailsRepository = detailsRepository;
-            this.creator = creator;
+            this.factory = factory;
         }
 
         /// <summary>
@@ -48,7 +49,7 @@ namespace WebApp.Models
         {
             var dataModel = detailsRepository.GetById(tripId);
             
-            return creator.CreateViewModel(dataModel,viewerType);
+            return factory.CreateCreator(viewerType).CreateViewModel(dataModel);
         }
     }
 }

@@ -9,12 +9,12 @@ namespace WebApp.Models
 {
     public interface ITripDetailsCreator
     {
-        TripDetailsViewModel CreateViewModel(TripDetails tripDetails,ViewerType viewerType);
+        TripDetailsViewModel CreateViewModel(TripDetails tripDetails);
     }
 
     public class TripDetailsCreator : ITripDetailsCreator
     {
-        public TripDetailsViewModel CreateViewModel(TripDetails tripDetails, ViewerType viewerType)
+        public TripDetailsViewModel CreateViewModel(TripDetails tripDetails)
         {
             var ret = new TripDetailsViewModel
             {
