@@ -3,6 +3,7 @@ using Moq;
 using WebApp.Models;
 using WebApp.Data.Repositories;
 using WebApp.Data;
+using WebApp.Models.Factories;
 using System;
 using System.Collections.Generic;
 
@@ -13,21 +14,25 @@ namespace Tests
         private TripDetailsViewModelGenerator viewModelGenerator;
         private Mock<ITripDetailsCreator> creatorMock;
         private Mock<ITripDetailsRepository> repoMock;
+        private Mock<ITripDetailsViewModelCreatorFactory> facMock;
         private readonly TripDetails testModel;
 
         public TripDetailsViewModelGeneratorTests()
         {
             creatorMock = new Mock<ITripDetailsCreator>();
             repoMock = new Mock<ITripDetailsRepository>();
-
+            facMock = new Mock<ITripDetailsViewModelCreatorFactory>();
+            
             repoMock.Setup(e => e.GetById(4)).Returns(() => throw new IndexOutOfRangeException());
             repoMock.Setup(e => e.GetById(-1)).Returns(() => throw new IndexOutOfRangeException());
+
+            facMock.Setup(e => e.CreateCreator(It.IsAny<ViewerType>())).Returns(creatorMock.Object);
 
             testModel = new TripDetails();
 
             repoMock.Setup(e => e.GetById(1)).Returns(testModel);
 
-            viewModelGenerator = new TripDetailsViewModelGenerator(repoMock.Object, creatorMock.Object);
+            viewModelGenerator = new TripDetailsViewModelGenerator(repoMock.Object, facMock.Object);
         }
 
         [Theory]
@@ -49,7 +54,7 @@ namespace Tests
         {
             viewModelGenerator.GetViewModel(1, (ViewerType)type);
 
-            creatorMock.Verify(rep => rep.CreateViewModel(testModel, (ViewerType)type), Times.Once);
+            creatorMock.Verify(rep => rep.CreateViewModel(testModel), Times.Once);
         }
 
         

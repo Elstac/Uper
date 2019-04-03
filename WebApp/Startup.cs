@@ -41,7 +41,7 @@ namespace WebApp
             services.AddTransient<IApplicationUserRepository, ApplicationUserRepository>();
             services.AddTransient<ITripDetailsCreator,TripDetailsCreator>();
             
-            services.AddScoped<ITripDetailViewModelCreatorFactory, TripDetailViewModelCreatorFactory>();
+            services.AddScoped<ITripDetailsViewModelCreatorFactory, TripDetailViewModelCreatorFactory>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

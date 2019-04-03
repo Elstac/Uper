@@ -2,12 +2,12 @@
 
 namespace WebApp.Models.Factories
 {
-    public interface ITripDetailViewModelCreatorFactory
+    public interface ITripDetailsViewModelCreatorFactory
     {
         ITripDetailsCreator CreateCreator(ViewerType viewerType);
     }
 
-    public class TripDetailViewModelCreatorFactory:ITripDetailViewModelCreatorFactory
+    public class TripDetailViewModelCreatorFactory:ITripDetailsViewModelCreatorFactory
     {
         private IServiceProvider provider;
 

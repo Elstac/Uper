@@ -31,9 +31,9 @@ namespace WebApp.Models
     public class TripDetailsViewModelGenerator : ITripDetailsViewModelGenerator
     {
         private ITripDetailsRepository detailsRepository;
-        private ITripDetailViewModelCreatorFactory factory;
+        private ITripDetailsViewModelCreatorFactory factory;
         
-        public TripDetailsViewModelGenerator(ITripDetailsRepository detailsRepository, ITripDetailViewModelCreatorFactory factory)
+        public TripDetailsViewModelGenerator(ITripDetailsRepository detailsRepository, ITripDetailsViewModelCreatorFactory factory)
         {
             this.detailsRepository = detailsRepository;
             this.factory = factory;

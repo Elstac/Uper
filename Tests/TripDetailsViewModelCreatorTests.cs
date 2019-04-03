@@ -13,7 +13,6 @@ namespace Tests
 
         public TripDetailsViewModelCreatorTests()
         {
-            detailsCreator = new PassengerListDecorator(new TripDetailsCreator());
 
             testModel = new TripDetails
             {
@@ -33,9 +32,10 @@ namespace Tests
         }
 
         [Fact]
-        public void ReturnMinimalViewModelBasedOnDataModelWithGivenIdForGuest()
+        public void ReturnMinimalViewModelForBaseCreator()
         {
-            var vm = detailsCreator.CreateViewModel(testModel, ViewerType.Guest);
+            detailsCreator = new TripDetailsCreator();
+            var vm = detailsCreator.CreateViewModel(testModel);
 
             Assert.Equal(testModel.Description, vm.Description);
             Assert.Equal(testModel.Date, vm.Date);
@@ -46,9 +46,10 @@ namespace Tests
         }
 
         [Fact]
-        public void ReturnViewModelWithPassangersListBasedOnDataModelWithGivenIdForPassanger()
+        public void ReturnViewModelWithPassangersListWhenUsedPassengerListDecorator()
         {
-            var vm = detailsCreator.CreateViewModel(testModel, ViewerType.Passanger);
+            detailsCreator = new PassengerListDecorator(new TripDetailsCreator());
+            var vm = detailsCreator.CreateViewModel(testModel);
 
             Assert.Equal(testModel.Description, vm.Description);
             Assert.Equal(testModel.Date, vm.Date);
