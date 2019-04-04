@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace WebApp.Models
 {
+    /// <summary>
+    /// Adds passangers usernames list to base TripDetailsViewModel.
+    /// </summary>
     public class PassengerListDecorator : ITripDetailsCreator
     {
         private ITripDetailsCreator wrape;
@@ -22,6 +25,5 @@ namespace WebApp.Models
 
             return vm;
         }
-        
     }
 }

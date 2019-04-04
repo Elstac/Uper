@@ -16,6 +16,11 @@ namespace WebApp.Models.Factories
             this.provider = provider;
         }
 
+        /// <summary>
+        /// Create base TripDetailsViewModelCreator and wrap it with decorators which depend on viewer type.
+        /// </summary>
+        /// <param name="viewerType">Type of viewer</param>
+        /// <returns></returns>
         public ITripDetailsCreator CreateCreator(ViewerType viewerType)
         {
             var ret = (ITripDetailsCreator)provider.GetService(typeof(ITripDetailsCreator));
