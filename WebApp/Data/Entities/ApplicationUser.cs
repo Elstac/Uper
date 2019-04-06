@@ -25,6 +25,7 @@ namespace WebApp.Data
         public string Name { get; set; }
         public string Surname { get; set; }
         public UserRole Role { get; set; }
+        public ICollection<TripDetails> TripList { get; set; }
     } 
 }
 

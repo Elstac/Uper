@@ -74,6 +74,10 @@ namespace WebApp
                     name: "Profiles",
                     template: "Profiles/Index/{id}/{type}",
                     defaults:new { controller = "Profiles", action = "Index" });
+                // TODO Route to user's private profile
+                routes.MapRoute(
+                    name: "UserProfile",
+                    template: "MyProfile");
             });
         }
     }
