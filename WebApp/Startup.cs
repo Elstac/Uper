@@ -13,11 +13,15 @@ using WebApp.Data;
 using WebApp.Data.Repositories;
 using WebApp.Models;
 using WebApp.Models.Factories;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace WebApp
 {
     public class Startup
     {
+        private readonly bool DbBuild = true;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -34,6 +38,38 @@ namespace WebApp
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+
+            //Configuration of services and test DB required for regirestration and logging in. To skip this change DbBuild value in appseetings.json file
+            if(Configuration.GetValue<bool>("DbBuild"))
+            {
+                //DB configuration
+                services.AddDbContext<ApplicationContext>(op =>
+                {
+                    op.UseSqlite(Configuration.GetConnectionString("TestConnection"));
+                });
+
+                services.AddIdentity<ApplicationUser, IdentityRole>()
+                    .AddUserStore<ApplicationContext>()
+                    .AddDefaultTokenProviders();
+
+                services.ConfigureApplicationCookie(op =>
+                {
+                    op.LoginPath = "/login";
+                    op.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                });
+
+                
+                services.Configure<IdentityOptions>(op =>
+                {
+                    //Configure password requirements
+                    op.Password.RequireDigit = false;
+                    op.Password.RequiredLength = 5;
+                    op.Password.RequireLowercase = true;
+                    op.Password.RequireUppercase = false;
+                    op.Password.RequireNonAlphanumeric = false;
+
+                });
+            }
 
             services.AddTransient<ITripDetailsViewModelGenerator, TripDetailsViewModelGenerator>();
             services.AddTransient<ITripDetailsRepository, TripDetailsRepository>();
