@@ -21,8 +21,12 @@ namespace Tests
 
         [Theory]
         [InlineData("@testmail.com")]
+        [InlineData("testtestmail.com")]
         [InlineData("test@.com")]
         [InlineData("test@testmail")]
+        [InlineData("test@testmail.")]
+        [InlineData("t@est@testmail.com")]
+        [InlineData("t.est@testmail.com")]
         public void ThrowException(string address)
         {
             Assert.Throws<InvalidEmailAddressException>(() => validator.ValidateEmailAddress(address));
