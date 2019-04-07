@@ -18,19 +18,13 @@ namespace WebApp.Controllers
             this.userManager = userManager;
             this.signInManager = signInManager;
         }
-
-
-        // GET: /<controller>/
-        public IActionResult Index()
-        {
-            return View();
-        }
-        
+                
         public IActionResult SignIn(string returnUrl)
         {
             ViewData["returnUrl"] = returnUrl;
             return View();
         }
+        
 
         public async Task<IActionResult> SignInAsync(string username, string password, string returnUrl)
         {
@@ -38,7 +32,7 @@ namespace WebApp.Controllers
 
             var result = await signInManager.PasswordSignInAsync(username, password, true, false);
 
-            if (result.Succeeded)
+            if (!result.Succeeded)
                 return Content("Sign in failed", "text/html");
 
             if (string.IsNullOrEmpty(returnUrl))

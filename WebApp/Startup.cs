@@ -49,7 +49,7 @@ namespace WebApp
                 });
 
                 services.AddIdentity<ApplicationUser, IdentityRole>()
-                    .AddUserStore<ApplicationContext>()
+                    .AddEntityFrameworkStores<ApplicationContext>()
                     .AddDefaultTokenProviders();
 
                 services.ConfigureApplicationCookie(op =>
