@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using WebApp.Data;
+using WebApp.Models;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,11 +13,13 @@ namespace WebApp.Controllers
     {
         private UserManager<ApplicationUser> userManager;
         private SignInManager<ApplicationUser> signInManager;
+        private IIdentityResultErrorHtmlCreator errorCreator;
 
-        public LoginController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public LoginController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IIdentityResultErrorHtmlCreator errorCreator)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.errorCreator = errorCreator;
         }
                 
         public IActionResult SignIn(string returnUrl)
@@ -53,10 +56,11 @@ namespace WebApp.Controllers
                 Email = email
             },password);
 
-            if(!result.Succeeded)
-                return Content("Registration failed", "text/html");
+            if (!result.Succeeded)
+                return Content(errorCreator.CreateErrorHtml(result),
+                               "text/html");
 
-            return await SignInAsync(username,password,"Home/Index");
+            return await SignInAsync(username,password,"/Home/Index");
         }
     }
 }

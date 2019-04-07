@@ -1,18 +1,26 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
+using System.Text;
 
 namespace WebApp.Models
 {
-    public interface IIdentityResultErrorListCreator
+    public interface IIdentityResultErrorHtmlCreator
     {
-        IEnumerable<string> CreateErrorList(IdentityResult result);
+        string CreateErrorHtml(IdentityResult result);
     }
 
-    public class IdentityResultErrorListCreator : IIdentityResultErrorListCreator
+    public class IdentityResultErrorHtmlCreator : IIdentityResultErrorHtmlCreator
     {
-        public IEnumerable<string> CreateErrorList(IdentityResult result)
+        public string CreateErrorHtml(IdentityResult result)
         {
-            throw new System.NotImplementedException();
+            var sb = new StringBuilder();
+
+            foreach (var error in result.Errors)
+            {
+                sb.Append($"<p>{error.Description}</p>");
+            }
+
+            return sb.ToString();
         }
     }
 }

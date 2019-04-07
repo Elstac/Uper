@@ -66,7 +66,6 @@ namespace WebApp
                     op.Password.RequireLowercase = true;
                     op.Password.RequireUppercase = false;
                     op.Password.RequireNonAlphanumeric = false;
-
                 });
             }
 
@@ -75,6 +74,7 @@ namespace WebApp
             services.AddTransient<IApplicationUserViewModelGenerator, ApplicationUserViewModelGenerator>();
             services.AddTransient<IApplicationUserRepository, ApplicationUserRepository>();
             services.AddTransient<ITripDetailsCreator,TripDetailsCreator>();
+            services.AddTransient<IIdentityResultErrorHtmlCreator,IdentityResultErrorHtmlCreator>();
             
             services.AddScoped<ITripDetailsViewModelCreatorFactory, TripDetailViewModelCreatorFactory>();
 
