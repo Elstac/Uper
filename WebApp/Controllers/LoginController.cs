@@ -24,7 +24,11 @@ namespace WebApp.Controllers
             ViewData["returnUrl"] = returnUrl;
             return View();
         }
-        
+
+        public IActionResult Register(string returnUrl)
+        {
+            return View();
+        }
 
         public async Task<IActionResult> SignInAsync(string username, string password, string returnUrl)
         {
@@ -35,7 +39,7 @@ namespace WebApp.Controllers
             if (!result.Succeeded)
                 return Content("Sign in failed", "text/html");
 
-            if (string.IsNullOrEmpty(returnUrl))
+            if (string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                 return RedirectToAction("Index", "Home");
 
             return Redirect(returnUrl);
