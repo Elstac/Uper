@@ -13,6 +13,12 @@ namespace WebApp.Controllers
         private UserManager<ApplicationUser> userManager;
         private SignInManager<ApplicationUser> signInManager;
 
+        public LoginController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        {
+            this.userManager = userManager;
+            this.signInManager = signInManager;
+        }
+
 
         // GET: /<controller>/
         public IActionResult Index()

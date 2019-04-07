@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,6 +25,8 @@ namespace WebApp.Controllers
         /// <param name="viewerType">Type of viewer</param>
         /// <returns>Details page</returns>
         public IActionResult Index(int id, int viewerType)
+        [Authorize]
+        public IActionResult Index(int id, int type)
         {
             var vm = generator.GetViewModel(id, (ViewerType)viewerType);
             
