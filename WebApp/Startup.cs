@@ -54,7 +54,7 @@ namespace WebApp
 
                 services.ConfigureApplicationCookie(op =>
                 {
-                    op.LoginPath = "/login";
+                    op.LoginPath = "/login/signin";
                     op.ExpireTimeSpan = TimeSpan.FromMinutes(30);
                 });
 
