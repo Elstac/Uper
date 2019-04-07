@@ -54,9 +54,9 @@ namespace WebApp.Controllers
             },password);
 
             if(!result.Succeeded)
-                return Content("Register failed", "text/html");
+                return Content("Registration failed", "text/html");
 
-            return Content("Account created", "text/html");
+            return await SignInAsync(username,password,"Home/Index");
         }
     }
 }
