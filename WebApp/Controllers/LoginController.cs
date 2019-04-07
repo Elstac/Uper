@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using WebApp.Data;
 using WebApp.Models;
+using WebApp.Exceptions;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,12 +15,17 @@ namespace WebApp.Controllers
         private UserManager<ApplicationUser> userManager;
         private SignInManager<ApplicationUser> signInManager;
         private IIdentityResultErrorHtmlCreator errorCreator;
+        private IEmailAddressValidator validator;
 
-        public LoginController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IIdentityResultErrorHtmlCreator errorCreator)
+        public LoginController(UserManager<ApplicationUser> userManager,
+                               SignInManager<ApplicationUser> signInManager,
+                               IIdentityResultErrorHtmlCreator errorCreator,
+                               IEmailAddressValidator validator)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.errorCreator = errorCreator;
+            this.validator = validator;
         }
                 
         public IActionResult SignIn(string returnUrl)
@@ -50,6 +56,15 @@ namespace WebApp.Controllers
 
         public async Task<IActionResult> RegisterAsync(string username, string password,string email)
         {
+            try
+            {
+                validator.ValidateEmailAddress(email);
+            }
+            catch(InvalidEmailAddressException e)
+            {
+                return Content(e.Message,"text/html");
+            }
+
             var result = await userManager.CreateAsync(new ApplicationUser
             {
                 UserName = username,

@@ -75,6 +75,7 @@ namespace WebApp
             services.AddTransient<IApplicationUserRepository, ApplicationUserRepository>();
             services.AddTransient<ITripDetailsCreator,TripDetailsCreator>();
             services.AddTransient<IIdentityResultErrorHtmlCreator,IdentityResultErrorHtmlCreator>();
+            services.AddTransient<IEmailAddressValidator,EmailAddressValidator>();
             
             services.AddScoped<ITripDetailsViewModelCreatorFactory, TripDetailViewModelCreatorFactory>();
 
