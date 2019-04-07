@@ -2,7 +2,7 @@
     var returnUrl = ViewData["returnUrl"];
 }
 
-<form asp-controller="Login" asp-action="SignInAsync" asp-route-returnurl="@returnUrl">
+<form asp-controller="Login" asp-action="SignInAsync" asp-route-returnurl="@returnUrl" class="login-input">
     <h1>Sign In</h1>
     <p>Username:</p>
     <input type="text" name="Username" />
@@ -10,5 +10,7 @@
     <input type="text" name="Password" height="120" width="120" />
     <input type="submit"/>
 </form>
-
+<div class="register">
+    @Html.ActionLink("Register", "Register")
+</div>
 
