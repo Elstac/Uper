@@ -25,7 +25,7 @@ namespace WebApp.Controllers
             return View();
         }
 
-        public IActionResult Register(string returnUrl)
+        public IActionResult Register()
         {
             return View();
         }
@@ -43,6 +43,20 @@ namespace WebApp.Controllers
                 return RedirectToAction("Index", "Home");
 
             return Redirect(returnUrl);
+        }
+
+        public async Task<IActionResult> RegisterAsync(string username, string password,string email)
+        {
+            var result = await userManager.CreateAsync(new ApplicationUser
+            {
+                UserName = username,
+                Email = email
+            },password);
+
+            if(!result.Succeeded)
+                return Content("Register failed", "text/html");
+
+            return Content("Account created", "text/html");
         }
     }
 }

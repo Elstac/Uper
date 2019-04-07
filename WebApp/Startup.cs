@@ -20,7 +20,6 @@ namespace WebApp
 {
     public class Startup
     {
-        private readonly bool DbBuild = true;
 
         public Startup(IConfiguration configuration)
         {

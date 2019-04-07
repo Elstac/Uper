@@ -24,9 +24,8 @@ namespace WebApp.Controllers
         /// <param name="id">Trip ID</param>
         /// <param name="viewerType">Type of viewer</param>
         /// <returns>Details page</returns>
-        public IActionResult Index(int id, int viewerType)
         [Authorize]
-        public IActionResult Index(int id, int type)
+        public IActionResult Index(int id, int viewerType)
         {
             var vm = generator.GetViewModel(id, (ViewerType)viewerType);
             
