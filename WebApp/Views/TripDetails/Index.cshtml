@@ -18,16 +18,23 @@
 
 @if (type != ViewerType.Guest)
 {
-<div>
+<div class="passangersList">
     <h2>Passangers</h2>
     @if (type == ViewerType.Passanger)
     {
-        <p>Hello passenger</p>
-        //TODO add passanger list
+        <h3>List:</h3>
+        foreach (var username in Model.PassangersUsernames)
+        {
+            <p>@username</p>
+        }
     }
     @if (type == ViewerType.Driver)
     {
-        <p>Hello driver</p>
+        <h3>List for driver:</h3>
+        foreach (var username in Model.PassangersUsernames)
+        {
+            <p>@username</p>
+        }
         //TODO add passanger management panel
     }
 </div>

@@ -4,7 +4,7 @@ using System.Linq;
 namespace WebApp.Data.Repositories
 {
     /// <summary>
-    /// Base class for every mockup repository. Every mockupRepository implementation should inherit from this class.
+    /// Base class for every mockup repository. Every mockupRepository implementation should inherit from this class. 
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class MockupBaseRepository<T> : IRepository<T>

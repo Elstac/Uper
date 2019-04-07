@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using WebApp.Data;
 using WebApp.Data.Repositories;
 using WebApp.Models;
+using WebApp.Models.Factories;
 
 namespace WebApp
 {
@@ -38,6 +39,9 @@ namespace WebApp
             services.AddTransient<ITripDetailsRepository, TripDetailsRepository>();
             services.AddTransient<IApplicationUserViewModelGenerator, ApplicationUserViewModelGenerator>();
             services.AddTransient<IApplicationUserRepository, ApplicationUserRepository>();
+            services.AddTransient<ITripDetailsCreator,TripDetailsCreator>();
+            
+            services.AddScoped<ITripDetailsViewModelCreatorFactory, TripDetailViewModelCreatorFactory>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -67,7 +71,7 @@ namespace WebApp
 
                 routes.MapRoute(
                     name: "tripDetails",
-                    template: "TripDetails/Index/{id}/{type}",
+                    template: "TripDetails/Index/{id}/{viewerType}",
                     defaults:new {controller = "TripDetails", action="Index" });
 
                 routes.MapRoute(

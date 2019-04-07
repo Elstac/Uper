@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace WebApp.Data.Repositories
 {
@@ -6,10 +7,10 @@ namespace WebApp.Data.Repositories
     {
         public TripDetailsRepository()
         {
-            dbContext = new System.Collections.Generic.List<TripDetails>()
+            dbContext = new List<TripDetails>()
             {
                 new TripDetails(){
-                    Id =1,
+                    Id = 0,
                     Description = "First Uper trip",
                     DestinationAddress = new Address(){
                         City = "CityDes",
@@ -22,7 +23,16 @@ namespace WebApp.Data.Repositories
                     Cost = 100,
                     Date = DateTime.Now,
                     VechicleModel = "???",    
-                    DriverId = 1
+                    DriverId = 1,
+                    Passangers = new List<ApplicationUser>
+                    {
+                        new ApplicationUser
+                        {
+                            Id = "1",
+                            Email ="pieciolot@gmail.com",
+                            UserName = "Piecia"
+                        }
+                    }
                 }
         };
         }
