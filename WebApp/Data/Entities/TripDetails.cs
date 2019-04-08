@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace WebApp.Data
 {
@@ -11,5 +13,7 @@ namespace WebApp.Data
         public string Description { get; set; }
         public string VechicleModel { get; set; }
         public DateTime Date { get; set; }
+
+        public ICollection<ApplicationUser> Passangers { get; set; }
     }
 }

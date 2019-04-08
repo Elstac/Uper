@@ -15,10 +15,49 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
+    <style>
+        header{
+            background-color:darkorchid;
+            font-size: 40px;
+            padding: 20px;
+            
+        }
+        nav {
+            background-color:fuchsia;
+            padding: 7px;
+        }
+        sidebar{
+        }
+        bodyRender{
+        }
+        footer{
+            background-color:lightpink;
+            padding: 5px;
+        }
+    </style>
+    
 </head>
 <body>
-  
-        @RenderBody()
+    <header>
+        UPER
+    </header>
+    <nav>
+        @Html.RouteLink("Home", "Home", new { action = "Index", id = "0", type = "0" })@{} <font color="pink"> | </font>
+        @Html.RouteLink("Travel Offers", "tripDetails", new { action = "Index", id = "0", type = "0" })@{} <font color="pink"> | </font>
+        @Html.RouteLink("My Profile", "Profiles", new { action = "Index", id = "0" })
+    </nav>  
 
+    <section>
+        <sidebar>
+
+        </sidebar>
+        <bodyRender>
+            @RenderBody();
+        </bodyRender>
+    </section>
+    
+    <footer>
+        Copyrighted by spółka z.o.o
+    </footer>
 </body>
 </html>

@@ -31,7 +31,8 @@ namespace WebApp.Models
                 Email = dataModel.Email,
                 PhoneNumber = dataModel.PhoneNumber,
                 Rating = dataModel.Rating,
-                NumOfVotes = dataModel.NumOfVote
+                NumOfVotes = dataModel.NumOfVote,
+                Description = dataModel.Description
             };
             return ret;
         }

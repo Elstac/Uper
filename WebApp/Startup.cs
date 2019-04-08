@@ -12,11 +12,15 @@ using Microsoft.Extensions.DependencyInjection;
 using WebApp.Data;
 using WebApp.Data.Repositories;
 using WebApp.Models;
+using WebApp.Models.Factories;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace WebApp
 {
     public class Startup
     {
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -34,10 +38,47 @@ namespace WebApp
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            //Configuration of services and test DB required for regirestration and logging in. To skip this change DbBuild value in appseetings.json file
+            if(Configuration.GetValue<bool>("DbBuild"))
+            {
+                //DB configuration
+                services.AddDbContext<ApplicationContext>(op =>
+                {
+                    op.UseSqlite(Configuration.GetConnectionString("TestConnection"));
+                });
+
+                services.AddIdentity<ApplicationUser, IdentityRole>()
+                    .AddEntityFrameworkStores<ApplicationContext>()
+                    .AddDefaultTokenProviders();
+
+                services.ConfigureApplicationCookie(op =>
+                {
+                    op.LoginPath = "/login/signin";
+                    op.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                });
+
+                
+                services.Configure<IdentityOptions>(op =>
+                {
+                    //Configure password requirements
+                    op.Password.RequireDigit = false;
+                    op.Password.RequiredLength = 5;
+                    op.Password.RequireLowercase = true;
+                    op.Password.RequireUppercase = false;
+                    op.Password.RequireNonAlphanumeric = false;
+                });
+            }
+
             services.AddTransient<ITripDetailsViewModelGenerator, TripDetailsViewModelGenerator>();
             services.AddTransient<ITripDetailsRepository, TripDetailsRepository>();
             services.AddTransient<IApplicationUserViewModelGenerator, ApplicationUserViewModelGenerator>();
             services.AddTransient<IApplicationUserRepository, ApplicationUserRepository>();
+            services.AddTransient<ITripDetailsCreator,TripDetailsCreator>();
+            services.AddTransient<IIdentityResultErrorHtmlCreator,IdentityResultErrorHtmlCreator>();
+            services.AddTransient<IEmailAddressValidator,EmailAddressValidator>();
+            services.AddTransient<IAccountManager, AccountManager>();
+            
+            services.AddScoped<ITripDetailsViewModelCreatorFactory, TripDetailViewModelCreatorFactory>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -55,6 +96,7 @@ namespace WebApp
                 app.UseHsts();
             }
 
+            app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
@@ -66,8 +108,13 @@ namespace WebApp
                     template: "{controller=Home}/{action=Index}/{id?}");
 
                 routes.MapRoute(
+                    name: "Home",
+                    template: "Home/Index/{id}/{type}",
+                    defaults: new { controller = "Home", action = "Index" });
+
+                routes.MapRoute(
                     name: "tripDetails",
-                    template: "TripDetails/Index/{id}/{type}",
+                    template: "TripDetails/Index/{id}/{viewerType}",
                     defaults:new {controller = "TripDetails", action="Index" });
 
                 routes.MapRoute(
@@ -79,6 +126,10 @@ namespace WebApp
                    name: "TripCreator",
                    template: "TripCreator/Index/{id}/{type}",
                    defaults: new { controller = "TripCreator", action = "Index" });
+                // TODO Route to user's private profile
+                routes.MapRoute(
+                    name: "UserProfile",
+                    template: "MyProfile");
             });
         }
     }
