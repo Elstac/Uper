@@ -15,6 +15,7 @@ using WebApp.Models;
 using WebApp.Models.Factories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using WebApp.Middlewares;
 
 namespace WebApp
 {
@@ -97,6 +98,10 @@ namespace WebApp
             }
 
             app.UseAuthentication();
+
+            //Custom type mapper for TripDetails redirection
+            app.UseTrpeMapper();
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
