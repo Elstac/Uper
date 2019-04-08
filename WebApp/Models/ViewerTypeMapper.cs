@@ -1,26 +1,20 @@
 ﻿using System;
-using System.Security.Claims;
 using WebApp.Data;
 
 namespace WebApp.Models
 {
     public interface IViewerTypeMapper
     {
-        ViewerType GetViewerType(ClaimsPrincipal principal, TripDetails tripDetails);
+        ViewerType GetViewerType(ApplicationUser user, TripDetails tripDetails);
     }
 
     public class ViewerTypeMapper : IViewerTypeMapper
     {
-        private IAccountManager accountManager;
-
-        public ViewerTypeMapper(IAccountManager accountManager)
+        public ViewerType GetViewerType(ApplicationUser user, TripDetails tripDetails)
         {
-            this.accountManager = accountManager;
-        }
+            if (user == null)
+                return ViewerType.Guest;
 
-        public ViewerType GetViewerType(ClaimsPrincipal user, TripDetails tripDetails)
-        {
-            var user = 
             if (int.Parse(user.Id) == tripDetails.DriverId)
                 return ViewerType.Driver;
 

@@ -32,6 +32,20 @@ namespace Tests
         }
 
         [Fact]
+        public void ReturnGuestIfUserIsNull()
+        {
+            var output = typeMapper.GetViewerType(
+                null,
+                new TripDetails
+                {
+                    DriverId = 2,
+                    Passangers = null
+                });
+
+            Assert.Equal(ViewerType.Guest, output);
+        }
+
+        [Fact]
         public void ReturnPassangerIfUserIsInPassangerList()
         {
             var user = new ApplicationUser
