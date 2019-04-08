@@ -14,5 +14,6 @@ namespace WebApp.ViewModels
         public int NumOfVotes { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
+        public string Description { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace WebApp.Data.Repositories
 {
@@ -20,7 +21,16 @@ namespace WebApp.Data.Repositories
                     EmailConfirmed = true,
                     PhoneNumber = "514665123",
                     Role = 0,
-                    PasswordHash = "ToHasloAleShashowane"
+                    PasswordHash = "ToHasloAleShashowane",
+                    Description = "hi im Jan and im a very happy not creepy driver",
+                    TripList = new List<TripDetails>()
+                    {
+                        new TripDetails()
+                        {
+                            Id = 1,
+                            DriverId = 1
+                        }
+                    }
                 }
             };
         }

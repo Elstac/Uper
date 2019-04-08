@@ -70,6 +70,11 @@ namespace WebApp
                     template: "{controller=Home}/{action=Index}/{id?}");
 
                 routes.MapRoute(
+                    name: "Home",
+                    template: "Home/Index/{id}/{type}",
+                    defaults: new { controller = "Home", action = "Index" });
+
+                routes.MapRoute(
                     name: "tripDetails",
                     template: "TripDetails/Index/{id}/{viewerType}",
                     defaults:new {controller = "TripDetails", action="Index" });
@@ -78,6 +83,10 @@ namespace WebApp
                     name: "Profiles",
                     template: "Profiles/Index/{id}/{type}",
                     defaults:new { controller = "Profiles", action = "Index" });
+                // TODO Route to user's private profile
+                routes.MapRoute(
+                    name: "UserProfile",
+                    template: "MyProfile");
             });
         }
     }
