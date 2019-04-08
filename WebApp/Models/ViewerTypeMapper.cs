@@ -12,7 +12,13 @@ namespace WebApp.Models
     {
         public ViewerType GetViewerType(ApplicationUser user, TripDetails tripDetails)
         {
-            throw new NotImplementedException();
+            if (int.Parse(user.Id) == tripDetails.DriverId)
+                return ViewerType.Driver;
+
+            if (tripDetails.Passangers!=null && tripDetails.Passangers.Contains(user))
+                return ViewerType.Passanger;
+
+            return ViewerType.Guest;
         }
     }
 }
