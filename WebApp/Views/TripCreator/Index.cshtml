@@ -12,43 +12,44 @@
     <form action="/TripCreator/Index" method="post">
         <div class="container">
             <p><label for="DestinationAddress.City">Destination City</label></p>
-            <p><input type="text" name="DestinationAddress.City" required /></p>
+            <p><input type="text" name="DestinationAddress.City"  /></p>
         </div>
         <div class="container">
             <p><label for="DestinationAddress.Street">Destination City Street</label></p>
-            <p><input type="text" name="DestinationAddress.Street" required /></p>
+            <p><input type="text" name="DestinationAddress.Street"  /></p>
         </div>
         <div class="container">
             <p><label for="StartingAddress.City">Starting City</label></p>
-            <p><input type="text" name="StartingAddress.City" required /></p>
+            <p><input type="text" name="StartingAddress.City"  /></p>
         </div>
         <div class="container">
             <p><label for="StartingAddress.Street">Starting City Street</label></p>
-            <p><input type="text" name="StartingAddress.Street" required /></p>
+            <p><input type="text" name="StartingAddress.Street"  /></p>
         </div>
         <div class="container">
             <p><label for="Cost">Cost per person (in zloty)</label></p>
-            <p><input type="number" name="Cost" min="0" max="999" step="0.01"  required /></p>
+            <p><input type="number" name="Cost" min="0" max="999" step="0.01" /></p>
         </div>
         <div class="container">
             <p><label for="VechicleModel">Vechicle Model</label></p>
-            <p><input type="text" name="VechicleModel" required /></p>
+            <p><input type="text" name="VechicleModel" /></p>
         </div>
         <div class="container">
             <p><label for="Date">Date</label></p>
-            <p><input type="datetime-local" name="Date" required /></p>
+            <p><input type="datetime-local" name="Date" /></p>
             <span class="validity"></span>
         </div>
         <div class="container">
             <p><label for="Size">Size</label></p>
-            <p><input type="number" name="Size" min="1" max="15" required /></p>
+            <p><input type="number" name="Size" min="1" max="15" /></p>
         </div>
         <div class="container">
             <p><label for="Description">Description</label></p>
-            <p><textarea name="Description" rows="4" cols="40" required></textarea></p>
+            <p><textarea name="Description" rows="4" cols="40"></textarea></p>
         </div>
         <div class="container">
-            <p><input type="submit" value="Submit" /></p>
+            <input type="submit" name="answer" value="Accept" class="btn btn-success" />
+            <input type="submit" name="answer" value="Decline" class="btn btn-danger" />
         </div>
     </form>
 </body>
