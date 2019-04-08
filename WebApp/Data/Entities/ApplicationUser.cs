@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -28,6 +29,7 @@ namespace WebApp.Data
         public string Surname { get; set; }
         public UserRole Role { get; set; }
         public string Description { get; set; }
+        [NotMapped]
         public ICollection<TripDetails> TripList { get; set; }
     } 
 }

@@ -12,7 +12,10 @@ namespace WebApp.Models
     {
         public ViewerType GetViewerType(ApplicationUser user, TripDetails tripDetails)
         {
-            if (int.Parse(user.Id) == tripDetails.DriverId)
+            if (user == null)
+                return ViewerType.Guest;
+
+            if (user.Id == tripDetails.DriverId)
                 return ViewerType.Driver;
 
             if (tripDetails.Passangers!=null && tripDetails.Passangers.Contains(user))

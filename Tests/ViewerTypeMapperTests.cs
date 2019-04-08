@@ -24,7 +24,21 @@ namespace Tests
                 },
                 new TripDetails
                 {
-                    DriverId = 2,
+                    DriverId = "2",
+                    Passangers = null
+                });
+
+            Assert.Equal(ViewerType.Guest, output);
+        }
+
+        [Fact]
+        public void ReturnGuestIfUserIsNull()
+        {
+            var output = typeMapper.GetViewerType(
+                null,
+                new TripDetails
+                {
+                    DriverId = "2",
                     Passangers = null
                 });
 
@@ -42,7 +56,7 @@ namespace Tests
             var output = typeMapper.GetViewerType(user,
                 new TripDetails
                 {
-                    DriverId = 2,
+                    DriverId = "2",
                     Passangers = new List<ApplicationUser>
                     {
                         user
@@ -63,7 +77,7 @@ namespace Tests
             var output = typeMapper.GetViewerType(user,
                 new TripDetails
                 {
-                    DriverId = 1,
+                    DriverId = "1",
                     Passangers = null
                 });
 

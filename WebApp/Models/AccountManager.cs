@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using WebApp.Data;
 
@@ -9,6 +10,7 @@ namespace WebApp.Models
     {
         Task CreateAccountAsync(string username, string password, string email);
         Task SignInAsync(string username, string password);
+        Task<ApplicationUser> GetUserAsync(ClaimsPrincipal principal);
     }
 
     public class AccountManager : IAccountManager
@@ -42,6 +44,11 @@ namespace WebApp.Models
 
             if (!result.Succeeded)
                 throw new InvalidOperationException(errorCreator.CreateErrorHtml(result));
+        }
+
+        public async Task<ApplicationUser> GetUserAsync(ClaimsPrincipal principal)
+        {
+            return await userManager.GetUserAsync(principal);
         }
 
         public async Task SignInAsync(string username, string password)

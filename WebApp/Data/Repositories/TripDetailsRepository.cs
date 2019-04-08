@@ -23,7 +23,7 @@ namespace WebApp.Data.Repositories
                     Cost = 100,
                     Date = DateTime.Now,
                     VechicleModel = "???",    
-                    DriverId = 1,
+                    DriverId = "27562d79-9470-45ab-9181-ad8944b2b458",
                     Passangers = new List<ApplicationUser>
                     {
                         new ApplicationUser

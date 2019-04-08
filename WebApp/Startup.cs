@@ -15,6 +15,7 @@ using WebApp.Models;
 using WebApp.Models.Factories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using WebApp.Middlewares;
 
 namespace WebApp
 {
@@ -77,6 +78,7 @@ namespace WebApp
             services.AddTransient<IIdentityResultErrorHtmlCreator,IdentityResultErrorHtmlCreator>();
             services.AddTransient<IEmailAddressValidator,EmailAddressValidator>();
             services.AddTransient<IAccountManager, AccountManager>();
+            services.AddTransient<IViewerTypeMapper, ViewerTypeMapper>();
             
             services.AddScoped<ITripDetailsViewModelCreatorFactory, TripDetailViewModelCreatorFactory>();
 
@@ -97,6 +99,10 @@ namespace WebApp
             }
 
             app.UseAuthentication();
+
+            //Custom type mapper for TripDetails redirection
+            app.UseTrpeMapper();
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
