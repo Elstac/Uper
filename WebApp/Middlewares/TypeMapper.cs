@@ -35,8 +35,8 @@ namespace WebApp.Middlewares
                 var user = await accountManager.GetUserAsync(context.User);
                 var data = repository.GetById(id);
                 var type = typeMapper.GetViewerType(user,data);
-
-                context.Request.QueryString = new QueryString($"id={id}&type={type}");
+                
+                context.Request.QueryString = new QueryString($"?id={id}&viewerType={type}");
             }
 
             await next.Invoke(context);

@@ -15,7 +15,7 @@ namespace WebApp.Models
             if (user == null)
                 return ViewerType.Guest;
 
-            if (int.Parse(user.Id) == tripDetails.DriverId)
+            if (user.Id == tripDetails.DriverId)
                 return ViewerType.Driver;
 
             if (tripDetails.Passangers!=null && tripDetails.Passangers.Contains(user))
