@@ -2,9 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using WebApp.Data;
 using WebApp.Models;
-using WebApp.Exceptions;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,20 +10,11 @@ namespace WebApp.Controllers
 {
     public class LoginController : Controller
     {
-        private UserManager<ApplicationUser> userManager;
-        private SignInManager<ApplicationUser> signInManager;
-        private IIdentityResultErrorHtmlCreator errorCreator;
-        private IEmailAddressValidator validator;
+        private IAccountManager accountManager;
 
-        public LoginController(UserManager<ApplicationUser> userManager,
-                               SignInManager<ApplicationUser> signInManager,
-                               IIdentityResultErrorHtmlCreator errorCreator,
-                               IEmailAddressValidator validator)
+        public LoginController(IAccountManager accountManager)
         {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
-            this.errorCreator = errorCreator;
-            this.validator = validator;
+            this.accountManager = accountManager;
         }
                 
         public IActionResult SignIn(string returnUrl)
@@ -43,13 +32,17 @@ namespace WebApp.Controllers
         {
             await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
 
-            var result = await signInManager.PasswordSignInAsync(username, password, true, false);
+            try
+            {
+                await accountManager.SignInAsync(username, password);
+            }
+            catch (System.Exception e)
+            {
+                return Content(e.Message, "text/html");
+            }
 
-            if (!result.Succeeded)
-                return Content("Sign in failed", "text/html");
-
-            if (string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
-                return RedirectToAction("Index", "Home");
+            if(string.IsNullOrEmpty(returnUrl)||!Url.IsLocalUrl(returnUrl))
+                return RedirectToAction("index","home");
 
             return Redirect(returnUrl);
         }
@@ -58,24 +51,14 @@ namespace WebApp.Controllers
         {
             try
             {
-                validator.ValidateEmailAddress(email);
+                await accountManager.CreateAccountAsync(username,password,email);
             }
-            catch(InvalidEmailAddressException e)
+            catch(System.Exception e)
             {
-                return Content(e.Message,"text/html");
+                return Content(e.Message, "text/html");
             }
 
-            var result = await userManager.CreateAsync(new ApplicationUser
-            {
-                UserName = username,
-                Email = email
-            },password);
-
-            if (!result.Succeeded)
-                return Content(errorCreator.CreateErrorHtml(result),
-                               "text/html");
-
-            return await SignInAsync(username,password,"/Home/Index");
+            return Content("Account created succesfully","text/html");
         }
     }
 }
