@@ -4,7 +4,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - WebApp</title>
-
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
@@ -42,9 +41,10 @@
         UPER
     </header>
     <nav>
-        @Html.RouteLink("Home", "Home", new { action = "Index", id = "0", type = "0" })@{} <font color="pink"> | </font>
-        @Html.RouteLink("Travel Offers", "tripDetails", new { action = "Index", id = "0", type = "0" })@{} <font color="pink"> | </font>
-        @Html.RouteLink("My Profile", "Profiles", new { action = "Index", id = "0" })
+        @Html.ActionLink("Home", "index", "Home")@{} <font color="pink"> | </font>
+        @Html.ActionLink("Travel Offers", "Index", "TripDetails", 0, 0)@{} <font color="pink"> | </font>
+        @Html.ActionLink("My Profile", "Index", "Profiles", 0)
+        <span style="float:right;color:pink">@Html.ActionLink("Log in", "SignIn", "Login") | No account? @Html.ActionLink("Register", "Register", "Login")</span>
     </nav>  
 
     <section>
