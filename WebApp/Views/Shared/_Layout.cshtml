@@ -42,7 +42,7 @@
         UPER
     </header>
     <nav>
-        @Html.ActionLink("Home", "Index", "Home")@{} <font color="pink"> | </font>
+        @Html.RouteLink("Home", "Home", new { action = "Index", id = "0", type = "0" })@{} <font color="pink"> | </font>
         @Html.RouteLink("Travel Offers", "tripDetails", new { action = "Index", id = "0", type = "0" })@{} <font color="pink"> | </font>
         @Html.RouteLink("My Profile", "Profiles", new { action = "Index", id = "0" })
     </nav>  

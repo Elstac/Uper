@@ -22,6 +22,7 @@ namespace WebApp.Data.Repositories
                     PhoneNumber = "514665123",
                     Role = 0,
                     PasswordHash = "ToHasloAleShashowane",
+                    Description = "hi im Jan and im a very happy not creepy driver",
                     TripList = new List<TripDetails>()
                     {
                         new TripDetails()

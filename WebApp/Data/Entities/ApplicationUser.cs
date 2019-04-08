@@ -18,6 +18,8 @@ namespace WebApp.Data
     /// <typeparam name="Rating">Current Rating of an User 0-5</typeparam>
     /// <typeparam name="NumOfVotes">Number of Votes already cast</typeparam>
     /// <typeparam name="Role">0 - User 1 - Moderator 2 - Admin</typeparam>
+    /// <typeparam name="TripList">User's trips</typeparam>
+    /// <typeparam name="Desctription">User-made desciption about him/herself to be viewed by others</typeparam>
     public class ApplicationUser : IdentityUser
     {
         public float Rating { get; set; }
@@ -25,6 +27,7 @@ namespace WebApp.Data
         public string Name { get; set; }
         public string Surname { get; set; }
         public UserRole Role { get; set; }
+        public string Description { get; set; }
         public ICollection<TripDetails> TripList { get; set; }
     } 
 }
