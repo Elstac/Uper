@@ -19,9 +19,9 @@ namespace WebApp.Models
         private IEmailAddressValidator validator;
 
         public AccountManager(UserManager<ApplicationUser> userManager,
-                               SignInManager<ApplicationUser> signInManager,
-                               IIdentityResultErrorHtmlCreator errorCreator,
-                               IEmailAddressValidator validator)
+                              SignInManager<ApplicationUser> signInManager,
+                              IIdentityResultErrorHtmlCreator errorCreator,
+                              IEmailAddressValidator validator)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
