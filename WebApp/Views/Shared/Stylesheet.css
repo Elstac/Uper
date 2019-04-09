@@ -1,0 +1,21 @@
+﻿body{
+    margin: 0px;
+}
+header{
+    background-color:darkorchid;
+    font-size: 40px;
+    padding: 20px;
+
+}
+nav {
+    background-color:fuchsia;
+    padding: 7px;
+}
+sidebar{
+}
+bodyRender{
+}
+footer{
+    background-color:lightpink;
+    padding: 5px;
+}

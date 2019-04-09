@@ -14,37 +14,24 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
+    <link rel="stylesheet" href="~/css/Stylesheet.css" type="text/css">
     <style>
-        header{
-            background-color:darkorchid;
-            font-size: 40px;
-            padding: 20px;
-            
-        }
-        nav {
-            background-color:fuchsia;
-            padding: 7px;
-        }
-        sidebar{
-        }
-        bodyRender{
-        }
-        footer{
-            background-color:lightpink;
-            padding: 5px;
+        body{
+            margin: 0px;
+            padding-top: 0px;
+            padding-bottom: 0px;
         }
     </style>
-    
 </head>
 <body>
     <header>
         UPER
     </header>
     <nav>
-        @Html.ActionLink("Home", "index", "Home")@{} <font color="pink"> | </font>
-        @Html.ActionLink("Travel Offers", "Index", "TripDetails", 0, 0)@{} <font color="pink"> | </font>
+        @Html.ActionLink("Home", "index", "Home")@{} <font color="pink"><strong> | </strong></font>
+        @Html.ActionLink("Travel Offers", "Index", "TripDetails")@{} <font color="pink"><strong> | </strong></font>
         @Html.ActionLink("My Profile", "Index", "Profiles", 0)
-        <span style="float:right;color:pink">@Html.ActionLink("Log in", "SignIn", "Login") | No account? @Html.ActionLink("Register", "Register", "Login")</span>
+        <span style="float:right;color:pink">@Html.ActionLink("Log in", "SignIn", "Login")<strong> | </strong>No account? @Html.ActionLink("Register", "Register", "Login")</span>
     </nav>  
 
     <section>
@@ -52,7 +39,7 @@
 
         </sidebar>
         <bodyRender>
-            @RenderBody();
+            @RenderBody()
         </bodyRender>
     </section>
     
