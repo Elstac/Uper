@@ -26,28 +26,73 @@ namespace WebApp.ViewModels
         /// </summary>
         public string VechicleModel { get; set; }
         /// <summary>
+        /// Get, Set Size
+        /// </summary>
+        public int Size { get; set; }
+        /// <summary>
         /// Get, Set Date
         /// </summary>
         public DateTime Date { get; set; }
 
         /// <summary>
-        /// Check if cost that is took as a string is required float 
+        /// Check if data is valid
         /// </summary>
-        /// <param name="_Cost">
-        /// String took from page
+        /// <param name="model">
+        /// New model that was created in TripCreator 
         /// </param>
         /// <returns>
-        /// return true if _Cost is float and is >= 0, otherwise return false 
+        /// Retruns true if data is valid, or false if is not
         /// </returns>
-        public bool IsCostValid(string _Cost)
+        public bool IsValid(TripCreatorViewModel model)
         {
             float Cost_;
-            bool IsValid = float.TryParse(_Cost,NumberStyles.Float,CultureInfo.InvariantCulture.NumberFormat,out Cost_);
-            if(IsValid)
+            bool IsValid = true;
+
+            if (float.TryParse(model.Cost, NumberStyles.Float, CultureInfo.InvariantCulture.NumberFormat, out Cost_) != true) IsValid = false;
+
+            if (Cost_ < 0.0) IsValid = false;
+
+            if (model.DestinationAddress.City != null)
             {
-                if (Cost_ >= 0.0) return true;
+                if (model.DestinationAddress.City.Length <= 0) IsValid = false;
             }
-            return false;
+            else IsValid = false;
+
+            if (model.DestinationAddress.Street != null)
+            {
+                if (model.DestinationAddress.Street.Length <= 0) IsValid = false;
+            }
+            else IsValid = false;
+
+            if (model.DestinationAddress.City != null)
+            {
+                if (model.StartingAddress.City.Length <= 0) IsValid = false;
+            }
+            else IsValid = false;
+
+            if (model.DestinationAddress.City != null)
+            {
+                if (model.StartingAddress.Street.Length <= 0) IsValid = false;
+            }
+            else IsValid = false;
+
+            if (model.VechicleModel != null)
+            {
+                if (model.VechicleModel.Length <= 0) IsValid = false;
+            }
+            else IsValid = false;
+
+            if (model.Size <= 0) IsValid = false;
+
+            if(model.Description != null)
+            { 
+            if (model.Description.Length <= 0) IsValid = false;
+            }
+            else IsValid = false;
+
+            if (model.Date.CompareTo(DateTime.Now) < 0) IsValid = false;
+
+            return IsValid;
         }
 
         public void ToDataBase()

@@ -37,7 +37,7 @@ namespace WebApp.Controllers
                 switch (answer)
                 {
                     case "Accept":
-                        if (ModelState.IsValid && model.IsCostValid(model.Cost))
+                        if (ModelState.IsValid && model.IsValid(model))
                         {
                             return View("ConfirmationPositive", model);
                         }
