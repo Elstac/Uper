@@ -17,7 +17,7 @@ namespace Tests
         {
             messageBuilder.Template = null;
 
-            Assert.Throws<NullReferenceException>(() => messageBuilder.BuildMessage());
+            Assert.Throws<NullReferenceException>(() => messageBuilder.BuildContent());
         }
 
         [Fact]
@@ -29,12 +29,12 @@ namespace Tests
             messageBuilder.BodyParts = new System.Collections.Generic.List<string> { "B" };
             messageBuilder.Footer = "C";
 
-            var output = messageBuilder.BuildMessage();
+            var output = messageBuilder.BuildContent();
             var expected = "<h1>A</h1>" +
                            "<p>B</p>" +
                            "<p>C</p>";
 
-            Assert.Equal(expected,output.HtmlBody.ToString());
+            Assert.Equal(expected,output);
         }
 
         [Fact]
@@ -49,13 +49,13 @@ namespace Tests
             messageBuilder.BodyParts = new System.Collections.Generic.List<string> { "B","B2"};
             messageBuilder.Footer = "C";
 
-            var output = messageBuilder.BuildMessage();
+            var output = messageBuilder.BuildContent();
             var expected = "<h1>A</h1>" +
                                  "<h2>B</h2>" +
                                  "<p>B2</p>" +
                                  "<p>C</p>";
 
-            Assert.Equal(expected, output.HtmlBody.ToString());
+            Assert.Equal(expected, output);
         }
 
         [Fact]
@@ -65,7 +65,7 @@ namespace Tests
 
             messageBuilder.BodyParts = new System.Collections.Generic.List<string> { "B1", "B2", "B3" };
 
-            Assert.Throws<MessageException>(() => messageBuilder.BuildMessage());
+            Assert.Throws<MessageException>(() => messageBuilder.BuildContent());
         }
 
         [Theory]
@@ -80,7 +80,7 @@ namespace Tests
             messageBuilder.BodyParts = new System.Collections.Generic.List<string> { "B" };
             messageBuilder.Footer = "C";
 
-            Assert.Throws<MessageException>(() => messageBuilder.BuildMessage());
+            Assert.Throws<MessageException>(() => messageBuilder.BuildContent());
         }
     }
 }

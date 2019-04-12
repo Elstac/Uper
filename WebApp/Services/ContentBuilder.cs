@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using MimeKit;
+﻿using System.Collections.Generic;
 using WebApp.Exceptions;
 
 namespace WebApp.Services
@@ -12,7 +10,7 @@ namespace WebApp.Services
         List<string> BodyParts { get; set; }
         string Footer { get; set; }
         
-        MimeMessage BuildMessage();
+        string BuildContent();
     }
 
     public class ContentBuilder : IContentBuilder
@@ -22,7 +20,7 @@ namespace WebApp.Services
         public List<string> BodyParts { get; set; }
         public string Footer { get; set; }
 
-        public MimeMessage BuildMessage()
+        public string BuildContent()
         {
             var tmp = Template;
             if (!Template.Contains("Head"))
@@ -49,13 +47,7 @@ namespace WebApp.Services
                 tmp = tmp.Replace($"Body{i+1}", BodyParts[i]);
             }
 
-            return new MimeMessage
-                   {
-                       Body = new TextPart("html")
-                       {
-                           Text = tmp
-                       }
-                   };
+            return tmp;
         } 
         
     }

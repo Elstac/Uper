@@ -21,6 +21,7 @@ namespace Tests
             message = new MimeMessage();
 
             smtpMock = new Mock<ISmtpClientProvider>();
+
             tempMock = new Mock<ITemplateProvider>();
 
             cbMock = new Mock<IContentBuilder>();
@@ -45,9 +46,10 @@ namespace Tests
         [Fact]
         public void SendCorrectMessage()
         {
-            emailService.SendMail("","","",null);
+            emailService.SendMail("sender","reciver","",null);
 
             smtpMock.Verify(m => m.SendMessage(message), Times.Once);
+            
         }
 
         [Fact]
@@ -56,6 +58,14 @@ namespace Tests
             emailService.SendMail("", "", "", null);
 
             mbMock.Verify(m => m.BuildMessage(), Times.Once);
+        }
+
+        [Fact]
+        public void CallContentBuilderBeforeSending()
+        {
+            emailService.SendMail("", "", "", null);
+
+            cbMock.Verify(m => m.BuildContent(), Times.Once);
         }
 
         [Fact]
@@ -73,7 +83,6 @@ namespace Tests
 
             smtpMock.Verify(m => m.Connect("username","password"), Times.Once);
         }
-
-
+        
     }
 }
