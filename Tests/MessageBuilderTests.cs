@@ -10,7 +10,7 @@ namespace Tests
     {
         private MessageBuilder messageBuilder = new MessageBuilder();
         private string template = "<h1>Head</h1>" +
-                                 "<p>Body</p>" +
+                                 "<p>Body1</p>" +
                                  "<p>Footer</p>";
         [Fact]
         public void ThrowNullReferenceExceptionWhenBuildWithoutTemplateSet()
