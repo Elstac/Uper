@@ -6,9 +6,9 @@ using Xunit;
 namespace Tests
 {
 
-    public class MessageBuilderTests
+    public class ContentBuilderTests
     {
-        private MessageBuilder messageBuilder = new MessageBuilder();
+        private ContentBuilder messageBuilder = new ContentBuilder();
         private string template = "<h1>Head</h1>" +
                                  "<p>Body1</p>" +
                                  "<p>Footer</p>";

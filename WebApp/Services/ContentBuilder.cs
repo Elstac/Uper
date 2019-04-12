@@ -5,7 +5,7 @@ using WebApp.Exceptions;
 
 namespace WebApp.Services
 {
-    public interface IMessageBuilder
+    public interface IContentBuilder
     {
         string Template { get; set; }
         string Head { get; set; }
@@ -15,7 +15,7 @@ namespace WebApp.Services
         MimeMessage BuildMessage();
     }
 
-    public class MessageBuilder : IMessageBuilder
+    public class ContentBuilder : IContentBuilder
     {
         public string Template { get; set; }
         public string Head { get; set; }
