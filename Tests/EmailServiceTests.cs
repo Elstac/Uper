@@ -23,6 +23,7 @@ namespace Tests
             smtpMock = new Mock<ISmtpClientProvider>();
 
             tempMock = new Mock<ITemplateProvider>();
+            tempMock.Setup(m => m.GetTemplate(It.IsAny<string>())).Returns("template");
 
             cbMock = new Mock<IContentBuilder>();
            
@@ -83,6 +84,13 @@ namespace Tests
 
             smtpMock.Verify(m => m.Connect("username","password"), Times.Once);
         }
-        
+
+        [Fact]
+        public void GetCorrectTypeTemplate()
+        {
+            emailService.SendMail("", "", "type", null);
+
+            tempMock.Verify(m => m.GetTemplate("type"), Times.Once);
+        }
     }
 }
