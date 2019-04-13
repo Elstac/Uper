@@ -13,17 +13,19 @@
     <p>Street: @Model.StartingAddress.Street</p>
     <p>Cost (Per person): @Model.Cost</p>
     <p>Vechicle: @Model.VechicleModel</p>
+    <p>Size: @Model.Size</p>
     <p>Date: @Model.Date</p>
     <p>Description: @Model.Description</p>
     <form action="/TripCreator/ConfirmationPositive" method="post">
         <input type="hidden" name="DestinationAddress.City" value="@Model.DestinationAddress.City" />
         <input type="hidden" name="DestinationAddress.Street" value="@Model.DestinationAddress.Street" />
-        <input type="hidden" name="StartingAddress.City" value="@Model.StartingAddress.City"/>
-        <input type="hidden" name="StartingAddress.Street" value="@Model.StartingAddress.Street"/>
-        <input type="hidden" name="Cost" value="@Model.Cost"/>
-        <input type="hidden" name="VechicleModel" value="@Model.VechicleModel"/>
-        <input type="hidden" name="Date" value="@Model.Date"/>
-        <input type="hidden" name="Description" value="@Model.Description"/>
+        <input type="hidden" name="StartingAddress.City" value="@Model.StartingAddress.City" />
+        <input type="hidden" name="StartingAddress.Street" value="@Model.StartingAddress.Street" />
+        <input type="hidden" name="Cost" value="@Model.Cost" />
+        <input type="hidden" name="Size" value="@Model.Size" />
+        <input type="hidden" name="VechicleModel" value="@Model.VechicleModel" />
+        <input type="hidden" name="Date" value="@Model.Date" />
+        <input type="hidden" name="Description" value="@Model.Description" />
         <input type="submit" name="answer" value="Accept" class="btn btn-success" />
         <input type="submit" name="answer" value="Decline" class="btn btn-danger" />
     </form>
