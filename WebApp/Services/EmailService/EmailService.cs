@@ -1,4 +1,4 @@
-﻿
+﻿using MimeKit;
 namespace WebApp.Services
 {
     public interface IEmailSservice
@@ -11,25 +11,39 @@ namespace WebApp.Services
         private ISmtpClientProvider smtpClient;
         private ITemplateProvider templateProvider;
         private IContentBuilder contentBuilder;
-        private IMessageBuilder messageBuilder;
         private ICredentialsProvider credentialsProvider;
 
         public EmailService(ISmtpClientProvider smtpClient,
                             ITemplateProvider templateProvider, 
                             IContentBuilder contentBuilder, 
-                            IMessageBuilder messageBuilder,
                             ICredentialsProvider credentialsProvider)
         {
             this.smtpClient = smtpClient;
             this.templateProvider = templateProvider;
             this.contentBuilder = contentBuilder;
-            this.messageBuilder = messageBuilder;
             this.credentialsProvider = credentialsProvider;
         }
 
         public void SendMail(string from, string to, string messageType, MessageBody body)
         {
-            throw new System.NotImplementedException();
+            var temp = templateProvider.GetTemplate(messageType);
+
+            contentBuilder.Template = temp;
+            contentBuilder.Head = body.Head;
+            contentBuilder.Footer = body.Footer;
+            contentBuilder.BodyParts = body.BodyParts;
+
+            var content = contentBuilder.BuildContent();
+
+            var message = new MimeKit.MimeMessage();
+            message.To.Add(new MailboxAddress(to));
+            message.From.Add(new MailboxAddress(from));
+            
+            var cred = credentialsProvider.GetCredentials();
+
+            smtpClient.Connect(cred.Username, cred.Password);
+            smtpClient.SendMessage(message);
+            smtpClient.Diconnect();
         }
     }
 }

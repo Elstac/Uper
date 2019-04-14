@@ -27,8 +27,6 @@ namespace Tests
 
             cbMock = new Mock<IContentBuilder>();
            
-            mbMock = new Mock<IMessageBuilder>();
-            mbMock.Setup(m => m.BuildMessage()).Returns(message);
 
             credentialsMock = new Mock<ICredentialsProvider>();
             credentialsMock.Setup(m => m.GetCredentials()).Returns(new SmtpClientCredentials
@@ -40,31 +38,15 @@ namespace Tests
             emailService = new EmailService(smtpMock.Object,
                 tempMock.Object,
                 cbMock.Object,
-                mbMock.Object,
                 credentialsMock.Object);
         }
         
-        [Fact]
-        public void SendCorrectMessage()
-        {
-            emailService.SendMail("sender","reciver","",null);
 
-            smtpMock.Verify(m => m.SendMessage(message), Times.Once);
-            
-        }
-
-        [Fact]
-        public void CallMessageBuilderBuildBeforeSending()
-        {
-            emailService.SendMail("", "", "", null);
-
-            mbMock.Verify(m => m.BuildMessage(), Times.Once);
-        }
 
         [Fact]
         public void CallContentBuilderBeforeSending()
         {
-            emailService.SendMail("", "", "", null);
+            emailService.SendMail("", "", "", new MessageBody());
 
             cbMock.Verify(m => m.BuildContent(), Times.Once);
         }
@@ -72,7 +54,7 @@ namespace Tests
         [Fact]
         public void GetCredentialsBeforeConnectig()
         {
-            emailService.SendMail("", "", "", null);
+            emailService.SendMail("", "", "", new MessageBody());
 
             credentialsMock.Verify(m => m.GetCredentials(), Times.Once);
         }
@@ -80,7 +62,7 @@ namespace Tests
         [Fact]
         public void PassCorrectCredentialsToSmtpProvider()
         {
-            emailService.SendMail("", "", "", null);
+            emailService.SendMail("", "", "", new MessageBody());
 
             smtpMock.Verify(m => m.Connect("username","password"), Times.Once);
         }
@@ -88,7 +70,7 @@ namespace Tests
         [Fact]
         public void GetCorrectTypeTemplate()
         {
-            emailService.SendMail("", "", "type", null);
+            emailService.SendMail("", "", "type", new MessageBody());
 
             tempMock.Verify(m => m.GetTemplate("type"), Times.Once);
         }

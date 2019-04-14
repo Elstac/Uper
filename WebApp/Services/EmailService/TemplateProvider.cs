@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 
-namespace WebApp.Services.EmailService
+namespace WebApp.Services
 {
     public interface ITemplateProvider
     {

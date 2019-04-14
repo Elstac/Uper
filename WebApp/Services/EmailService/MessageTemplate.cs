@@ -1,4 +1,4 @@
-﻿namespace WebApp.Services.EmailService
+﻿namespace WebApp.Services
 {
     public class MessageTemplate
     {

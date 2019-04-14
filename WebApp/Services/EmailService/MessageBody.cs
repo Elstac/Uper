@@ -4,9 +4,9 @@ namespace WebApp.Services
 {
     public class MessageBody
     {
-        string Template { get; set; }
-        string Head { get; set; }
-        List<string> BodyParts { get; set; }
-        string Footer { get; set; }
+        public string Template { get; set; }
+        public string Head { get; set; }
+        public List<string> BodyParts { get; set; }
+        public string Footer { get; set; }
     }
 }
