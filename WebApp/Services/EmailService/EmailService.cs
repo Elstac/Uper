@@ -1,12 +1,12 @@
 ﻿using MimeKit;
 namespace WebApp.Services
 {
-    public interface IEmailSservice
+    public interface IEmailService
     {
         void SendMail(string from, string to, string messageType, MessageBody body);
     }
 
-    public class EmailService : IEmailSservice
+    public class EmailService : IEmailService
     {
         private ISmtpClientProvider smtpClient;
         private ITemplateProvider templateProvider;

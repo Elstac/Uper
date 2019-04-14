@@ -16,7 +16,7 @@ using WebApp.Models.Factories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using WebApp.Middlewares;
-
+using WebApp.Services;
 namespace WebApp
 {
     public class Startup
@@ -79,12 +79,26 @@ namespace WebApp
             services.AddTransient<IEmailAddressValidator,EmailAddressValidator>();
             services.AddTransient<IAccountManager, AccountManager>();
             services.AddTransient<IViewerTypeMapper, ViewerTypeMapper>();
-            
             services.AddScoped<ITripDetailsViewModelCreatorFactory, TripDetailViewModelCreatorFactory>();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-        }
+            #region EmailServiceSetup
+            services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<ISmtpClientProvider, GmailSmtpClientProvider>();
+            services.AddTransient<IContentBuilder, ContentBuilder>();
 
+            services.AddTransient<ICredentialsProvider>((fac) =>
+            {
+                return new CredentialsProvider(Configuration.GetValue<string>("CredentialsFile"));
+            });
+
+            services.AddTransient<ITemplateProvider>((fac) =>
+            {
+                return new JsonTemplateProvider(Configuration.GetValue<string>("TemplateFile"));
+            });
+            #endregion
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+        } 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
