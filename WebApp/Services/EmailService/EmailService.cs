@@ -38,7 +38,11 @@ namespace WebApp.Services
             var message = new MimeKit.MimeMessage();
             message.To.Add(new MailboxAddress(to));
             message.From.Add(new MailboxAddress(from));
-            
+            message.Body = new TextPart
+            {
+                Text = content
+            };
+
             var cred = credentialsProvider.GetCredentials();
 
             smtpClient.Connect(cred.Username, cred.Password);

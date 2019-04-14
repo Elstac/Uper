@@ -21,14 +21,19 @@ namespace WebApp.Services
 
         public string GetTemplate(string messageType)
         {
-            var list = (List<MessageTemplate>)new JsonSerializer().Deserialize(new StreamReader(configFile),typeof(List<MessageTemplate>));
+            var list = (TemplateList)new JsonSerializer().Deserialize(new StreamReader(configFile),typeof(TemplateList));
 
-            var val = list.Find((tmp) =>
+            var val = list.templates.Find((tmp) =>
             {
                 return tmp.Name == messageType;
             });
 
             return val.Template;
         }
+    }
+
+    class TemplateList
+    {
+        public List<MessageTemplate> templates { get; set; }
     }
 }

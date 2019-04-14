@@ -1,0 +1,8 @@
+{
+  "templates": [
+    {
+      "Name": "Standard",
+      "Template": "<h1>Head</h1><p>Body1</p><p>Footer</p>"
+    }
+  ]
+}
