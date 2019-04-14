@@ -26,6 +26,7 @@ namespace Tests
             tempMock.Setup(m => m.GetTemplate(It.IsAny<string>())).Returns("template");
 
             cbMock = new Mock<IContentBuilder>();
+            cbMock.Setup(m => m.BuildContent()).Returns("x");
            
 
             credentialsMock = new Mock<ICredentialsProvider>();
