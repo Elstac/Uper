@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System.IO;
 
 namespace WebApp.Services
 {
@@ -9,9 +10,16 @@ namespace WebApp.Services
 
     public class CredentialsProvider : ICredentialsProvider
     {
+        private string filePath;
+
+        public CredentialsProvider(string filePath)
+        {
+            this.filePath = filePath;
+        }
+
         public SmtpClientCredentials GetCredentials()
         {
-            throw new NotImplementedException();
+            return new JsonSerializer().Deserialize(new StreamReader(filePath), typeof(SmtpClientCredentials))as SmtpClientCredentials;
         }
     }
 }
