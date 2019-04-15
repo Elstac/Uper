@@ -16,7 +16,7 @@ using WebApp.Models.Factories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using WebApp.Middlewares;
-
+using WebApp.Services;
 namespace WebApp
 {
     public class Startup
@@ -80,6 +80,7 @@ namespace WebApp
                 });
             }
 
+            #region SetupDI
             services.AddTransient<ITripDetailsViewModelGenerator, TripDetailsViewModelGenerator>();
             services.AddTransient<ITripDetailsRepository, MockupTripDetailsRepository>();
             services.AddTransient<IApplicationUserViewModelGenerator, ApplicationUserViewModelGenerator>();
@@ -89,12 +90,32 @@ namespace WebApp
             services.AddTransient<IEmailAddressValidator,EmailAddressValidator>();
             services.AddTransient<IAccountManager, AccountManager>();
             services.AddTransient<IViewerTypeMapper, ViewerTypeMapper>();
-            
             services.AddScoped<ITripDetailsViewModelCreatorFactory, TripDetailViewModelCreatorFactory>();
+            #endregion
+
+            #region EmailServiceSetup
+            services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<ISmtpClientProvider, GmailSmtpClientProvider>();
+            services.AddTransient<IContentBuilder>((fac) =>
+            {
+                return new ContentBuilder(
+                    new System.Text.RegularExpressions.Regex(
+                        Configuration.GetValue<string>("MessageTemplateRegex")));
+            });
+
+            services.AddTransient<ICredentialsProvider>((fac) =>
+            {
+                return new CredentialsProvider(Configuration.GetValue<string>("CredentialsFile"));
+            });
+
+            services.AddTransient<ITemplateProvider>((fac) =>
+            {
+                return new JsonTemplateProvider(Configuration.GetValue<string>("TemplateFile"));
+            });           
+            #endregion
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-        }
-
+        } 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
