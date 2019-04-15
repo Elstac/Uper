@@ -24,7 +24,13 @@ namespace WebApp.Services
             var tmp = template;
             foreach (var match in matches)
             {
-                tmp = tmp.Replace(match.ToString(), body.GetReplacement(match.ToString()));
+                var matchS = match.ToString();
+                var replacement = body.GetReplacement(matchS);
+
+                if (replacement == "")
+                    tmp = tmp.Remove(tmp.IndexOf(matchS),matchS.Length);
+                else
+                    tmp = tmp.Replace(matchS, body.GetReplacement(matchS));
             }
 
             return tmp;

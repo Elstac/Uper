@@ -59,8 +59,8 @@ namespace Tests
             mock.Setup(m => m.GetReplacement("{Body1}")).Returns("B");
             mock.Setup(m => m.GetReplacement("{Footer}")).Returns("C");
 
-            var output = messageBuilder.BuildContent(template, bodyMock.Object);
-            var expected = "<p>B</p><p>C</p>";
+            var output = messageBuilder.BuildContent(template, mock.Object);
+            var expected = "<h1></h1><p>B</p><p>C</p>";
 
             Assert.Equal(expected, output);
         }
