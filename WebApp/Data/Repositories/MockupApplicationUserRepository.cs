@@ -17,6 +17,7 @@ namespace WebApp.Data.Repositories
         public IEnumerable<ApplicationUser> GetAll()
         {
             return dbContext;
+
         }
 
         public ApplicationUser GetById(string id)
