@@ -15,6 +15,7 @@
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
     <link rel="stylesheet" href="~/css/Stylesheet.css" type="text/css">
+    @inject IAccountManager AccountManager
     <style>
         body{
             margin: 0px;
@@ -31,8 +32,16 @@
         @Html.ActionLink("Home", "index", "Home")@{} <font color="pink"> | </font>
         @Html.ActionLink("Travel Offers", "Index", "TripDetails", 0, 0)@{} <font color="pink"> | </font>
         @Html.ActionLink("My Profile", "Index", "Profiles", 0)@{} <font color="pink"> | </font>
-        @Html.ActionLink("Create Trip", "Index", "TripCreator", 0)
-        <span style="float:right;color:pink">@Html.ActionLink("Log in", "SignIn", "Login") | No account? @Html.ActionLink("Register", "Register", "Login")</span>
+        @Html.ActionLink("Create Trip", "Index", "TripCreator", 0)@{}
+        @if (AccountManager.IsSignedIn(User))
+        {
+            <span style="float:right;color:pink">@AccountManager.GetUserName(User) | @Html.ActionLink("Log Out", "SignOut", "Login")</span>
+        }
+        else
+        {
+            <span style="float:right;color:pink">@Html.ActionLink("Log in", "SignIn", "Login") | No account? @Html.ActionLink("Register", "Register", "Login")</span>
+        }
+
     </nav>  
 
     <section>

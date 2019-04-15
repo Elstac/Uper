@@ -20,7 +20,7 @@ namespace WebApp.Data
     /// <typeparam name="NumOfVotes">Number of Votes already cast</typeparam>
     /// <typeparam name="Role">0 - User 1 - Moderator 2 - Admin</typeparam>
     /// <typeparam name="TripList">User's trips</typeparam>
-    /// <typeparam name="Desctription">User-made desciption about him/herself to be viewed by others</typeparam>
+    /// <typeparam name="Description">User-made desciption about him/herself to be viewed by others</typeparam>
     public class ApplicationUser : IdentityUser
     {
         public float Rating { get; set; }

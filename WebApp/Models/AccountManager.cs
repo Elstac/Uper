@@ -11,6 +11,10 @@ namespace WebApp.Models
         Task CreateAccountAsync(string username, string password, string email);
         Task SignInAsync(string username, string password);
         Task<ApplicationUser> GetUserAsync(ClaimsPrincipal principal);
+        bool IsSignedIn(ClaimsPrincipal principal);
+        Task SignOutAsync();
+        string GetUserName(ClaimsPrincipal principal);
+
     }
 
     public class AccountManager : IAccountManager
@@ -57,6 +61,21 @@ namespace WebApp.Models
 
             if (!result.Succeeded)
                 throw new InvalidOperationException("Sign in failed");
+        }
+
+        public async Task SignOutAsync()
+        {
+            await signInManager.SignOutAsync();
+        }
+
+        public bool IsSignedIn(ClaimsPrincipal principal)
+        {
+            return signInManager.IsSignedIn(principal);
+        }
+
+        public string GetUserName(ClaimsPrincipal principal)
+        {
+            return userManager.GetUserName(principal);
         }
     }
 }
