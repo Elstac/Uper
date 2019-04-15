@@ -26,7 +26,7 @@ namespace Tests
             tempMock.Setup(m => m.GetTemplate(It.IsAny<string>())).Returns("template");
 
             cbMock = new Mock<IContentBuilder>();
-            cbMock.Setup(m => m.BuildContent()).Returns("x");
+            cbMock.Setup(m => m.BuildContent(It.IsAny<string>(),It.IsAny<IMessageBodyDictionary>())).Returns("x");
            
 
             credentialsMock = new Mock<ICredentialsProvider>();
@@ -47,9 +47,10 @@ namespace Tests
         [Fact]
         public void CallContentBuilderBeforeSending()
         {
-            emailService.SendMail("", "", "", new MessageBody());
+            var msgb = new MessageBody();
+            emailService.SendMail("", "", "", msgb);
 
-            cbMock.Verify(m => m.BuildContent(), Times.Once);
+            cbMock.Verify(m => m.BuildContent("template",msgb), Times.Once);
         }
 
         [Fact]

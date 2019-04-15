@@ -61,15 +61,15 @@ namespace WebApp.Controllers
                 return Content(e.Message, "text/html");
             }
 
-            emailService.SendMail("Uper", email, "Standard", new MessageBody
-            {
-                Head = $"Hi {username}",
-                BodyParts = new System.Collections.Generic.List<string>
-                {
-                    $"Your account name: {username}"
-                },
-                Footer = "Bye"
-            });
+            //emailService.SendMail("Uper", email, "Standard", new MessageBody
+            //{
+            //    Head = $"Hi {username}",
+            //    BodyParts = new System.Collections.Generic.List<string>
+            //    {
+            //        $"Your account name: {username}"
+            //    },
+            //    Footer = "Bye"
+            //});
 
             return Content("Account created succesfully check email","text/html");
         }

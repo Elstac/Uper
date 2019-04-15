@@ -24,7 +24,7 @@ namespace WebApp.Services
             var tmp = template;
             foreach (var match in matches)
             {
-                tmp.Replace(match.ToString(), body.GetReplacement(match.ToString()));
+                tmp = tmp.Replace(match.ToString(), body.GetReplacement(match.ToString()));
             }
 
             return tmp;

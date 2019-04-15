@@ -1,9 +1,8 @@
-﻿using System;
+﻿using Moq;
+using System;
 using System.Text.RegularExpressions;
-using WebApp.Exceptions;
 using WebApp.Services;
 using Xunit;
-using Moq;
 
 namespace Tests
 {
@@ -24,9 +23,9 @@ namespace Tests
             bodyMock.Setup(m => m.GetReplacement("{Footer}")).Returns("C");
         }
         [Fact]
-        public void ThrowNullReferenceExceptionWhenBuildWithoutTemplateSet()
+        public void ThrowArgumentNullExceptionWhenBuildWithoutTemplateSet()
         {
-            Assert.Throws<NullReferenceException>(() => messageBuilder.BuildContent(null,bodyMock.Object));
+            Assert.Throws<ArgumentNullException>(() => messageBuilder.BuildContent(null,bodyMock.Object));
         }
 
         [Fact]
@@ -41,12 +40,14 @@ namespace Tests
         }
         
         [Theory]
-        [InlineData("<p>{Body}</p><p>{Footer}</p>")]
-        [InlineData("<h1>{Head}</h1><p>{Body|}</p>")]
-        [InlineData("<h1>{Head}</h1><p>{Footer}</p>")]
-        public void ThrowMessageExceptionWhenIncompatibileTemplateAndBodydictionary(string temp)
+        [InlineData("<p>{Body1}</p><p>{Footer}</p>", "<p>B</p><p>C</p>")]
+        [InlineData("<h1>{Head}</h1><p>{Body1}</p>", "<h1>A</h1><p>B</p>")]
+        [InlineData("<h1>{Head}</h1><p>{Footer}</p>", "<h1>A</h1><p>C</p>")]
+        public void ReturnCorrectContentWhenTemplateAndBodydictionaryAreIncompatibile(string temp, string expected)
         {
-            Assert.Throws<MessageException>(() => messageBuilder.BuildContent(temp,bodyMock.Object));
+            var output = messageBuilder.BuildContent(temp, bodyMock.Object);
+
+            Assert.Equal(expected, output);
         }
     }
 }
