@@ -10,6 +10,7 @@ namespace Tests
     public class ContentBuilderTests
     {
         private Mock<IMessageBodyDictionary> bodyMock;
+
         private ContentBuilder messageBuilder = new ContentBuilder(new Regex(@"\{\w+\}"));
         private string template = "<h1>{Head}</h1>" +
                                  "<p>{Body1}</p>" +
@@ -46,6 +47,20 @@ namespace Tests
         public void ReturnCorrectContentWhenTemplateAndBodydictionaryAreIncompatibile(string temp, string expected)
         {
             var output = messageBuilder.BuildContent(temp, bodyMock.Object);
+
+            Assert.Equal(expected, output);
+        }
+
+        [Fact]
+        public void RemoveUnusedTemplateParts()
+        {
+            var mock = new Mock<IMessageBodyDictionary>();
+            mock.Setup(m => m.GetReplacement("{Head}")).Returns("");
+            mock.Setup(m => m.GetReplacement("{Body1}")).Returns("B");
+            mock.Setup(m => m.GetReplacement("{Footer}")).Returns("C");
+
+            var output = messageBuilder.BuildContent(template, bodyMock.Object);
+            var expected = "<p>B</p><p>C</p>";
 
             Assert.Equal(expected, output);
         }

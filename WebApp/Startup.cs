@@ -70,6 +70,7 @@ namespace WebApp
                 });
             }
 
+            #region SetupDI
             services.AddTransient<ITripDetailsViewModelGenerator, TripDetailsViewModelGenerator>();
             services.AddTransient<ITripDetailsRepository, TripDetailsRepository>();
             services.AddTransient<IApplicationUserViewModelGenerator, ApplicationUserViewModelGenerator>();
@@ -80,6 +81,7 @@ namespace WebApp
             services.AddTransient<IAccountManager, AccountManager>();
             services.AddTransient<IViewerTypeMapper, ViewerTypeMapper>();
             services.AddScoped<ITripDetailsViewModelCreatorFactory, TripDetailViewModelCreatorFactory>();
+            #endregion
 
             #region EmailServiceSetup
             services.AddTransient<IEmailService, EmailService>();
@@ -94,7 +96,7 @@ namespace WebApp
             services.AddTransient<ITemplateProvider>((fac) =>
             {
                 return new JsonTemplateProvider(Configuration.GetValue<string>("TemplateFile"));
-            });
+            });           
             #endregion
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
