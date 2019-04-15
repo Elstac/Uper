@@ -1,50 +1,30 @@
 ﻿using System.Collections.Generic;
 using WebApp.Exceptions;
+using System.Text.RegularExpressions;
 
 namespace WebApp.Services
 {
     public interface IContentBuilder
     {
-        string Template { get; set; }
-        string Head { get; set; }
-        List<string> BodyParts { get; set; }
-        string Footer { get; set; }
-        
-        string BuildContent();
+        string BuildContent(string template, IMessageBodyDictionary body);
     }
 
     public class ContentBuilder : IContentBuilder
     {
-        public string Template { get; set; }
-        public string Head { get; set; }
-        public List<string> BodyParts { get; set; }
-        public string Footer { get; set; }
+        private Regex regex;
 
-        public string BuildContent()
+        public ContentBuilder(Regex regex)
         {
-            var tmp = Template;
-            if (!Template.Contains("Head"))
-            {
-                if (!string.IsNullOrEmpty(Head))
-                    throw new MessageException("Template doesnt contains placeholder for head");
-            }
-            else
-                tmp = tmp.Replace("Head", Head);
+            this.regex = regex;
+        }
 
-            if (!Template.Contains("Footer"))
+        public string BuildContent(string template, IMessageBodyDictionary body)
+        {
+            var matches = regex.Matches(template);
+            var tmp = template;
+            foreach (var match in matches)
             {
-                if (!string.IsNullOrEmpty(Head))
-                    throw new MessageException("Template doesnt contains placeholder for footer");
-            }
-            else
-                tmp = tmp.Replace("Footer", Footer);
-
-            for (int i = 0; i < BodyParts.Count; i++)
-            {
-                if (!Template.Contains($"Body{i+1}"))
-                    throw new MessageException($"Template doesnt contains placeholder for part {i+1} of body");
-
-                tmp = tmp.Replace($"Body{i+1}", BodyParts[i]);
+                tmp.Replace(match.ToString(), body.GetReplacement(match.ToString()));
             }
 
             return tmp;

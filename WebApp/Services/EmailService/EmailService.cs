@@ -12,8 +12,8 @@ namespace WebApp.Services
         /// <param name="from">Message sender address</param>
         /// <param name="to">Message reciver address</param>
         /// <param name="messageType">Type of message template</param>
-        /// <param name="body">Parts of message body</param>
-        void SendMail(string from, string to, string messageType, MessageBody body);
+        /// <param name="body">Dictionary of replacements in template</param>
+        void SendMail(string from, string to, string messageType, IMessageBodyDictionary body);
     }
 
     public class EmailService : IEmailService
@@ -33,19 +33,14 @@ namespace WebApp.Services
             this.contentBuilder = contentBuilder;
             this.credentialsProvider = credentialsProvider;
         }
-        public void SendMail(string from, string to, string messageType, MessageBody body)
+        public void SendMail(string from, string to, string messageType, IMessageBodyDictionary body)
         {
             var temp = templateProvider.GetTemplate(messageType);
             
-            contentBuilder.Template = temp;
-            contentBuilder.Head = body.Head;
-            contentBuilder.Footer = body.Footer;
-            contentBuilder.BodyParts = body.BodyParts;
-
-            var content = contentBuilder.BuildContent();
+            var content = contentBuilder.BuildContent(temp,body);
 
             //Create message
-            var message = new MimeKit.MimeMessage();
+            var message = new MimeMessage();
             message.To.Add(new MailboxAddress(to));
             message.From.Add(new MailboxAddress(from));
             message.Body = new TextPart

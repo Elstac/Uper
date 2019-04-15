@@ -2,11 +2,22 @@
 
 namespace WebApp.Services
 {
-    public class MessageBody
+    public interface IMessageBodyDictionary
     {
-        public string Template { get; set; }
-        public string Head { get; set; }
-        public List<string> BodyParts { get; set; }
-        public string Footer { get; set; }
+        string GetReplacement(string key);
+        void AddReplacement(string value, string key);
+    }
+
+    public class MessageBody : Dictionary<string, string>, IMessageBodyDictionary
+    {
+        public void AddReplacement(string value, string key)
+        {
+            Add(key, value);
+        }
+
+        public string GetReplacement(string key)
+        {
+            return this[key];
+        }
     }
 }
