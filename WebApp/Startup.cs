@@ -43,14 +43,24 @@ namespace WebApp
             if(Configuration.GetValue<bool>("DbBuild"))
             {
                 //DB configuration
-                services.AddDbContext<ApplicationContext>(op =>
+                if (Configuration.GetValue<bool>("Dbbase"))
                 {
-                    op.UseSqlite(Configuration.GetConnectionString("TestConnection"));
-                });
+                    services.AddDbContext<ApplicationContext>(op =>
+                 {
+                     op.UseSqlite(Configuration.GetConnectionString("TestConnection"));
+                 });
+                }
+                else
+                {
+                    services.AddDbContext<ApplicationContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                }
+
 
                 services.AddIdentity<ApplicationUser, IdentityRole>()
                     .AddEntityFrameworkStores<ApplicationContext>()
                     .AddDefaultTokenProviders();
+
 
                 services.ConfigureApplicationCookie(op =>
                 {
@@ -71,9 +81,9 @@ namespace WebApp
             }
 
             services.AddTransient<ITripDetailsViewModelGenerator, TripDetailsViewModelGenerator>();
-            services.AddTransient<ITripDetailsRepository, TripDetailsRepository>();
+            services.AddTransient<ITripDetailsRepository, MockupTripDetailsRepository>();
             services.AddTransient<IApplicationUserViewModelGenerator, ApplicationUserViewModelGenerator>();
-            services.AddTransient<IApplicationUserRepository, ApplicationUserRepository>();
+            services.AddTransient<IApplicationUserRepository, MocApplicationUserRepository>();
             services.AddTransient<ITripDetailsCreator,TripDetailsCreator>();
             services.AddTransient<IIdentityResultErrorHtmlCreator,IdentityResultErrorHtmlCreator>();
             services.AddTransient<IEmailAddressValidator,EmailAddressValidator>();
@@ -88,6 +98,8 @@ namespace WebApp
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            // Store instance of the DI service provider so our application can access it anywhere
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

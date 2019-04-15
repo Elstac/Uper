@@ -5,11 +5,18 @@ using System.Threading.Tasks;
 using WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.ViewModels;
+using WebApp.Data;
 
 namespace WebApp.Controllers
 {
     public class TripCreatorController : Controller
     {
+        protected ApplicationContext mContext;
+
+        public TripCreatorController(ApplicationContext context)
+        {
+            mContext = context;
+        }
         /// <summary>
         /// Default HTTPGet 
         /// </summary>
@@ -71,7 +78,7 @@ namespace WebApp.Controllers
                 switch (answer)
                 {
                     case "Accept":
-                        model.ToDataBase();
+                        model.ToDataBase(mContext);
                         return RedirectToAction("Index", "Home");
                     case "Decline":
                         return View("Index");

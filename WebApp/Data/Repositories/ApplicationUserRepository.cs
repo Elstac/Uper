@@ -1,38 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace WebApp.Data.Repositories
 {
-    public class ApplicationUserRepository : MockupApplicationUserRepository, IApplicationUserRepository
+    public class ApplicationUserRepository : IApplicationUserRepository
     {
-        public ApplicationUserRepository()
+        private ApplicationContext dbContext;
+
+        public ApplicationUserRepository(ApplicationContext Context)
         {
-            dbContext = new System.Collections.Generic.List<ApplicationUser>()
-            {
-                new ApplicationUser()
-                {
-                    Id = "1",
-                    UserName = "janex123",
-                    Name = "Jan",
-                    Surname = "Kolumb",
-                    Rating = 5,
-                    NumOfVote = 1,
-                    Email = "jantoja@wp.pl",
-                    EmailConfirmed = true,
-                    PhoneNumber = "514665123",
-                    Role = 0,
-                    PasswordHash = "ToHasloAleShashowane",
-                    Description = "hi im Jan and im a very happy not creepy driver",
-                    TripList = new List<TripDetails>()
-                    {
-                        new TripDetails()
-                        {
-                            Id = 1,
-                            DriverId = "1"
-                        }
-                    }
-                }
-            };
+            dbContext = Context;
+        }
+        public void Add(ApplicationUser toAdd)
+        {
+            dbContext.Set<ApplicationUser>().Add(toAdd);
+            dbContext.SaveChanges();
+        }
+
+        public IEnumerable<ApplicationUser> GetAll()
+        {
+            return dbContext.Set<ApplicationUser>().ToList();
+        }
+
+        public ApplicationUser GetById(string id)
+        {
+            return dbContext.Set<ApplicationUser>().Find(id);
+        }
+
+        public IEnumerable<ApplicationUser> GetList(ISpecification<ApplicationUser> specification)
+        {
+            return dbContext.Set<ApplicationUser>().AsQueryable().Where(specification.Criteria).ToList();
+        }
+
+        public void Remove(ApplicationUser toRemove)
+        {
+            dbContext.Set<ApplicationUser>().Remove(toRemove);
+            dbContext.SaveChanges();
         }
     }
 }
