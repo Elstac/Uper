@@ -1,5 +1,5 @@
 ﻿header{
-    background-color:darkorchid;
+    background-color:orchid;
     font-size: 40px;
     padding: 20px;
 
@@ -9,8 +9,10 @@ nav {
     padding: 7px;
 }
 sidebar{
+    background-color:transparent;
 }
-bodyRender{
+bodyRender {
+    background-color: transparent;
 }
 footer{
     background-color:lightpink;

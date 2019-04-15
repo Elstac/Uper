@@ -28,6 +28,21 @@ namespace WebApp.Controllers
             return View();
         }
 
+        public IActionResult SignOut(string returnUrl)
+        {
+            if (!accountManager.IsSignedIn(User))
+            {
+                Content("Co ty w ogole robisz wylogowujac sie nie bedac zalogowany lepiej przemysl swoje akcje");
+            }
+
+            accountManager.SignOutAsync();
+
+            if (string.IsNullOrEmpty(returnUrl) || !Url.IsLocalUrl(returnUrl))
+                return RedirectToAction("index", "home");
+
+            return Redirect(returnUrl);
+        }
+
         public async Task<IActionResult> SignInAsync(string username, string password, string returnUrl)
         {
             await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
