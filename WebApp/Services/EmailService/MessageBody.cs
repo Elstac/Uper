@@ -9,9 +9,10 @@ namespace WebApp.Services
 
     public class MessageBody : Dictionary<string, string>, IMessageBodyDictionary
     {
-        public void AddReplacement(string value, string key)
+        public MessageBody AddReplacement(string value, string key)
         {
             Add(key, value);
+            return this;
         }
 
         public string GetReplacement(string key)

@@ -43,7 +43,7 @@ namespace WebApp.Services
             var message = new MimeMessage();
             message.To.Add(new MailboxAddress(to));
             message.From.Add(new MailboxAddress(from));
-            message.Body = new TextPart
+            message.Body = new TextPart("html")
             {
                 Text = content
             };

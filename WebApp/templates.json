@@ -2,7 +2,7 @@
   "templates": [
     {
       "Name": "Standard",
-      "Template": "<h1>Head</h1><p>Body1</p><p>Footer</p>"
+      "Template": "<h1>Head: {Head}</h1>\n<p>Body: {Body1}</p>\n<p>Footer: {Footer}</p>"
     }
   ]
 }

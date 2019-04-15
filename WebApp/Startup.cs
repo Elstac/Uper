@@ -86,7 +86,12 @@ namespace WebApp
             #region EmailServiceSetup
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<ISmtpClientProvider, GmailSmtpClientProvider>();
-            services.AddTransient<IContentBuilder, ContentBuilder>();
+            services.AddTransient<IContentBuilder>((fac) =>
+            {
+                return new ContentBuilder(
+                    new System.Text.RegularExpressions.Regex(
+                        Configuration.GetValue<string>("MessageTemplateRegex")));
+            });
 
             services.AddTransient<ICredentialsProvider>((fac) =>
             {
