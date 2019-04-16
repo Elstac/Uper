@@ -16,13 +16,6 @@
     </environment>
     <link rel="stylesheet" href="~/css/Stylesheet.css" type="text/css">
     @inject IAccountManager AccountManager
-    <style>
-        body{
-            margin: 0px;
-            padding-top: 0px;
-            padding-bottom: 0px;
-        }
-    </style>
 </head>
 <body>
     <header>
@@ -31,7 +24,7 @@
     <nav>
         @Html.ActionLink("Home", "index", "Home")@{} <font color="pink"> | </font>
         @Html.ActionLink("Travel Offers", "Index", "TripDetails", 0, 0)@{} <font color="pink"> | </font>
-        @Html.ActionLink("My Profile", "Index", "Profiles", 0)@{} <font color="pink"> | </font>
+        @Html.ActionLink("My Profile", "MyProfile", "Profiles")@{} <font color="pink"> | </font>
         @Html.ActionLink("Create Trip", "Index", "TripCreator", 0)@{}
         @if (AccountManager.IsSignedIn(User))
         {
