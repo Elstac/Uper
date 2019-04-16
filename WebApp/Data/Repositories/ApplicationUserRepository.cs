@@ -38,5 +38,6 @@ namespace WebApp.Data.Repositories
         {
             dbContext.Set<ApplicationUser>().Remove(toRemove);
             dbContext.SaveChanges();
+        }
     }
 }
