@@ -1,12 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using WebApp.Data.Entities;
 
 namespace WebApp.Data.Repositories
 {
+
+    /// <summary>
+    /// Provides access to TripDetails table in database
+    /// </summary>
+    public interface ITripDetailsRepository : IRepository<TripDetails>
+    {
+
+    }
+
     public class TripDetailsRepository:ITripDetailsRepository
     {
         private ApplicationContext dbContext;

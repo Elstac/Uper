@@ -1,11 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using WebApp.Data.Entities;
 
 namespace WebApp.Data.Repositories
 {
+    public interface ITripUserRepository : IRepository<TripUser>
+    {
+
+    }
+
     public class TripUserRepository : ITripUserRepository
     {
         private ApplicationContext dbContext;

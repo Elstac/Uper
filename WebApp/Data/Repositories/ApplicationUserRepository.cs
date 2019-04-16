@@ -1,10 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace WebApp.Data.Repositories
 {
+    public interface IApplicationUserRepository
+    {
+        IEnumerable<ApplicationUser> GetAll();
+        void Add(ApplicationUser toAdd);
+        void Remove(ApplicationUser toRemove);
+        ApplicationUser GetById(string id);
+        IEnumerable<ApplicationUser> GetList(ISpecification<ApplicationUser> specification);
+    }
+
     public class ApplicationUserRepository : IApplicationUserRepository
     {
         private ApplicationContext dbContext;
