@@ -39,6 +39,7 @@ namespace WebApp
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            #region Database
             //Configuration of services and test DB required for regirestration and logging in. To skip this change DbBuild value in appseetings.json file
             if(Configuration.GetValue<bool>("DbBuild"))
             {
@@ -55,7 +56,7 @@ namespace WebApp
                     services.AddDbContext<ApplicationContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
                 }
-
+                #endregion
 
                 services.AddIdentity<ApplicationUser, IdentityRole>()
                     .AddEntityFrameworkStores<ApplicationContext>()

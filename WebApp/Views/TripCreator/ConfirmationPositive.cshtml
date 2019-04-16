@@ -16,7 +16,7 @@
     <p>Size: @Model.Size</p>
     <p>Date: @Model.Date</p>
     <p>Description: @Model.Description</p>
-    <form action="/TripCreator/ConfirmationPositive" method="post">
+    <form action="/TripCreator/ConfirmationPositive" method="post" asp-antiforgery="true">
         <input type="hidden" name="DestinationAddress.City" value="@Model.DestinationAddress.City" />
         <input type="hidden" name="DestinationAddress.Street" value="@Model.DestinationAddress.Street" />
         <input type="hidden" name="StartingAddress.City" value="@Model.StartingAddress.City" />

@@ -6,21 +6,28 @@ using WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.ViewModels;
 using WebApp.Data;
+using WebApp.Data.Repositories;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers
 {
     public class TripCreatorController : Controller
     {
         protected ApplicationContext mContext;
+        protected IAccountManager accountManager;
+        protected ITripDetailsRepository tripDetailsRepository;
 
-        public TripCreatorController(ApplicationContext context)
+        public TripCreatorController(ApplicationContext context,IAccountManager _accountManager, ITripDetailsRepository _tripDetailsRepository)
         {
             mContext = context;
+            accountManager = _accountManager;
+            tripDetailsRepository = _tripDetailsRepository;
         }
         /// <summary>
         /// Default HTTPGet 
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         [HttpGet]
         public IActionResult Index()
         {
@@ -36,6 +43,8 @@ namespace WebApp.Controllers
         /// Hold information which button user used
         /// </param>
         /// <returns></returns>
+        [ValidateAntiForgeryToken]
+        [Authorize]
         [HttpPost]
         public IActionResult Index(TripCreatorViewModel model,string answer)
         {
@@ -70,7 +79,9 @@ namespace WebApp.Controllers
         /// Data that user put while creating trip
         /// </param>
         /// <returns></returns>
+        [Authorize]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult ConfirmationPositive(string answer, TripCreatorViewModel model)
         {
             if (!String.IsNullOrWhiteSpace(answer))
@@ -78,7 +89,9 @@ namespace WebApp.Controllers
                 switch (answer)
                 {
                     case "Accept":
-                        model.ToDataBase(mContext);
+                        TripDetails tripDetails = model.GetTripDetailsModel();
+                        tripDetails.DriverId = accountManager.GetUserId(HttpContext.User);
+                        tripDetailsRepository.Add(tripDetails);
                         return RedirectToAction("Index", "Home");
                     case "Decline":
                         return View("Index");
@@ -93,7 +106,9 @@ namespace WebApp.Controllers
         /// Controller for wrong data put by user
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult ValidationError()
         {
             return View("Index");
