@@ -19,6 +19,8 @@ namespace WebApp.Data
             base.OnModelCreating(modelBuilder);
 
             // Fluent API
+            modelBuilder.Entity<TripDetails>().OwnsOne(c => c.DestinationAddress);
+            modelBuilder.Entity<TripDetails>().OwnsOne(c => c.StartingAddress);
 
             modelBuilder.Entity<ApplicationUser>();
         }
