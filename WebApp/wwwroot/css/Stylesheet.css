@@ -13,10 +13,10 @@ nav {
     padding: 7px;
 }
 sidebar{
-    background-color:transparent;
+    background-color:blueviolet;
 }
 bodyRender {
-    background-color: transparent;
+    background-color:turquoise;
 }
 footer{
     background-color:lightpink;
