@@ -268,3 +268,5 @@ __pycache__/
 
 #local file
 **/Local
+
+passwd.json

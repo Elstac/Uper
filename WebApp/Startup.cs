@@ -16,7 +16,7 @@ using WebApp.Models.Factories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using WebApp.Middlewares;
-
+using WebApp.Services;
 namespace WebApp
 {
     public class Startup
@@ -43,14 +43,24 @@ namespace WebApp
             if(Configuration.GetValue<bool>("DbBuild"))
             {
                 //DB configuration
-                services.AddDbContext<ApplicationContext>(op =>
+                if (Configuration.GetValue<bool>("Dbbase"))
                 {
-                    op.UseSqlite(Configuration.GetConnectionString("TestConnection"));
-                });
+                    services.AddDbContext<ApplicationContext>(op =>
+                 {
+                     op.UseSqlite(Configuration.GetConnectionString("TestConnection"));
+                 });
+                }
+                else
+                {
+                    services.AddDbContext<ApplicationContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                }
+
 
                 services.AddIdentity<ApplicationUser, IdentityRole>()
                     .AddEntityFrameworkStores<ApplicationContext>()
                     .AddDefaultTokenProviders();
+
 
                 services.ConfigureApplicationCookie(op =>
                 {
@@ -70,24 +80,47 @@ namespace WebApp
                 });
             }
 
+            #region SetupDI
             services.AddTransient<ITripDetailsViewModelGenerator, TripDetailsViewModelGenerator>();
-            services.AddTransient<ITripDetailsRepository, TripDetailsRepository>();
+            services.AddTransient<ITripDetailsRepository, MockupTripDetailsRepository>();
             services.AddTransient<IApplicationUserViewModelGenerator, ApplicationUserViewModelGenerator>();
-            services.AddTransient<IApplicationUserRepository, ApplicationUserRepository>();
+            services.AddTransient<IApplicationUserRepository, MocApplicationUserRepository>();
             services.AddTransient<ITripDetailsCreator,TripDetailsCreator>();
             services.AddTransient<IIdentityResultErrorHtmlCreator,IdentityResultErrorHtmlCreator>();
             services.AddTransient<IEmailAddressValidator,EmailAddressValidator>();
             services.AddTransient<IAccountManager, AccountManager>();
             services.AddTransient<IViewerTypeMapper, ViewerTypeMapper>();
-            
             services.AddScoped<ITripDetailsViewModelCreatorFactory, TripDetailViewModelCreatorFactory>();
+            #endregion
+
+            #region EmailServiceSetup
+            services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<ISmtpClientProvider, GmailSmtpClientProvider>();
+            services.AddTransient<IContentBuilder>((fac) =>
+            {
+                return new ContentBuilder(
+                    new System.Text.RegularExpressions.Regex(
+                        Configuration.GetValue<string>("MessageTemplateRegex")));
+            });
+
+            services.AddTransient<ICredentialsProvider>((fac) =>
+            {
+                return new CredentialsProvider(Configuration.GetValue<string>("CredentialsFile"));
+            });
+
+            services.AddTransient<ITemplateProvider>((fac) =>
+            {
+                return new JsonTemplateProvider(Configuration.GetValue<string>("TemplateFile"));
+            });           
+            #endregion
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-        }
-
+        } 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            // Store instance of the DI service provider so our application can access it anywhere
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
