@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace WebApp.Data.Repositories
 {
@@ -38,7 +40,9 @@ namespace WebApp.Data.Repositories
 
         public IEnumerable<ApplicationUser> GetList(ISpecification<ApplicationUser> specification)
         {
-            return dbContext.Set<ApplicationUser>().AsQueryable().Where(specification.Criteria).ToList();
+            return Specifications.SpecificationEvaluator<ApplicationUser>.EvaluateSpecification(
+                dbContext.Set<ApplicationUser>().AsQueryable(),
+                specification);
         }
 
         public void Remove(ApplicationUser toRemove)
