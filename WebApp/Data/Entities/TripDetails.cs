@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using WebApp.Data.Entities;
 
 namespace WebApp.Data
 {
@@ -15,7 +16,7 @@ namespace WebApp.Data
         public string VechicleModel { get; set; }
         public int Size { get; set; }
         public DateTime Date { get; set; }
-        [NotMapped]
-        public ICollection<ApplicationUser> Passangers { get; set; }
+
+        public ICollection<TripUser> Passangers { get; set; }
     }
 }

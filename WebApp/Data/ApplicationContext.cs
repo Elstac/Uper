@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq.Expressions;
 using WebApp.Data.Entities;
 
 namespace WebApp.Data
@@ -19,6 +21,19 @@ namespace WebApp.Data
             base.OnModelCreating(modelBuilder);
 
             // Fluent API
+            modelBuilder.Entity<TripDetails>().OwnsOne(c => c.DestinationAddress);
+            modelBuilder.Entity<TripDetails>().OwnsOne(c => c.StartingAddress);
+
+            modelBuilder.Entity<TripUser>()
+                .HasKey(tu => new { tu.TripId, tu.UserId });
+            modelBuilder.Entity<TripUser>()
+                .HasOne(tu => tu.User)
+                .WithMany(u => u.TripList)
+                .HasForeignKey(tu => tu.UserId);
+            modelBuilder.Entity<TripUser>()
+                 .HasOne(tu => tu.Trip)
+                 .WithMany(u => u.Passangers)
+                 .HasForeignKey(tu => tu.TripId);
 
             modelBuilder.Entity<ApplicationUser>();
         }

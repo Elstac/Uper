@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using WebApp.Data;
+using WebApp.Data.Entities;
 
 namespace WebApp.Models
 {
@@ -18,8 +20,12 @@ namespace WebApp.Models
             if (user.Id == tripDetails.DriverId)
                 return ViewerType.Driver;
 
-            if (tripDetails.Passangers!=null && tripDetails.Passangers.Contains(user))
-                return ViewerType.Passanger;
+            if (tripDetails.Passangers!=null)
+            {
+                var list = (List<TripUser>)(tripDetails.Passangers);
+                if (list.Exists(td => td.User == user))
+                    return ViewerType.Passanger;
+            }
 
             return ViewerType.Guest;
         }

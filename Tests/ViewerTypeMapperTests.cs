@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using WebApp.Data;
+using WebApp.Data.Entities;
 using WebApp.Models;
 using Xunit;
 
@@ -57,9 +58,12 @@ namespace Tests
                 new TripDetails
                 {
                     DriverId = "2",
-                    Passangers = new List<ApplicationUser>
+                    Passangers = new List<TripUser>
                     {
-                        user
+                        new TripUser
+                        {
+                            User = user
+                        }
                     }
                 });
 
