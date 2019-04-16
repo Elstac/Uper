@@ -9,7 +9,7 @@
 </div>
 <div></div>
 <body>
-    <form action="/TripCreator/Index" method="post">
+    <form action="/TripCreator/Index" method="post" asp-antiforgery="true">
         <div class="container">
             <p><label for="DestinationAddress.City">Destination City</label></p>
             <p><input type="text" name="DestinationAddress.City"  /></p>

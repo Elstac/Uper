@@ -97,19 +97,18 @@ namespace WebApp.ViewModels
             return IsValid;
         }
 
-        public void ToDataBase(ApplicationContext context)
+        public TripDetails GetTripDetailsModel()
         {
             TripDetails tripDetails = new TripDetails();
             tripDetails.DestinationAddress = this.DestinationAddress;
             tripDetails.StartingAddress = this.StartingAddress;
-            tripDetails.DriverId = "1";
             tripDetails.Cost = float.Parse(this.Cost, CultureInfo.InvariantCulture.NumberFormat);
             tripDetails.Description = this.Description;
             tripDetails.VechicleModel = this.VechicleModel;
             tripDetails.Date = this.Date;
             tripDetails.Size = this.Size;
 
-            TripDetailsRepository tripDetailsRepository = new TripDetailsRepository(context);
+            return tripDetails;
         }
     }
 }

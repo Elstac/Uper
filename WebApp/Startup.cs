@@ -39,6 +39,7 @@ namespace WebApp
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            #region Database
             //Configuration of services and test DB required for regirestration and logging in. To skip this change DbBuild value in appseetings.json file
             if(Configuration.GetValue<bool>("DbBuild"))
             {
@@ -55,7 +56,7 @@ namespace WebApp
                     services.AddDbContext<ApplicationContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
                 }
-
+                #endregion
 
                 services.AddIdentity<ApplicationUser, IdentityRole>()
                     .AddEntityFrameworkStores<ApplicationContext>()
@@ -82,9 +83,9 @@ namespace WebApp
 
             #region SetupDI
             services.AddTransient<ITripDetailsViewModelGenerator, TripDetailsViewModelGenerator>();
-            services.AddTransient<ITripDetailsRepository, MockupTripDetailsRepository>();
+            services.AddTransient<ITripDetailsRepository, TripDetailsRepository>();
             services.AddTransient<IApplicationUserViewModelGenerator, ApplicationUserViewModelGenerator>();
-            services.AddTransient<IApplicationUserRepository, MocApplicationUserRepository>();
+            services.AddTransient<IApplicationUserRepository, ApplicationUserRepository>();
             services.AddTransient<ITripDetailsCreator,TripDetailsCreator>();
             services.AddTransient<IIdentityResultErrorHtmlCreator,IdentityResultErrorHtmlCreator>();
             services.AddTransient<IEmailAddressValidator,EmailAddressValidator>();
