@@ -1,7 +1,7 @@
-﻿using WebApp.Data;
+﻿using Microsoft.AspNetCore.Identity;
+using WebApp.Data;
+using WebApp.Data.Repositories;
 using WebApp.ViewModels;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Http;
 
 namespace WebApp.Models
 {

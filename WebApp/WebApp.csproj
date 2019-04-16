@@ -22,8 +22,4 @@
     <PackageReference Include="Mimekit" Version="2.1.3" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
 </Project>

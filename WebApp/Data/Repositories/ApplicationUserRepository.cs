@@ -5,6 +5,15 @@ using System.Threading.Tasks;
 
 namespace WebApp.Data.Repositories
 {
+    public interface IApplicationUserRepository
+    {
+        IEnumerable<ApplicationUser> GetAll();
+        void Add(ApplicationUser toAdd);
+        void Remove(ApplicationUser toRemove);
+        ApplicationUser GetById(string id);
+        IEnumerable<ApplicationUser> GetList(ISpecification<ApplicationUser> specification);
+    }
+
     public class ApplicationUserRepository : IApplicationUserRepository
     {
         private ApplicationContext dbContext;
@@ -31,7 +40,9 @@ namespace WebApp.Data.Repositories
 
         public IEnumerable<ApplicationUser> GetList(ISpecification<ApplicationUser> specification)
         {
-            return dbContext.Set<ApplicationUser>().AsQueryable().Where(specification.Criteria).ToList();
+            return Specifications.SpecificationEvaluator<ApplicationUser>.EvaluateSpecification(
+                dbContext.Set<ApplicationUser>().AsQueryable(),
+                specification);
         }
 
         public void Remove(ApplicationUser toRemove)

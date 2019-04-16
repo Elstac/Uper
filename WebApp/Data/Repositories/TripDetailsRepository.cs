@@ -1,46 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using WebApp.Data.Entities;
 
 namespace WebApp.Data.Repositories
 {
-    public class TripDetailsRepository:ITripDetailsRepository
+
+    /// <summary>
+    /// Provides access to TripDetails table in database
+    /// </summary>
+    public interface ITripDetailsRepository : IRepository<TripDetails>
     {
-        private ApplicationContext dbContext;
 
-        public TripDetailsRepository(ApplicationContext Context)
-        {
-            dbContext = Context;
-        }
+    }
 
-        public void Add(TripDetails toAdd)
+    public class TripDetailsRepository:BaseRepository<TripDetails>, ITripDetailsRepository
+    {
+        public TripDetailsRepository(ApplicationContext context):base(context)
         {
-            dbContext.Set<TripDetails>().Add(toAdd);
-             dbContext.SaveChanges();
-        }
-
-        public IEnumerable<TripDetails> GetAll()
-        {
-            return dbContext.Set<TripDetails>().ToList();
-        }
-
-        public TripDetails GetById(int id)
-        {
-            return dbContext.Set<TripDetails>().Find(id);
-        }
-
-        public IEnumerable<TripDetails> GetList(ISpecification<TripDetails> specification)
-        {
-            return dbContext.Set<TripDetails>().AsQueryable().Where(specification.Criteria).ToList();
-        }
-
-        public void Remove(TripDetails toRemove)
-        {
-            dbContext.Set<TripDetails>().Remove(toRemove);
-            dbContext.SaveChanges();
         }
     }
 }
