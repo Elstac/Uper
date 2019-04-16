@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
 using WebApp.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers
 {
@@ -20,19 +21,12 @@ namespace WebApp.Controllers
             this.accountManager = accountManager;
             this.repository = repository;
         }
-
+        [Authorize]
         public IActionResult MyProfile()
         {
-            if (!accountManager.IsSignedIn(User))
-            {
-                return RedirectToAction("UnloggedException");
-            }
-            else
-            {
-                var vm = generator.ConvertAppUserToViewModel(repository.GetById(accountManager.GetUserId(User)));
+            var vm = generator.ConvertAppUserToViewModel(repository.GetById(accountManager.GetUserId(User)));
 
-                return View(vm);
-            }          
+            return View(vm);        
         }
 
         public IActionResult UnloggedException()
