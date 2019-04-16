@@ -1,0 +1,16 @@
+﻿@model WebApp.ViewModels.ApplicationUserViewModel
+@inject IAccountManager  AccountManager
+    <head>
+        <h1>UserProfile</h1>
+    </head>
+
+    <body>
+        <h2>Info:</h2>
+        <p>Name: @Model.Name @Model.Surname</p>
+        <p>UserName: @Model.UserName</p>
+        <p>Email: @Model.Email</p>
+        <p>PhoneNumber: @Model.PhoneNumber</p>
+        <p>Rating: @Model.Rating</p>
+        <p>Votes: @Model.NumOfVotes</p>
+        <p>@Model.Description</p>
+    </body>

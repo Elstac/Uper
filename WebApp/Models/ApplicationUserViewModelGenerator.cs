@@ -1,38 +1,40 @@
-﻿using System;
-using WebApp.Data;
-using WebApp.Data.Repositories;
+﻿using WebApp.Data;
 using WebApp.ViewModels;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
 
 namespace WebApp.Models
 {
     public interface IApplicationUserViewModelGenerator
     {
-        ApplicationUserViewModel GetViewModel(int tripId);
+        ApplicationUserViewModel ConvertAppUserToViewModel(ApplicationUser AppUser);
     }
+
     public class ApplicationUserViewModelGenerator : IApplicationUserViewModelGenerator
     {
+        private IAccountManager accountManager;
         private IApplicationUserRepository userRepository;
+        private UserManager<ApplicationUser> userManager;
 
-        public ApplicationUserViewModelGenerator(IApplicationUserRepository userRepository)
+        public ApplicationUserViewModelGenerator(IApplicationUserRepository userRepository,IAccountManager accountManager, UserManager<ApplicationUser> userManager)
         {
             this.userRepository = userRepository;
-
+            this.accountManager = accountManager;
+            this.userManager = userManager;
         }
 
-        public ApplicationUserViewModel GetViewModel(int tripId)
+        public ApplicationUserViewModel ConvertAppUserToViewModel(ApplicationUser AppUser)
         {
-            var dataModel = userRepository.GetById(tripId.ToString());
-
             var ret = new ApplicationUserViewModel
             {
-                UserName = dataModel.UserName,
-                Name = dataModel.UserName,
-                Surname = dataModel.Surname,
-                Email = dataModel.Email,
-                PhoneNumber = dataModel.PhoneNumber,
-                Rating = dataModel.Rating,
-                NumOfVotes = dataModel.NumOfVote,
-                Description = dataModel.Description
+                UserName = AppUser.UserName,
+                Name = AppUser.UserName,
+                Surname = AppUser.Surname,
+                Email = AppUser.Email,
+                PhoneNumber = AppUser.PhoneNumber,
+                Rating = AppUser.Rating,
+                NumOfVotes = AppUser.NumOfVote,
+                Description = AppUser.Description
             };
             return ret;
         }

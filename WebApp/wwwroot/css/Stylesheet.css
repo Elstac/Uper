@@ -1,8 +1,12 @@
-﻿header{
-    background-color:orchid;
+﻿body {
+    margin: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+header {
+    background-color: orchid;
     font-size: 40px;
     padding: 20px;
-
 }
 nav {
     background-color:fuchsia;

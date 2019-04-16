@@ -13,6 +13,7 @@ namespace WebApp.Models
         Task<ApplicationUser> GetUserAsync(ClaimsPrincipal principal);
         bool IsSignedIn(ClaimsPrincipal principal);
         Task SignOutAsync();
+        string GetUserId(ClaimsPrincipal principal);
         string GetUserName(ClaimsPrincipal principal);
 
     }
@@ -76,6 +77,11 @@ namespace WebApp.Models
         public string GetUserName(ClaimsPrincipal principal)
         {
             return userManager.GetUserName(principal);
+        }
+
+        public string GetUserId(ClaimsPrincipal principal)
+        {
+            return userManager.GetUserId(principal);
         }
     }
 }
