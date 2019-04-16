@@ -33,7 +33,7 @@ namespace WebApp.Data
             modelBuilder.Entity<TripUser>()
                  .HasOne(tu => tu.Trip)
                  .WithMany(u => u.Passangers)
-                 .HasForeignKey(tu => tu.UserId);
+                 .HasForeignKey(tu => tu.TripId);
 
             modelBuilder.Entity<ApplicationUser>();
         }

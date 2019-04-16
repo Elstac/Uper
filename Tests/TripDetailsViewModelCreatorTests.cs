@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using WebApp.Data;
+using WebApp.Data.Entities;
 using WebApp.Models;
 using Xunit;
 
@@ -18,11 +19,14 @@ namespace Tests
             {
                 Cost = 10,
                 Date = DateTime.Today,
-                Passangers = new List<ApplicationUser>
+                Passangers = new List<TripUser>
                 {
-                    new ApplicationUser
+                    new TripUser
                     {
-                        Name = "Piecia"
+                        User = new ApplicationUser
+                        {
+                            Name = "Piecia"
+                        }
                     }
                 },
                 Description = "des",
@@ -60,7 +64,7 @@ namespace Tests
             int i = 0;
             foreach (var user in testModel.Passangers)
             {
-                Assert.Equal(user.Name, vm.PassangersUsernames[i++]);
+                Assert.Equal(user.User.Name, vm.PassangersUsernames[i++]);
             }
         }
     }
