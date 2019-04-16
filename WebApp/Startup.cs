@@ -82,9 +82,9 @@ namespace WebApp
 
             #region SetupDI
             services.AddTransient<ITripDetailsViewModelGenerator, TripDetailsViewModelGenerator>();
-            services.AddTransient<ITripDetailsRepository, MockupTripDetailsRepository>();
+            services.AddTransient<ITripDetailsRepository, TripDetailsRepository>();
             services.AddTransient<IApplicationUserViewModelGenerator, ApplicationUserViewModelGenerator>();
-            services.AddTransient<IApplicationUserRepository, MocApplicationUserRepository>();
+            services.AddTransient<IApplicationUserRepository, ApplicationUserRepository>();
             services.AddTransient<ITripDetailsCreator,TripDetailsCreator>();
             services.AddTransient<IIdentityResultErrorHtmlCreator,IdentityResultErrorHtmlCreator>();
             services.AddTransient<IEmailAddressValidator,EmailAddressValidator>();
