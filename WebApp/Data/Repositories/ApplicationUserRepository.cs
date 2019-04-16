@@ -1,7 +1,6 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace WebApp.Data.Repositories
 {
@@ -30,18 +29,19 @@ namespace WebApp.Data.Repositories
 
         public IEnumerable<ApplicationUser> GetAll()
         {
-            return dbContext.Set<ApplicationUser>().ToList();
+            return dbContext.Set<ApplicationUser>().Include(au=>au.TripList).ToList();
         }
 
         public ApplicationUser GetById(string id)
         {
-            return dbContext.Set<ApplicationUser>().Find(id);
+            return dbContext.Set<ApplicationUser>().Include(au => au.TripList)
+                .Where(au => au.Id == id).First();
         }
 
         public IEnumerable<ApplicationUser> GetList(ISpecification<ApplicationUser> specification)
         {
             return Specifications.SpecificationEvaluator<ApplicationUser>.EvaluateSpecification(
-                dbContext.Set<ApplicationUser>().AsQueryable(),
+                dbContext.Set<ApplicationUser>().Include(au => au.TripList),
                 specification);
         }
 

@@ -12,6 +12,11 @@ namespace WebApp.Data.Repositories
     {
         protected ApplicationContext context;
 
+        /// <summary>
+        /// Main method for repository. Provides base db query for concrete repository. 
+        /// For simple data object it sholud return DbSet.AsQuerable().
+        /// </summary>
+        /// <returns></returns>
         protected abstract IQueryable<T> GetBaseQuery();
 
         public BaseRepository(ApplicationContext context)

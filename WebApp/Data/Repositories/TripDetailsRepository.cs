@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace WebApp.Data.Repositories
@@ -16,6 +17,11 @@ namespace WebApp.Data.Repositories
     {
         public TripDetailsRepository(ApplicationContext context):base(context)
         {
+        }
+
+        protected override IQueryable<TripDetails> GetBaseQuery()
+        {
+            return context.TripDetails.Include(td => td.Passangers);
         }
     }
 }
