@@ -23,7 +23,17 @@ namespace WebApp.Data.Specifications
                 ret = ret.Where(specification.Criteria);
             }
 
+            if (specification.Take != 0)
+                ret = ret.Take(specification.Take);
+
+            if (specification.OrderBy != null)
+                ret = ret.OrderBy(specification.OrderBy);
+
+            if (specification.OrderByDescending != null)
+                ret = ret.OrderBy(specification.OrderByDescending);
+
             return ret;
         }
+        
     }
 }
