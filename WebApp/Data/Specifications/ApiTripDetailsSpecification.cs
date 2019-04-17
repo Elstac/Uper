@@ -1,16 +1,15 @@
-﻿using System;
-using System.Linq.Expressions;
-
-namespace WebApp.Data.Specifications
+﻿namespace WebApp.Data.Specifications
 {
-    public class ApiTripDetailsSpecification : ISpecification<TripDetails>
+    /// <summary>
+    /// Query returns 20 latest trips
+    /// </summary>
+    public class ApiTripDetailsSpecification : BaseSpecification<TripDetails>
     {
-        public Expression<Func<TripDetails, bool>> Criteria { get; };
-
-        public Expression<Func<TripDetails, object>> OrderBy => throw new NotImplementedException();
-
-        public Expression<Func<TripDetails, object>> OrderByDescending => throw new NotImplementedException();
-
-        public int Take { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public ApiTripDetailsSpecification():base(
+            td => td.Size < td.Passangers.Count)
+        {
+            ApplyOrderBy(td => td.Date);
+            ApplyPageing(20, 0);
+        }
     }
 }
