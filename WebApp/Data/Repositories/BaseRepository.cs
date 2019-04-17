@@ -11,14 +11,7 @@ namespace WebApp.Data.Repositories
     public abstract class BaseRepository<T> : IRepository<T> where T : BaseEntity
     {
         protected ApplicationContext context;
-
-        /// <summary>
-        /// Main method for repository. Provides base db query for concrete repository. 
-        /// For simple data object it sholud return DbSet.AsQuerable().
-        /// </summary>
-        /// <returns></returns>
-        protected abstract IQueryable<T> GetBaseQuery();
-
+        
         public BaseRepository(ApplicationContext context)
         {
             this.context = context;
@@ -32,18 +25,18 @@ namespace WebApp.Data.Repositories
 
         public IEnumerable<T> GetAll()
         {
-            return GetBaseQuery().ToList();
+            return context.Set<T>().ToList();
         }
 
         public T GetById(int id)
         {
-            return GetBaseQuery().Where(be => be.Id == id).First();
+            return context.Set<T>().Where(be => be.Id == id).First();
         }
 
         public IEnumerable<T> GetList(ISpecification<T> specification)
         {
             return SpecificationEvaluator<T>.EvaluateSpecification(
-                GetBaseQuery(),
+                context.Set<T>(),
                 specification);
         }
 
