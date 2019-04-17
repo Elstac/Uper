@@ -32,7 +32,7 @@ namespace WebApp.Models
         {
             token = token.Replace(' ', '+');
             var user = userRepository.GetById(userId);
-            
+
             if(user == null)
                 throw new InvalidOperationException("Account confirmation failed");
 
@@ -46,8 +46,9 @@ namespace WebApp.Models
         {
             var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
             emailService.SendMail("Uper", user.Email, "AccountConfirmation",
-                new MessageBody().AddReplacement($"{user.UserName}", "{Name}")
-                .AddReplacement($@"<a href={url}?userId={user.Id}&token={token}>this link</a>", "{Link}"));
+                new MessageBodyDictionary().AddReplacement($"{user.UserName}", "{Name}")
+                .AddReplacement($@"<a href={url}?userId={user.Id}&token={token}>this link</a>", "{Link}")
+                .AddReplacement("to confirm your email address","{Purpose}"));
         }
     }
 }

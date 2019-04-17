@@ -7,9 +7,9 @@ namespace WebApp.Services
         string GetReplacement(string key);
     }
 
-    public class MessageBody : Dictionary<string, string>, IMessageBodyDictionary
+    public class MessageBodyDictionary : Dictionary<string, string>, IMessageBodyDictionary
     {
-        public MessageBody AddReplacement(string value, string key)
+        public MessageBodyDictionary AddReplacement(string value, string key)
         {
             Add(key, value);
             return this;
