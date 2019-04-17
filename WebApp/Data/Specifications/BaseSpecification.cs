@@ -6,8 +6,13 @@ using System.Threading.Tasks;
 
 namespace WebApp.Data.Specifications
 {
-    public class BaseSpecification<T> : ISpecification<T>
+    public abstract class BaseSpecification<T> : ISpecification<T>
     {
+        public BaseSpecification(Expression<Func<T, bool>> criteria)
+        {
+            Criteria = criteria;
+        }
+
         public Expression<Func<T, bool>> Criteria { get; }
 
         public Expression<Func<T, object>> OrderBy { get; private set; }
