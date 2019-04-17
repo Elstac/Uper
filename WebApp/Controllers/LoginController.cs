@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 using WebApp.Data;
 using WebApp.Models;
@@ -90,11 +91,17 @@ namespace WebApp.Controllers
             await emailConfirmator.SendConfirmationEmailAsync(user,url);
             return Content("Account created succesfully check email","text/html");
         }
-
-        public IActionResult ConfirmAccount([FromQuery] string userId, [FromQuery] string token)
+        [Route("[controller]/ConfirmAccount")]
+        public async Task<IActionResult> ConfirmAccountAsync([FromQuery] string userId, [FromQuery] string token)
         {
-            ViewData["id"] = userId;
-            ViewData["token"] = token;
+            try
+            {
+                await emailConfirmator.ConfirmAcconuntAsync(userId, token);
+            }
+            catch(InvalidOperationException e)
+            {
+                return Content(e.Message);
+            }
 
             return View();
         }
