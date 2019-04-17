@@ -22,7 +22,7 @@ namespace WebApp.Controllers
         [HttpGet]
         public IEnumerable<TripDetails> Get()
         {
-            return repository.GetList(new ApiTripDetailsSpecification(20));
+            return repository.GetList(new ApiTripDetailsSpecification(2));
         }
     }
 }
