@@ -1,55 +1,47 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using WebApp.Data.Specifications;
-using Microsoft.EntityFrameworkCore;
 namespace WebApp.Data.Repositories
 {
     /// <summary>
     /// Base class for every repository. Implements shared functionality such as adding, removing, finding by id etc.
     /// </summary>
-    /// <typeparam name="T">Type of entity</typeparam>
-    public abstract class BaseRepository<T> : IRepository<T> where T : BaseEntity
+    /// <typeparam name="EntityType">Type of entity</typeparam>
+    public abstract class BaseRepository<EntityType,IdType> : IRepository<EntityType,IdType> where EntityType : class
     {
         protected ApplicationContext context;
-
-        /// <summary>
-        /// Main method for repository. Provides base db query for concrete repository. 
-        /// For simple data object it sholud return DbSet.AsQuerable().
-        /// </summary>
-        /// <returns></returns>
-        protected abstract IQueryable<T> GetBaseQuery();
-
+        
         public BaseRepository(ApplicationContext context)
         {
             this.context = context;
         }
 
-        public void Add(T toAdd)
+        public void Add(EntityType toAdd)
         {
-            context.Set<T>().Add(toAdd);
+            context.Set<EntityType>().Add(toAdd);
             context.SaveChanges();
         }
 
-        public IEnumerable<T> GetAll()
+        public IEnumerable<EntityType> GetAll()
         {
-            return GetBaseQuery().ToList();
+            return context.Set<EntityType>().ToList();
         }
 
-        public T GetById(int id)
+        public EntityType GetById(IdType id)
         {
-            return GetBaseQuery().Where(be => be.Id == id).First();
+            return context.Set<EntityType>().Find(id);
         }
 
-        public IEnumerable<T> GetList(ISpecification<T> specification)
+        public IEnumerable<EntityType> GetList(ISpecification<EntityType> specification)
         {
-            return SpecificationEvaluator<T>.EvaluateSpecification(
-                GetBaseQuery(),
+            return SpecificationEvaluator<EntityType>.EvaluateSpecification(
+                context.Set<EntityType>(),
                 specification);
         }
 
-        public void Remove(T toRemove)
+        public void Remove(EntityType toRemove)
         {
-            context.Set<T>().Remove(toRemove);
+            context.Set<EntityType>().Remove(toRemove);
             context.SaveChanges();
         }
     }
