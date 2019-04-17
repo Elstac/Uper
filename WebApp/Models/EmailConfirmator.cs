@@ -30,7 +30,12 @@ namespace WebApp.Models
 
         public async Task ConfirmAcconuntAsync(string userId, string token)
         {
+            token = token.Replace(' ', '+');
             var user = userRepository.GetById(userId);
+            
+            if(user == null)
+                throw new InvalidOperationException("Account confirmation failed");
+
             var response = await userManager.ConfirmEmailAsync(user, token);
 
             if (!response.Succeeded)
@@ -42,7 +47,7 @@ namespace WebApp.Models
             var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
             emailService.SendMail("Uper", user.Email, "AccountConfirmation",
                 new MessageBody().AddReplacement($"{user.UserName}", "{Name}")
-                .AddReplacement($"<a href={url}?userId={user.Id}&token={token}>this link</a>", "{Link}"));
+                .AddReplacement($@"<a href={url}?userId={user.Id}&token={token}>this link</a>", "{Link}"));
         }
     }
 }

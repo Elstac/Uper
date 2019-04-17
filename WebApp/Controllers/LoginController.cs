@@ -103,7 +103,7 @@ namespace WebApp.Controllers
                 return Content(e.Message);
             }
 
-            return View();
+            return RedirectToRoute("Home");
         }
     }
 }
