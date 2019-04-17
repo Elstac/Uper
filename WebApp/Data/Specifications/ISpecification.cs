@@ -25,5 +25,9 @@ namespace WebApp.Data
         /// Number of rows included in returned collection
         /// </summary>
         int Take { get; }
+        /// <summary>
+        /// Nuber of first row included in returned collection
+        /// </summary>
+        int Skip { get; }
     }
 }
