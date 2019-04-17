@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
+using WebApp.Data;
 using WebApp.Models;
 using WebApp.Services;
 
@@ -12,12 +14,12 @@ namespace WebApp.Controllers
     public class LoginController : Controller
     {
         private IAccountManager accountManager;
-        private IEmailService emailService;
+        private IEmailConfirmator emailConfirmator;
 
-        public LoginController(IAccountManager accountManager,IEmailService emailService)
+        public LoginController(IAccountManager accountManager,IEmailConfirmator emailConfirmator)
         {
             this.accountManager = accountManager;
-            this.emailService = emailService;
+            this.emailConfirmator = emailConfirmator;
         }
                 
         public IActionResult SignIn(string returnUrl)
@@ -67,21 +69,41 @@ namespace WebApp.Controllers
 
         public async Task<IActionResult> RegisterAsync(string username, string password,string email)
         {
+            var user = new ApplicationUser
+            {
+                UserName = username,
+                Email = email
+            };
+
             try
             {
-                await accountManager.CreateAccountAsync(username,password,email);
+                await accountManager.CreateAccountAsync(user,password);
             }
             catch(System.Exception e)
             {
                 return Content(e.Message, "text/html");
             }
 
-            emailService.SendMail("Uper", email, "Standard", 
-                new MessageBody().AddReplacement($"Hi {username}","{Head}")
-                .AddReplacement($"Your account name: {username}","{Body1}")
-                .AddReplacement("Bye","{Footer}"));
-            
+            await accountManager.SignInAsync(username, password);
+
+            var url =Url.Action("ConfirmAccount","Login",new { },Request.Scheme);
+
+            await emailConfirmator.SendConfirmationEmailAsync(user,url);
             return Content("Account created succesfully check email","text/html");
+        }
+        [Route("[controller]/ConfirmAccount")]
+        public async Task<IActionResult> ConfirmAccountAsync([FromQuery] string userId, [FromQuery] string token)
+        {
+            try
+            {
+                await emailConfirmator.ConfirmAcconuntAsync(userId, token);
+            }
+            catch(InvalidOperationException e)
+            {
+                return Content(e.Message);
+            }
+
+            return RedirectToRoute("Home");
         }
     }
 }

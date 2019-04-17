@@ -8,7 +8,7 @@ namespace WebApp.Models
 {
     public interface IAccountManager
     {
-        Task CreateAccountAsync(string username, string password, string email);
+        Task CreateAccountAsync(ApplicationUser user, string password);
         Task SignInAsync(string username, string password);
         Task<ApplicationUser> GetUserAsync(ClaimsPrincipal principal);
         bool IsSignedIn(ClaimsPrincipal principal);
@@ -36,16 +36,12 @@ namespace WebApp.Models
             this.validator = validator;
         }
 
-        public async Task CreateAccountAsync(string username, string password, string email)
+        public async Task CreateAccountAsync(ApplicationUser user,string password)
         {
-            if (!validator.ValidateEmailAddress(email))
+            if (!validator.ValidateEmailAddress(user.Email))
                 return;
             
-            var result = await userManager.CreateAsync(new ApplicationUser
-            {
-                UserName = username,
-                Email = email
-            }, password);
+            var result = await userManager.CreateAsync(user, password);
 
             if (!result.Succeeded)
                 throw new InvalidOperationException(errorCreator.CreateErrorHtml(result));

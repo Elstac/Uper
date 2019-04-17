@@ -3,6 +3,10 @@
     {
       "Name": "Standard",
       "Template": "<h1>Head: {Head}</h1>\n<p>Body: {Body1}</p>\n<p>Footer: {Footer}</p>"
+    },
+    {
+      "Name": "AccountConfirmation",
+      "Template": "<h1>Hi {Name}</h1>\n<p>Please use {Link} to confirm your email</p>\n"
     }
   ]
 }
