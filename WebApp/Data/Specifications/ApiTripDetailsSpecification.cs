@@ -1,15 +1,15 @@
 ﻿namespace WebApp.Data.Specifications
 {
     /// <summary>
-    /// Query returns 20 latest trips
+    /// Query returns x latest trips
     /// </summary>
     public class ApiTripDetailsSpecification : BaseSpecification<TripDetails>
     {
-        public ApiTripDetailsSpecification():base(
-            td => td.Size < td.Passangers.Count)
+        public ApiTripDetailsSpecification(int take):base(
+            null)
         {
             ApplyOrderBy(td => td.Date);
-            ApplyPageing(20, 0);
+            ApplyPageing(take, 0);
         }
     }
 }
