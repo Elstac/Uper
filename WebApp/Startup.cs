@@ -92,6 +92,7 @@ namespace WebApp
             services.AddTransient<IAccountManager, AccountManager>();
             services.AddTransient<IViewerTypeMapper, ViewerTypeMapper>();
             services.AddScoped<ITripDetailsViewModelCreatorFactory, TripDetailViewModelCreatorFactory>();
+            services.AddTransient<IEmailConfirmator, EmailConfirmator>();
             #endregion
 
             #region EmailServiceSetup
