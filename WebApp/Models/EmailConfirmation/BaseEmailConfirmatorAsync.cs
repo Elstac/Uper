@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using WebApp.Data.Repositories;
 using WebApp.Exceptions;
 using WebApp.Services;

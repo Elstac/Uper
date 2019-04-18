@@ -14,12 +14,10 @@ namespace WebApp.Controllers
     public class LoginController : Controller
     {
         private IAccountManager accountManager;
-        private IEmailConfirmator emailConfirmator;
 
-        public LoginController(IAccountManager accountManager,IEmailConfirmator emailConfirmator)
+        public LoginController(IAccountManager accountManager)
         {
             this.accountManager = accountManager;
-            this.emailConfirmator = emailConfirmator;
         }
                 
         public IActionResult SignIn(string returnUrl)
@@ -87,21 +85,12 @@ namespace WebApp.Controllers
             await accountManager.SignInAsync(username, password);
 
             var url =Url.Action("ConfirmAccount","Login",new { },Request.Scheme);
-
-            await emailConfirmator.SendConfirmationEmailAsync(user,url);
+            
             return Content("Account created succesfully check email","text/html");
         }
         [Route("[controller]/ConfirmAccount")]
         public async Task<IActionResult> ConfirmAccountAsync([FromQuery] string userId, [FromQuery] string token)
         {
-            try
-            {
-                await emailConfirmator.ConfirmAcconuntAsync(userId, token);
-            }
-            catch(InvalidOperationException e)
-            {
-                return Content(e.Message);
-            }
 
             return RedirectToRoute("Home");
         }
