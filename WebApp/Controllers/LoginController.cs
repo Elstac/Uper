@@ -86,12 +86,17 @@ namespace WebApp.Controllers
             }
 
             var url =Url.Action("ConfirmAccount","Login",new { },Request.Scheme);
-            
+
+            await accountConfirmatorFactory.CreateAccountConfirmatorSender(user.UserName)
+                .SendConfirmationEmailAsync(user.Id, url);
+
             return Content("Account created succesfully check email","text/html");
         }
         [Route("[controller]/ConfirmAccount")]
-        public async Task<IActionResult> ConfirmAccountAsync([FromQuery] string userId, [FromQuery] string token)
+        public async Task<IActionResult> ConfirmAccountAsync([FromQuery] string id, [FromQuery] string token)
         {
+            await accountConfirmatorFactory.CreateAccountConfirmator()
+                .ConfirmEmailAsync(id, token);
 
             return RedirectToRoute("Home");
         }

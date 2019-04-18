@@ -17,7 +17,6 @@ namespace Tests
         private Mock<IMessageBodyDictionary> bodyMock;
         private Mock<IEmailService> emailMock;
         private Mock<IConfirmationTokenProvider> tokenMock;
-        private string result;
         private ApplicationUser user;
 
         public EmailConfirmatorSenderTests()
