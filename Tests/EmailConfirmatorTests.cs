@@ -1,4 +1,5 @@
 ﻿using Moq;
+using System.Threading.Tasks;
 using WebApp.Data;
 using WebApp.Data.Repositories;
 using WebApp.Exceptions;
@@ -38,7 +39,7 @@ namespace Tests
 
             bodyMock = new Mock<IMessageBodyDictionary>();
             confirmMock = new Mock<IConfirmationProvider>();
-            confirmMock.Setup(m => m.GenerateTokenAsync(It.IsAny<ApplicationUser>())).Returns(new System.Threading.Tasks.Task<string>(() => "token"));
+            confirmMock.Setup(m => m.GenerateTokenAsync(It.IsAny<ApplicationUser>())).Returns(Task.FromResult("token"));
 
             emailMock = new Mock<IEmailService>();
 
