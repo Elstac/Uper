@@ -30,6 +30,7 @@ namespace WebApp.Models.EmailConfirmation
             this.messageBody = messageBody;
             this.userRepository = userRepository;
             this.messageBody = messageBody;
+            this.messageType = messageType;
         }
 
         public async Task ConfirmEmailAsync(string Id, string token, params object[] parameters)
@@ -39,7 +40,12 @@ namespace WebApp.Models.EmailConfirmation
 
         public async Task SendConfirmationEmailAsync(string Id, string url)
         {
-            throw new NotImplementedException();
+            var user = userRepository.GetById(Id);
+            var token = await confirmAsyncBehavior.GenerateTokenAsync(user);
+
+            messageBody.AddReplacement(url + $"?id={Id}&token={token}", "{Link}");
+
+            emailService.SendMail("Uper", user.Email, messageType, messageBody);
         }
     }
 }
