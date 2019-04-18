@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using WebApp.Data.Repositories;
+using WebApp.Exceptions;
 using WebApp.Services;
 
 namespace WebApp.Models.EmailConfirmation
@@ -41,6 +42,9 @@ namespace WebApp.Models.EmailConfirmation
         public async Task SendConfirmationEmailAsync(string Id, string url)
         {
             var user = userRepository.GetById(Id);
+            if (user == null)
+                throw new OwnNullArgumentException("Invalid user id");
+
             var token = await confirmAsyncBehavior.GenerateTokenAsync(user);
 
             messageBody.AddReplacement(url + $"?id={Id}&token={token}", "{Link}");

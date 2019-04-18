@@ -31,11 +31,10 @@ namespace Tests
             var n = new ApplicationUser();
             n = null;
             repoMock = new Mock<IApplicationUserRepository>();
-            repoMock.Setup(m => m.GetById("null"))
-                .Returns(n);
-
             repoMock.Setup(m => m.GetById(It.IsAny<string>()))
                 .Returns(user);
+            repoMock.Setup(m => m.GetById("null"))
+                .Returns(n);
 
             bodyMock = new Mock<IMessageBodyDictionary>();
             confirmMock = new Mock<IConfirmationProvider>();
@@ -77,5 +76,28 @@ namespace Tests
             emailConfirmator.SendConfirmationEmailAsync("null", "www.url/controller/action"));
         }
         
+        [Fact]
+        public async void GetUserFromRepositoryByRecivedId()
+        {
+            await emailConfirmator.ConfirmEmailAsync("a", "token");
+
+            repoMock.Verify(m => m.GetById("a"), Times.Once);
+        }
+
+        [Fact]
+        public async void CallConfirmBechviourWithRecivedUserTokenAndParameters()
+        {
+            await emailConfirmator.ConfirmEmailAsync("a", "token",1,"10");
+
+            confirmMock.Verify(m => m.ConfirmAsync(user,"token",1,"10"), Times.Once);
+        }
+
+        [Fact]
+        public async void PassToConfirmBehaviorRecreatedTokenBasedOnRecivedToken()
+        {
+            await emailConfirmator.ConfirmEmailAsync("a", "token with spaces");
+
+            confirmMock.Verify(m => m.ConfirmAsync(user, "token+with+spaces"), Times.Once);
+        }
     }
 }
