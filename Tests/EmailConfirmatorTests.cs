@@ -1,24 +1,18 @@
 ﻿using Moq;
-using System.Threading.Tasks;
 using WebApp.Data;
 using WebApp.Data.Repositories;
 using WebApp.Exceptions;
-using WebApp.Models;
 using WebApp.Models.EmailConfirmation;
-using WebApp.Services;
 using Xunit;
 
 namespace Tests
 {
     public class EmailConfirmatorTests
     {
-        private EmailConfirmatorAsync emailConfirmator;
+        private EmailConfirmator emailConfirmator;
 
         private Mock<IApplicationUserRepository> repoMock;
-        private Mock<IMessageBodyDictionary> bodyMock;
         private Mock<IConfirmationProvider> confirmMock;
-        private Mock<IEmailService> emailMock;
-        private string result;
         private ApplicationUser user;
 
         public EmailConfirmatorTests()
@@ -35,45 +29,10 @@ namespace Tests
                 .Returns(user);
             repoMock.Setup(m => m.GetById("null"))
                 .Returns(n);
-
-            bodyMock = new Mock<IMessageBodyDictionary>();
+            
             confirmMock = new Mock<IConfirmationProvider>();
-            confirmMock.Setup(m => m.GenerateTokenAsync(It.IsAny<ApplicationUser>())).Returns(Task.FromResult("token"));
 
-            emailMock = new Mock<IEmailService>();
-
-            emailConfirmator = new EmailConfirmatorAsync(confirmMock.Object, emailMock.Object, bodyMock.Object, repoMock.Object,"type");
-        }
-
-        [Fact]
-        public async void ReplaceLinkWithUrlWitIdAndTokenInBodyBeforeSending()
-        {
-            await emailConfirmator.SendConfirmationEmailAsync("a","www.url/controller/action");
-
-            bodyMock.Verify(m => m.AddReplacement("www.url/controller/action?id=a&token=token", "{Link}"));
-        }
-
-        [Fact]
-        public async void GenerateTokenBeforeSending()
-        {
-            await emailConfirmator.SendConfirmationEmailAsync("a", "www.url/controller/action");
-
-            confirmMock.Verify(m => m.GenerateTokenAsync(user), Times.Once);
-        }
-
-        [Fact]
-        public async void SendMailToUserEmailAddressFromUperOfGivenType()
-        {
-            await emailConfirmator.SendConfirmationEmailAsync("a", "www.url/controller/action");
-
-            emailMock.Verify(m => m.SendMail("Uper", "useremail", "type", bodyMock.Object), Times.Once);
-        }
-
-        [Fact]
-        public async void ThrowArgumentNullExceptionIfUserDoesntExistsSendEmail()
-        {
-            await Assert.ThrowsAsync<OwnNullArgumentException>(() => 
-            emailConfirmator.SendConfirmationEmailAsync("null", "www.url/controller/action"));
+            emailConfirmator = new EmailConfirmator(confirmMock.Object,repoMock.Object);
         }
         
         [Fact]

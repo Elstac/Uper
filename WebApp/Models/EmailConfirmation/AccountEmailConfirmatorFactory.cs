@@ -34,7 +34,7 @@ namespace WebApp.Models.EmailConfirmation
             body.AddReplacement(name, "{Name}")
                 .AddReplacement("to confirm your account", "{Purpose}");
 
-            return new EmailConfirmationSender(serviceProvider.GetService<IEmailService>(),
+            return new EmailConfirmatorSender(serviceProvider.GetService<IEmailService>(),
                 body,
                 serviceProvider.GetService<IApplicationUserRepository>(),
                 new AccountTokenProvider(serviceProvider.GetService<UserManager<ApplicationUser>>()),

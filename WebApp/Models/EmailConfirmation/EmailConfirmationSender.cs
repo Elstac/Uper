@@ -10,7 +10,7 @@ namespace WebApp.Models.EmailConfirmation
         Task SendConfirmationEmailAsync(string Id, string url);
     }
 
-    public class EmailConfirmationSender:IEmailConfirmationSender
+    public class EmailConfirmatorSender:IEmailConfirmationSender
     {
         private IEmailService emailService;
         private IMessageBodyDictionary messageBody;
@@ -18,7 +18,7 @@ namespace WebApp.Models.EmailConfirmation
         private IConfirmationTokenProvider tokenProvider;
         private string messageType;
 
-        public EmailConfirmationSender(IEmailService emailService,
+        public EmailConfirmatorSender(IEmailService emailService,
             IMessageBodyDictionary messageBody, 
             IApplicationUserRepository userRepository, 
             IConfirmationTokenProvider tokenProvider, 
