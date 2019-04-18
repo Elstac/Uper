@@ -36,7 +36,14 @@ namespace WebApp.Models.EmailConfirmation
 
         public async Task ConfirmEmailAsync(string Id, string token, params object[] parameters)
         {
-            throw new NotImplementedException();
+            var user = userRepository.GetById(Id);
+
+            if (user == null)
+                throw new OwnNullArgumentException("Invalid user id");
+
+            token = token.Replace(" ", "+");
+
+            await confirmAsyncBehavior.ConfirmAsync(user, token, parameters);
         }
 
         public async Task SendConfirmationEmailAsync(string Id, string url)

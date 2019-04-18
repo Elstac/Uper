@@ -70,7 +70,7 @@ namespace Tests
         }
 
         [Fact]
-        public async void ThrowArgumentNullExceptionIfUserDoesntExists()
+        public async void ThrowArgumentNullExceptionIfUserDoesntExistsSendEmail()
         {
             await Assert.ThrowsAsync<OwnNullArgumentException>(() => 
             emailConfirmator.SendConfirmationEmailAsync("null", "www.url/controller/action"));
@@ -98,6 +98,13 @@ namespace Tests
             await emailConfirmator.ConfirmEmailAsync("a", "token with spaces");
 
             confirmMock.Verify(m => m.ConfirmAsync(user, "token+with+spaces"), Times.Once);
+        }
+
+        [Fact]
+        public async void ThrowArgumentNullExceptionIfUserDoesntExistsConfirm()
+        {
+            await Assert.ThrowsAsync<OwnNullArgumentException>(() =>
+            emailConfirmator.ConfirmEmailAsync("null", "token"));
         }
     }
 }
