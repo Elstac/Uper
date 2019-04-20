@@ -2,6 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using WebApp.Data;
+using WebApp.Exceptions;
 
 namespace WebApp.Models.EmailConfirmation
 {
@@ -9,9 +10,20 @@ namespace WebApp.Models.EmailConfirmation
     {
         private UserManager<ApplicationUser> userManager;
 
-        public Task ConfirmAsync(ApplicationUser user, string token, params object[] parameters)
+        public PasswordResetProvider(UserManager<ApplicationUser> userManager)
         {
-            throw new NotImplementedException();
+            this.userManager = userManager;
+        }
+
+        public async Task ConfirmAsync(ApplicationUser user, string token, params object[] parameters)
+        {
+            if (parameters == null)
+                throw new OwnNullArgumentException("Invalid parameters number");
+
+            var result = await userManager.ResetPasswordAsync(user, token, parameters[0].ToString());
+
+            if (!result.Succeeded)
+                throw new InvalidOperationException("Password reset failed");
         }
     }
 }
