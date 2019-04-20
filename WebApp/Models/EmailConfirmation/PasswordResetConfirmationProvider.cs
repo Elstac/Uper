@@ -6,11 +6,11 @@ using WebApp.Exceptions;
 
 namespace WebApp.Models.EmailConfirmation
 {
-    public class PasswordResetProvider : IConfirmationProvider
+    public class PasswordResetConfirmationProvider : IConfirmationProvider
     {
         private UserManager<ApplicationUser> userManager;
 
-        public PasswordResetProvider(UserManager<ApplicationUser> userManager)
+        public PasswordResetConfirmationProvider(UserManager<ApplicationUser> userManager)
         {
             this.userManager = userManager;
         }
