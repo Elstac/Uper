@@ -9,8 +9,8 @@ namespace WebApp.Models.EmailConfirmation
 {
     public interface IPasswordResetConfirmatorFactory
     {
-        IEmailConfirmationSender CreateAccountConfirmatorSender(string name);
-        IEmailConfirmator CreateAccountConfirmator();
+        IEmailConfirmationSender CreatePasswordResetSender(string name);
+        IEmailConfirmator CreatePasswordResetConfirmator();
     }
 
     public class PasswordResetConfirmatorFactory : IPasswordResetConfirmatorFactory
@@ -22,13 +22,13 @@ namespace WebApp.Models.EmailConfirmation
             this.serviceProvider = serviceProvider;
         }
 
-        public IEmailConfirmator CreateAccountConfirmator()
+        public IEmailConfirmator CreatePasswordResetConfirmator()
         {
             return new EmailConfirmator(new PasswordResetConfirmationProvider(serviceProvider.GetService<UserManager<ApplicationUser>>()),
                                         serviceProvider.GetService<IApplicationUserRepository>());
         }
 
-        public IEmailConfirmationSender CreateAccountConfirmatorSender(string name)
+        public IEmailConfirmationSender CreatePasswordResetSender(string name)
         {
             var body = new MessageBodyDictionary();
             body.AddReplacement(name, "{Name}")
