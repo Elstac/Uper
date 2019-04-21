@@ -7,17 +7,17 @@ using Microsoft.AspNetCore.Identity;
 
 namespace WebApp.Models.EmailConfirmation
 {
-    public interface IPasswordResetConfirmatorFactory
+    public interface IPasswordResetFactory
     {
         IEmailConfirmationSender CreatePasswordResetSender(string name);
         IEmailConfirmator CreatePasswordResetConfirmator();
     }
 
-    public class PasswordResetConfirmatorFactory : IPasswordResetConfirmatorFactory
+    public class PasswordResetFactory : IPasswordResetFactory
     {
         private IServiceProvider serviceProvider;
 
-        public PasswordResetConfirmatorFactory(IServiceProvider serviceProvider)
+        public PasswordResetFactory(IServiceProvider serviceProvider)
         {
             this.serviceProvider = serviceProvider;
         }
