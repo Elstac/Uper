@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace WebApp.Data.Specifications
 {
@@ -14,7 +15,7 @@ namespace WebApp.Data.Specifications
         /// <param name="query">Base query</param>
         /// <param name="specification">Specification to apply</param>
         /// <returns>New query containing specification</returns>
-        public static IQueryable<T> EvaluateSpecification(IQueryable<T> query, ISpecification<T> specification)
+        public static IEnumerable<T> EvaluateSpecification(IQueryable<T> query, ISpecification<T> specification)
         {
             var ret = query;
 
@@ -32,7 +33,7 @@ namespace WebApp.Data.Specifications
             if (specification.OrderByDescending != null)
                 ret = ret.OrderBy(specification.OrderByDescending);
 
-            return ret;
+            return ret.ToList();
         }
         
     }
