@@ -27,6 +27,12 @@ namespace WebApp.Controllers
             return View();
         }
 
+        public IActionResult ChangePassword(string id, string token)
+        {
+            ViewData["id"] = id;
+            ViewData["token"] = token;
+            return View();
+        }
         
         public async Task<IActionResult> SendPasswordResetAsync(string email)
         {
@@ -36,7 +42,7 @@ namespace WebApp.Controllers
                 return BadRequest("Invalid email");
 
             var user = userList[0];
-            var url = Url.Action("Reset", "PasswordReset", new { }, Request.Scheme);
+            var url = Url.Action("ChangePassword", "PasswordReset", new { }, Request.Scheme);
 
             await passwordResetFactory.CreatePasswordResetSender(user.UserName).SendConfirmationEmailAsync(user.Id,url);
 
