@@ -14,7 +14,13 @@ namespace WebApp.Controllers
     {
         private IPasswordResetFactory passwordResetFactory;
         private IApplicationUserRepository userRepository;
-       
+
+        public PasswordResetController(IPasswordResetFactory passwordResetFactory, IApplicationUserRepository userRepository)
+        {
+            this.passwordResetFactory = passwordResetFactory;
+            this.userRepository = userRepository;
+        }
+
         // GET: /<controller>/
         public IActionResult Index()
         {
