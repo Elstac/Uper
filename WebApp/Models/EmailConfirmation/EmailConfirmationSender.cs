@@ -18,6 +18,14 @@ namespace WebApp.Models.EmailConfirmation
         private IConfirmationTokenProvider tokenProvider;
         private string messageType;
 
+        /// <summary>
+        /// Base implenmentation of EmailConfirmator
+        /// </summary>
+        /// <param name="emailService">Service used for sending emails</param>
+        /// <param name="messageBody">Basse message body exluding link replacement</param>
+        /// <param name="userRepository">Repository of users</param>
+        /// <param name="tokenProvider">Token provider for confirmation</param>
+        /// <param name="messageType">Name of message template used in email sender</param>
         public EmailConfirmatorSender(IEmailService emailService,
             IMessageBodyDictionary messageBody, 
             IApplicationUserRepository userRepository, 
