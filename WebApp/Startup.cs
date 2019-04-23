@@ -202,7 +202,7 @@ namespace WebApp
             app.UseAuthentication();
 
             //Custom type mapper for TripDetails redirection
-            //app.UseTrpeMapper();
+            app.UseTrpeMapper();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
