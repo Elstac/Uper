@@ -46,7 +46,7 @@ namespace WebApp.Controllers
 
             await passwordResetFactory.CreatePasswordResetSender(user.UserName).SendConfirmationEmailAsync(user.Id,url);
 
-            return Content("Password reset confirmation has been sent", "html/text");
+            return Content($"Password reset confirmation email has been sent to {email}", "text/html");
         }
 
         public async Task<IActionResult> ChangePasswordAsync(string id, string token, string newPassword)
