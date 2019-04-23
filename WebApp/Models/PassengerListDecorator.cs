@@ -20,7 +20,7 @@ namespace WebApp.Models
         {
             var vm = wrape.CreateViewModel(tripDetails);
             
-            vm.PassangersUsernames = (from tu in tripDetails.Passangers select tu.User.Name).ToList();
+            vm.PassangersUsernames = (from tu in tripDetails.Passangers select tu.User.UserName).ToList();
 
             return vm;
         }
