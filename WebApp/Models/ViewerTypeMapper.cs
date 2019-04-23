@@ -22,9 +22,11 @@ namespace WebApp.Models
 
             if (tripDetails.Passangers!=null)
             {
-                var list = (List<TripUser>)(tripDetails.Passangers);
-                if (list.Exists(td => td.User == user))
-                    return ViewerType.Passanger;
+                foreach (var pass in tripDetails.Passangers)
+                {
+                    if (pass.User == user)
+                        return ViewerType.Passanger;
+                }
             }
 
             return ViewerType.Guest;
