@@ -1,19 +1,72 @@
 ﻿@model WebApp.ViewModels.TripDetailsViewModel
 @{var type = (ViewerType)ViewData["type"]; }
 <div>
-    <h1>@Model.StartingAddress.City @Model.StartingAddress.Street to @Model.DestinationAddress.City @Model.DestinationAddress.Street</h1>
-</div>
-<div class="description">
-    <h2>Description:</h2>
-    <p>@Model.Description</p>
+    <h1>Trip from @Model.StartingAddress.City to @Model.DestinationAddress.City </h1>
 </div>
 
-<div class="details">
-    <h2>Details:</h2>
-    <p><b>Cost:</b> @Model.Cost</p>
-    <p><b>Driver:</b> @Model.DriverUsername</p>
-    <p><b>Date:</b> @Model.Date</p>
-    <p><b>Vechicle model:</b> @Model.VechicleModel</p>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Destination City
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DestinationAddress.City)
+        </dd>
+        <dt>
+            Destination City Street
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DestinationAddress.Street)
+        </dd>
+        <dt>
+            Starting City
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StartingAddress.City)
+        </dd>
+        <dt>
+            Starting City Street
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StartingAddress.Street)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Cost)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Cost)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.VechicleModel)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.VechicleModel)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Size)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Size)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <p><b>Trip map:</b></p>
+    <img src="@Model.MapPath" />
 </div>
 
 @if (type != ViewerType.Guest)
@@ -38,9 +91,16 @@
             //TODO add passanger management panel
         }
     </div>
-}  
+}
+else
+{
+    <form asp-action="Join" asp-controller="TripDetails" method="post" asp-route-id="@Model.TripId" asp-antiforgery="true">
+        <div>
+            <input type="submit" value="Join" class="btn btn-success" />
+        </div>
+    </form>
 
+}
 <div>
-    <p><b>Trip map:</b></p>
-    <img src="@Model.MapPath"/>
+    <a asp-action="Index" asp-controller="FakeTripList">Back to List</a>
 </div>

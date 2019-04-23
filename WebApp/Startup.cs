@@ -89,7 +89,9 @@ namespace WebApp
             }
 
             #region SetupDI
+
             services.AddTransient<ITripDetailsViewModelProvider, TripDetailsViewModelProvider>();
+            services.AddTransient<ITripUserRepository, TripUserRepository>();
             services.AddTransient<ITripDetailsRepository, TripDetailsRepository>();
             services.AddTransient<IApplicationUserViewModelGenerator, ApplicationUserViewModelGenerator>();
             services.AddTransient<IApplicationUserRepository, ApplicationUserRepository>();
@@ -231,6 +233,11 @@ namespace WebApp
                    name: "TripCreator",
                    template: "TripCreator/Index/{id}/{type}",
                    defaults: new { controller = "TripCreator", action = "Index" });
+
+                routes.MapRoute(
+                name: "FakeTripList",
+                template: "FakeTripList/Index/{id}/{type}",
+                defaults: new { controller = "FakeTripList", action = "Index" });
                 // TODO Route to user's private profile
                 routes.MapRoute(
                     name: "UserProfile",
