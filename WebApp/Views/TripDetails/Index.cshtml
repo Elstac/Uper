@@ -66,6 +66,8 @@
 
 @if (type != ViewerType.Guest)
 {
+    if (true)
+    {
     <div class="passangersList">
         <h2>Passangers</h2>
         @if (type == ViewerType.Passanger)
@@ -86,6 +88,25 @@
             //TODO add passanger management panel
         }
     </div>
+    }
+
+    if (type == ViewerType.Driver)
+    {
+        <form asp-action="Remove" asp-controller="TripDetails" method="post" asp-route-id="@Model.TripId" asp-antiforgery="true">
+            <div>
+                <input type="submit" value="Delete" class="btn btn-success" />
+            </div>
+        </form>
+    }
+    if (type == ViewerType.Passanger)
+    {
+        <form asp-action="Leave" asp-controller="TripDetails" method="post" asp-route-id="@Model.TripId" asp-antiforgery="true">
+            <div>
+                <input type="submit" value="Leave" class="btn btn-success" />
+            </div>
+        </form>
+    }
+
 }
 else
 {

@@ -11,7 +11,8 @@ namespace WebApp.Data.Repositories
     /// </summary>
     public interface ITripUserRepository : IRepository<TripUser, int>
     {
-
+        void RemoveUserFromTrip(int id,string userid);
+        void RemoveTripUsers(int id);
     }
 
     public class TripUserRepository : BaseRepository<TripUser, int>, ITripUserRepository
@@ -21,5 +22,16 @@ namespace WebApp.Data.Repositories
 
         }
 
+        public void RemoveUserFromTrip(int id, string userid)
+        {
+                context.Set<TripUser>().Remove(context.Set<TripUser>().Find(id,userid));
+                context.SaveChanges();
+        }
+
+        public void RemoveTripUsers(int id)
+        {
+            context.Set<TripUser>().RemoveRange(context.TripUser.Where(tu => tu.TripId == id));
+            context.SaveChanges();
+        }
     }
 }
