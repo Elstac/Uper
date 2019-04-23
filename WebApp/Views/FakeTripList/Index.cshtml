@@ -1,0 +1,88 @@
+﻿@model IEnumerable<WebApp.Data.TripDetails>
+
+@{
+    ViewData["Title"] = "Index";
+   
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StartingAddress.City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartingAddress.Street)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DestinationAddress.City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DestinationAddress.Street)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DriverId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VechicleModel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Size)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayNameFor(modelItem => item.StartingAddress.City)
+            </td>
+            <td>
+                @Html.DisplayNameFor(modelItem => item.StartingAddress.Street)
+            </td>
+            <td>
+                @Html.DisplayNameFor(modelItem => item.DestinationAddress.City)
+            </td>
+            <td>
+                @Html.DisplayNameFor(modelItem => item.DestinationAddress.Street)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DriverId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cost)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VechicleModel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Size)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                <a asp-action="Index" asp-controller="TripDetails" asp-route-id="@item.Id">Details</a> |
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

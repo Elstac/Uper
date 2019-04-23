@@ -18,6 +18,8 @@ namespace WebApp.Models
         {
             var ret = new TripDetailsViewModel
             {
+                TripId = tripDetails.Id,
+                Size = tripDetails.Size,
                 Cost = tripDetails.Cost,
                 Description = tripDetails.Description,
                 VechicleModel = tripDetails.VechicleModel,
