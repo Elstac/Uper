@@ -9,15 +9,17 @@ namespace WebApp.Controllers
 {
     public class TripDetailsController : Controller
     {
+
         private ITripDetailsViewModelProvider generator;
         private IAccountManager accountManager;
         private ITripUserRepository tripUserRepository;
-
-        public TripDetailsController(ITripDetailsViewModelProvider generator, IAccountManager accountManager, ITripUserRepository tripUserRepository)
+        private ITripDetailsRepository tripDetailsRepository;
+        public TripDetailsController(ITripDetailsViewModelProvider generator, IAccountManager accountManager, ITripUserRepository tripUserRepository, ITripDetailsRepository tripDetailsRepository)
         {
             this.generator = generator;
             this.accountManager = accountManager;
             this.tripUserRepository = tripUserRepository;
+            this.tripDetailsRepository = tripDetailsRepository;
         }
 
         /// <summary>
@@ -27,10 +29,12 @@ namespace WebApp.Controllers
         /// <param name="viewerType">Type of viewer</param>
         /// <returns>Details page</returns>
         [Authorize]
-        public IActionResult Index(int id, [FromQuery]ViewerType viewerType)
+        public IActionResult Index([FromQuery]int id, [FromQuery]ViewerType viewerType)
         {
-            viewerType = (ViewerType)1;
+
+           // viewerType = (ViewerType)1;
             var vm = generator.GetViewModel(id,viewerType);
+
             ViewData["type"] = viewerType;
             return View(vm);
         }
@@ -46,6 +50,25 @@ namespace WebApp.Controllers
             };
 
             tripUserRepository.Add(tripUser);
+            return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Remove(int id)
+        {
+            tripUserRepository.RemoveTripUsers(id);
+            tripDetailsRepository.Remove(tripDetailsRepository.GetById(id));
+            return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Leave(int id)
+        {
+            tripUserRepository.RemoveUserFromTrip(id,accountManager.GetUserId(HttpContext.User));
             return RedirectToAction("Index", "Home");
         }
     }
