@@ -24,7 +24,7 @@ namespace WebApp.Models.EmailConfirmation
 
         public IEmailConfirmator CreateAccountConfirmator()
         {
-            return new EmailConfirmator(new AccountConfirmationProvider(), 
+            return new EmailConfirmator(new AccountConfirmationProvider(serviceProvider.GetService<UserManager<ApplicationUser>>()), 
                                         serviceProvider.GetService<IApplicationUserRepository>());
         }
 
