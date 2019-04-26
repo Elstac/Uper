@@ -38,7 +38,7 @@ namespace WebApp.Models.EmailConfirmation
                 body,
                 serviceProvider.GetService<IApplicationUserRepository>(),
                 new AccountTokenProvider(serviceProvider.GetService<UserManager<ApplicationUser>>()),
-                "HyperLinkConfirmation");
+                "HyperlinkConfirmation");
         }
     }
 }
