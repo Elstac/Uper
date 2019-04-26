@@ -15,7 +15,7 @@ namespace WebApp.Models.EmailConfirmation
         private IApplicationUserRepository userRepository;
 
         public EmailConfirmator(IConfirmationProvider confirmBehavior,
-                                     IApplicationUserRepository userRepository)
+                                IApplicationUserRepository userRepository)
         {
             this.confirmBehavior = confirmBehavior;
             this.userRepository = userRepository;
