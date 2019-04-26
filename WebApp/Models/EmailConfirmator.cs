@@ -23,6 +23,7 @@ namespace WebApp.Models
 
         public EmailConfirmator(IEmailService emailService, UserManager<ApplicationUser> userManager,IApplicationUserRepository userRepository)
         {
+            
             this.emailService = emailService;
             this.userManager = userManager;
             this.userRepository = userRepository;
