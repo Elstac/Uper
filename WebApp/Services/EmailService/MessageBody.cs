@@ -5,11 +5,12 @@ namespace WebApp.Services
     public interface IMessageBodyDictionary
     {
         string GetReplacement(string key);
+        IMessageBodyDictionary AddReplacement(string value, string key);
     }
 
     public class MessageBodyDictionary : Dictionary<string, string>, IMessageBodyDictionary
     {
-        public MessageBodyDictionary AddReplacement(string value, string key)
+        public IMessageBodyDictionary AddReplacement(string value, string key)
         {
             Add(key, value);
             return this;
