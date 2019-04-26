@@ -17,6 +17,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using WebApp.Middlewares;
 using WebApp.Services;
+using WebApp.Models.EmailConfirmation;
+
 namespace WebApp
 {
     public class Startup
@@ -92,6 +94,7 @@ namespace WebApp
             services.AddTransient<IAccountManager, AccountManager>();
             services.AddTransient<IViewerTypeMapper, ViewerTypeMapper>();
             services.AddScoped<ITripDetailsViewModelCreatorFactory, TripDetailViewModelCreatorFactory>();
+            services.AddTransient<IAccountEmailConfirmatorFactory, AccountEmailConfirmatorFactory>();
             #endregion
 
             #region EmailServiceSetup

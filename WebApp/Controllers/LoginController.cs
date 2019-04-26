@@ -5,6 +5,7 @@ using System;
 using System.Threading.Tasks;
 using WebApp.Data;
 using WebApp.Models;
+using WebApp.Models.EmailConfirmation;
 using WebApp.Services;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -14,10 +15,12 @@ namespace WebApp.Controllers
     public class LoginController : Controller
     {
         private IAccountManager accountManager;
+        private IAccountEmailConfirmatorFactory accountConfirmatorFactory;
 
-        public LoginController(IAccountManager accountManager)
+        public LoginController(IAccountManager accountManager,IAccountEmailConfirmatorFactory accountConfirmatorFactory)
         {
             this.accountManager = accountManager;
+            this.accountConfirmatorFactory = accountConfirmatorFactory;
         }
                 
         public IActionResult SignIn(string returnUrl)
@@ -82,15 +85,17 @@ namespace WebApp.Controllers
                 return Content(e.Message, "text/html");
             }
 
-            await accountManager.SignInAsync(username, password);
-
             var url =Url.Action("ConfirmAccount","Login",new { },Request.Scheme);
+            confirm = accountConfirmatorFactory.CreateAccountConfirmator(user.UserName);
+
+            await confirm.SendConfirmationEmailAsync(user.Id, url);
             
             return Content("Account created succesfully check email","text/html");
         }
         [Route("[controller]/ConfirmAccount")]
         public async Task<IActionResult> ConfirmAccountAsync([FromQuery] string userId, [FromQuery] string token)
         {
+            accountConfirmatorFactory.
 
             return RedirectToRoute("Home");
         }
