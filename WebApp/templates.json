@@ -6,7 +6,7 @@
     },
     {
       "Name": "HyperlinkConfirmation",
-      "Template": "<h1>Hi {Name}</h1>\n<p>Please use {Link} {Purpose}</p>\n"
+      "Template": "<h1>Hi {Name}</h1>\n<p>Please use <a href={Link}>this link</a> {Purpose}</p>\n"
     }
   ]
 }

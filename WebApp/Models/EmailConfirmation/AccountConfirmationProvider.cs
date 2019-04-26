@@ -4,11 +4,6 @@ using WebApp.Data;
 
 namespace WebApp.Models.EmailConfirmation
 {
-    public interface IConfirmationProvider
-    {
-        Task ConfirmAsync(ApplicationUser user, string token, params object[] parameters);
-    }
-
     public class AccountConfirmationProvider : IConfirmationProvider
     {
         private UserManager<ApplicationUser> userManager;

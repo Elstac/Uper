@@ -4,18 +4,18 @@ using WebApp.Data;
 
 namespace WebApp.Models.EmailConfirmation
 {
-    public class AccountTokenProvider:IConfirmationTokenProvider
+    public class PasswordResetTokenProvider : IConfirmationTokenProvider
     {
         private UserManager<ApplicationUser> userManager;
 
-        public AccountTokenProvider(UserManager<ApplicationUser> userManager)
+        public PasswordResetTokenProvider(UserManager<ApplicationUser> userManager)
         {
             this.userManager = userManager;
         }
 
         public async Task<string> GenerateTokenAsync(ApplicationUser user)
         {
-            return await userManager.GenerateEmailConfirmationTokenAsync(user);
+            return await userManager.GeneratePasswordResetTokenAsync(user);
         }
     }
 }
