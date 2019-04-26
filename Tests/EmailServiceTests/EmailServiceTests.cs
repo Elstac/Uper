@@ -47,7 +47,7 @@ namespace Tests
         [Fact]
         public void CallContentBuilderBeforeSending()
         {
-            var msgb = new MessageBody();
+            var msgb = new MessageBodyDictionary();
             emailService.SendMail("", "", "", msgb);
 
             cbMock.Verify(m => m.BuildContent("template",msgb), Times.Once);
@@ -56,7 +56,7 @@ namespace Tests
         [Fact]
         public void GetCredentialsBeforeConnectig()
         {
-            emailService.SendMail("", "", "", new MessageBody());
+            emailService.SendMail("", "", "", new MessageBodyDictionary());
 
             credentialsMock.Verify(m => m.GetCredentials(), Times.Once);
         }
@@ -64,7 +64,7 @@ namespace Tests
         [Fact]
         public void PassCorrectCredentialsToSmtpProvider()
         {
-            emailService.SendMail("", "", "", new MessageBody());
+            emailService.SendMail("", "", "", new MessageBodyDictionary());
 
             smtpMock.Verify(m => m.Connect("username","password"), Times.Once);
         }
@@ -72,7 +72,7 @@ namespace Tests
         [Fact]
         public void GetCorrectTypeTemplate()
         {
-            emailService.SendMail("", "", "type", new MessageBody());
+            emailService.SendMail("", "", "type", new MessageBodyDictionary());
 
             tempMock.Verify(m => m.GetTemplate("type"), Times.Once);
         }

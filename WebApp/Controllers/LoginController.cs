@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 using WebApp.Data;
 using WebApp.Models;
-using WebApp.Services;
+using WebApp.Models.EmailConfirmation;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,12 +13,12 @@ namespace WebApp.Controllers
     public class LoginController : Controller
     {
         private IAccountManager accountManager;
-        private IEmailConfirmator emailConfirmator;
+        private IAccountEmailConfirmatorFactory accountConfirmatorFactory;
 
-        public LoginController(IAccountManager accountManager,IEmailConfirmator emailConfirmator)
+        public LoginController(IAccountManager accountManager,IAccountEmailConfirmatorFactory accountConfirmatorFactory)
         {
             this.accountManager = accountManager;
-            this.emailConfirmator = emailConfirmator;
+            this.accountConfirmatorFactory = accountConfirmatorFactory;
         }
                 
         public IActionResult SignIn(string returnUrl)
@@ -84,24 +83,18 @@ namespace WebApp.Controllers
                 return Content(e.Message, "text/html");
             }
 
-            await accountManager.SignInAsync(username, password);
-
             var url =Url.Action("ConfirmAccount","Login",new { },Request.Scheme);
 
-            await emailConfirmator.SendConfirmationEmailAsync(user,url);
+            await accountConfirmatorFactory.CreateAccountConfirmatorSender(user.UserName)
+                .SendConfirmationEmailAsync(user.Id, url);
+
             return Content("Account created succesfully check email","text/html");
         }
         [Route("[controller]/ConfirmAccount")]
-        public async Task<IActionResult> ConfirmAccountAsync([FromQuery] string userId, [FromQuery] string token)
+        public async Task<IActionResult> ConfirmAccountAsync([FromQuery] string id, [FromQuery] string token)
         {
-            try
-            {
-                await emailConfirmator.ConfirmAcconuntAsync(userId, token);
-            }
-            catch(InvalidOperationException e)
-            {
-                return Content(e.Message);
-            }
+            await accountConfirmatorFactory.CreateAccountConfirmator()
+                .ConfirmEmailAsync(id, token);
 
             return RedirectToRoute("Home");
         }
