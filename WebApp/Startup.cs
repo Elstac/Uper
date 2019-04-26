@@ -80,7 +80,11 @@ namespace WebApp
                     op.Password.RequireLowercase = true;
                     op.Password.RequireUppercase = false;
                     op.Password.RequireNonAlphanumeric = false;
+
+                    op.User.RequireUniqueEmail = true;
                 });
+
+                
             }
 
             #region SetupDI
