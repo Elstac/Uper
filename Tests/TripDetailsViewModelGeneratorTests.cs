@@ -30,7 +30,7 @@ namespace Tests
 
             testModel = new TripDetails();
 
-            repoMock.Setup(e => e.GetById(1)).Returns(testModel);
+            repoMock.Setup(e => e.GetUserWithTripListById(1)).Returns(testModel);
 
             viewModelGenerator = new TripDetailsViewModelProvider(repoMock.Object, facMock.Object);
         }
@@ -43,7 +43,7 @@ namespace Tests
         {
             viewModelGenerator.GetViewModel(1, (ViewerType)type);
 
-            repoMock.Verify(rep => rep.GetById(1),Times.Once);
+            repoMock.Verify(rep => rep.GetUserWithTripListById(1),Times.Once);
         }
 
         [Theory]
