@@ -11,7 +11,7 @@ namespace Tests
 {
     public class TripDetailsViewModelGeneratorTests
     {
-        private TripDetailsViewModelGenerator viewModelGenerator;
+        private TripDetailsViewModelProvider viewModelGenerator;
         private Mock<ITripDetailsCreator> creatorMock;
         private Mock<ITripDetailsRepository> repoMock;
         private Mock<ITripDetailsViewModelCreatorFactory> facMock;
@@ -30,45 +30,31 @@ namespace Tests
 
             testModel = new TripDetails();
 
-            repoMock.Setup(e => e.GetById(1)).Returns(testModel);
+            repoMock.Setup(e => e.GetUserWithTripListById(1)).Returns(testModel);
 
-            viewModelGenerator = new TripDetailsViewModelGenerator(repoMock.Object, facMock.Object);
+            viewModelGenerator = new TripDetailsViewModelProvider(repoMock.Object, facMock.Object);
         }
 
         [Theory]
         [InlineData(0)]
         [InlineData(1)]
         [InlineData(2)]
-        public void GetDataModelWithGivemIdFromRepository(int type)
+        public void GetDataModelWithGivenIdFromRepository(int type)
         {
             viewModelGenerator.GetViewModel(1, (ViewerType)type);
 
-            repoMock.Verify(rep => rep.GetById(1),Times.Once);
+            repoMock.Verify(rep => rep.GetUserWithTripListById(1),Times.Once);
         }
 
         [Theory]
         [InlineData(0)]
         [InlineData(1)]
         [InlineData(2)]
-        public void GetViewModelWithGivemIdAndViewerTypeFromCreator(int type)
+        public void GetViewModelWithGivenIdAndViewerTypeFromCreator(int type)
         {
             viewModelGenerator.GetViewModel(1, (ViewerType)type);
 
             creatorMock.Verify(rep => rep.CreateViewModel(testModel), Times.Once);
-        }
-
-        
-
-        [Theory]
-        [InlineData(-1,0)]
-        [InlineData(-1,1)]
-        [InlineData(-1,2)]
-        [InlineData(4,0)]
-        [InlineData(4,1)]
-        [InlineData(4,2)]
-        public void ThrowIndexOutOfRangeExceptionWhenIdIsInvalid(int id,int type)
-        {
-            Assert.Throws<IndexOutOfRangeException>(() => viewModelGenerator.GetViewModel(id, (ViewerType)type));
         }
     }
 }

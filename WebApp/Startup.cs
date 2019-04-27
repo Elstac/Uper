@@ -88,7 +88,7 @@ namespace WebApp
             }
 
             #region SetupDI
-            services.AddTransient<ITripDetailsViewModelGenerator, TripDetailsViewModelGenerator>();
+            services.AddTransient<ITripDetailsViewModelProvider, TripDetailsViewModelProvider>();
             services.AddTransient<ITripDetailsRepository, TripDetailsRepository>();
             services.AddTransient<IApplicationUserViewModelGenerator, ApplicationUserViewModelGenerator>();
             services.AddTransient<IApplicationUserRepository, ApplicationUserRepository>();

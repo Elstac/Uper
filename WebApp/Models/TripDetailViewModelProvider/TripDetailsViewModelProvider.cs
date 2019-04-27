@@ -14,7 +14,7 @@ namespace WebApp.Models
     /// <summary>
     /// Provides logic for creating WebApp.ViewModels.TripDetailViewModel.
     /// </summary>
-    public interface ITripDetailsViewModelGenerator
+    public interface ITripDetailsViewModelProvider
     {
         /// <summary>
         /// Creates TripDetailViewModel depends on <paramref name="viewerType"/> based on DetailOffer with ID = <paramref name="tripId"/>
@@ -28,19 +28,19 @@ namespace WebApp.Models
     /// <summary>
     /// Standard implementation of WebApp.Models.ITripDetailsViewModelGenerator
     /// </summary>
-    public class TripDetailsViewModelGenerator : ITripDetailsViewModelGenerator
+    public class TripDetailsViewModelProvider : ITripDetailsViewModelProvider
     {
         private ITripDetailsRepository detailsRepository;
         private ITripDetailsViewModelCreatorFactory factory;
         
-        public TripDetailsViewModelGenerator(ITripDetailsRepository detailsRepository, ITripDetailsViewModelCreatorFactory factory)
+        public TripDetailsViewModelProvider(ITripDetailsRepository detailsRepository, ITripDetailsViewModelCreatorFactory factory)
         {
             this.detailsRepository = detailsRepository;
             this.factory = factory;
         }
 
         /// <summary>
-        /// Creates minimal ViewModel for site guests, extended for passangers and full for driver
+        /// Creates minimal ViewModel depend on <paramref name="viewerType"/>. See current configured factory for exact implementation
         /// </summary>
         /// <param name="tripId">TripDetail id</param>
         /// <param name="viewerType">Type of viewer</param>

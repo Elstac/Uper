@@ -6,9 +6,9 @@ namespace WebApp.Controllers
 {
     public class TripDetailsController : Controller
     {
-        private ITripDetailsViewModelGenerator generator;
+        private ITripDetailsViewModelProvider generator;
 
-        public TripDetailsController(ITripDetailsViewModelGenerator generator)
+        public TripDetailsController(ITripDetailsViewModelProvider generator)
         {
             this.generator = generator;
         }
