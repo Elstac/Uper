@@ -11,7 +11,7 @@ namespace Tests
 {
     public class TripDetailsViewModelGeneratorTests
     {
-        private TripDetailsViewModelGenerator viewModelGenerator;
+        private TripDetailsViewModelProvider viewModelGenerator;
         private Mock<ITripDetailsCreator> creatorMock;
         private Mock<ITripDetailsRepository> repoMock;
         private Mock<ITripDetailsViewModelCreatorFactory> facMock;
@@ -32,7 +32,7 @@ namespace Tests
 
             repoMock.Setup(e => e.GetById(1)).Returns(testModel);
 
-            viewModelGenerator = new TripDetailsViewModelGenerator(repoMock.Object, facMock.Object);
+            viewModelGenerator = new TripDetailsViewModelProvider(repoMock.Object, facMock.Object);
         }
 
         [Theory]
