@@ -56,19 +56,5 @@ namespace Tests
 
             creatorMock.Verify(rep => rep.CreateViewModel(testModel), Times.Once);
         }
-
-        
-
-        [Theory]
-        [InlineData(-1,0)]
-        [InlineData(-1,1)]
-        [InlineData(-1,2)]
-        [InlineData(4,0)]
-        [InlineData(4,1)]
-        [InlineData(4,2)]
-        public void ThrowIndexOutOfRangeExceptionWhenIdIsInvalid(int id,int type)
-        {
-            Assert.Throws<IndexOutOfRangeException>(() => viewModelGenerator.GetViewModel(id, (ViewerType)type));
-        }
     }
 }
