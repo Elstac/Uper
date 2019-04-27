@@ -25,7 +25,7 @@ namespace Tests
                     {
                         User = new ApplicationUser
                         {
-                            Name = "Piecia"
+                            UserName = "Piecia"
                         }
                     }
                 },
@@ -64,7 +64,7 @@ namespace Tests
             int i = 0;
             foreach (var user in testModel.Passangers)
             {
-                Assert.Equal(user.User.Name, vm.PassangersUsernames[i++]);
+                Assert.Equal(user.User.UserName, vm.PassangersUsernames[i++]);
             }
         }
     }
