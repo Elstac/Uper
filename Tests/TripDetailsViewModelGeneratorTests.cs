@@ -39,7 +39,7 @@ namespace Tests
         [InlineData(0)]
         [InlineData(1)]
         [InlineData(2)]
-        public void GetDataModelWithGivemIdFromRepository(int type)
+        public void GetDataModelWithGivenIdFromRepository(int type)
         {
             viewModelGenerator.GetViewModel(1, (ViewerType)type);
 
@@ -50,7 +50,7 @@ namespace Tests
         [InlineData(0)]
         [InlineData(1)]
         [InlineData(2)]
-        public void GetViewModelWithGivemIdAndViewerTypeFromCreator(int type)
+        public void GetViewModelWithGivenIdAndViewerTypeFromCreator(int type)
         {
             viewModelGenerator.GetViewModel(1, (ViewerType)type);
 
