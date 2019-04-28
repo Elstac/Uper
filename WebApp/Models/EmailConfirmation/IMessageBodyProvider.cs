@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using WebApp.Services;
+﻿using WebApp.Services;
 
 namespace WebApp.Models.EmailConfirmation
 {
+    /// <summary>
+    /// Provides custom message body for EmailConfirmatorFactories
+    /// </summary>
     interface IMessageBodyProvider
     {
         IMessageBodyDictionary GetBody();

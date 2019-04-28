@@ -1,9 +1,7 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using WebApp.Data.Repositories;
 using WebApp.Services;
-using Microsoft.Extensions.DependencyInjection;
-using WebApp.Data;
-using Microsoft.AspNetCore.Identity;
 
 namespace WebApp.Models.EmailConfirmation
 {
