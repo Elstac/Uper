@@ -72,10 +72,19 @@ namespace Tests
         }
 
         [Fact]
+        public async void GetMessageBodyFromProvider()
+        {
+            await emailConfirmator.SendConfirmationEmailAsync("a", "www.url/controller/action","par1","par2");
+
+            bodyProvMock.Verify(m => m.GetBody("par1","par2"), Times.Once);
+        }
+
+        [Fact]
         public async void ThrowArgumentNullExceptionIfUserDoesntExistsSendEmail()
         {
             await Assert.ThrowsAsync<OwnNullArgumentException>(() =>
             emailConfirmator.SendConfirmationEmailAsync("null", "www.url/controller/action"));
         }
+         
     }
 }
