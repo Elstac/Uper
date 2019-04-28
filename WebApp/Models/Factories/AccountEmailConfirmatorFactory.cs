@@ -24,7 +24,7 @@ namespace WebApp.Models.EmailConfirmation
 
         public IEmailConfirmator CreateAccountConfirmator()
         {
-            return new EmailConfirmator(new AccountConfirmationProvider(serviceProvider.GetService<UserManager<ApplicationUser>>()), 
+            return new EmailConfirmator(serviceProvider.GetService<AccountConfirmationProvider>(),
                                         serviceProvider.GetService<IApplicationUserRepository>());
         }
 
@@ -37,7 +37,7 @@ namespace WebApp.Models.EmailConfirmation
             return new EmailConfirmatorSender(serviceProvider.GetService<IEmailService>(),
                 body,
                 serviceProvider.GetService<IApplicationUserRepository>(),
-                new AccountTokenProvider(serviceProvider.GetService<UserManager<ApplicationUser>>()),
+                serviceProvider.GetService<AccountTokenProvider>(),
                 "HyperlinkConfirmation");
         }
     }
