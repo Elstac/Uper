@@ -44,14 +44,14 @@ namespace WebApp.Controllers
             var user = userList[0];
             var url = Url.Action("ChangePassword", "PasswordReset", new { }, Request.Scheme);
 
-            await passwordResetFactory.CreatePasswordResetSender(user.UserName).SendConfirmationEmailAsync(user.Id,url);
+            await passwordResetFactory.CreateCofirmationSender().SendConfirmationEmailAsync(user.Id,url, user.UserName);
 
             return Content($"Password reset confirmation email has been sent to {email}", "text/html");
         }
 
         public async Task<IActionResult> ChangePasswordAsync(string id, string token, string newPassword)
         {
-            await passwordResetFactory.CreatePasswordResetConfirmator().ConfirmEmailAsync(id, token, newPassword);
+            await passwordResetFactory.CreateConfirmator().ConfirmEmailAsync(id, token, newPassword);
 
             return Content("Password changed successfully");
         }
