@@ -16,6 +16,7 @@ namespace WebApp.Models.EmailConfirmation
     public class AccountEmailConfirmatorFactory:IAccountEmailConfirmatorFactory
     {
         private IServiceProvider serviceProvider;
+        private IMessageBodyProvider messageBodyProvider;
 
         public AccountEmailConfirmatorFactory(IServiceProvider serviceProvider)
         {
@@ -30,12 +31,8 @@ namespace WebApp.Models.EmailConfirmation
 
         public IEmailConfirmationSender CreateAccountConfirmatorSender(string name)
         {
-            var body = new MessageBodyDictionary();
-            body.AddReplacement(name, "{Name}")
-                .AddReplacement("to confirm your account", "{Purpose}");
-
             return new EmailConfirmatorSender(serviceProvider.GetService<IEmailService>(),
-                body,
+                messageBodyProvider.GetBody(),
                 serviceProvider.GetService<IApplicationUserRepository>(),
                 serviceProvider.GetService<AccountTokenProvider>(),
                 "HyperlinkConfirmation");
