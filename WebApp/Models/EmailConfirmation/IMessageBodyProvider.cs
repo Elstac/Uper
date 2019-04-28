@@ -5,7 +5,7 @@ namespace WebApp.Models.EmailConfirmation
     /// <summary>
     /// Provides custom message body for EmailConfirmatorFactories
     /// </summary>
-    interface IMessageBodyProvider
+    public interface IMessageBodyProvider
     {
         IMessageBodyDictionary GetBody(params object[] par);
     }
