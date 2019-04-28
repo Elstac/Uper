@@ -14,6 +14,7 @@ namespace Tests
         private EmailConfirmatorSender emailConfirmator;
 
         private Mock<IApplicationUserRepository> repoMock;
+        private Mock<IMessageBodyProvider> bodyProvMock;
         private Mock<IMessageBodyDictionary> bodyMock;
         private Mock<IEmailService> emailMock;
         private Mock<IConfirmationTokenProvider> tokenMock;
@@ -35,12 +36,15 @@ namespace Tests
                 .Returns(n);
 
             bodyMock = new Mock<IMessageBodyDictionary>();
+            bodyProvMock = new Mock<IMessageBodyProvider>();
+            bodyProvMock.Setup(bpm => bpm.GetBody(It.IsAny<object[]>())).Returns(bodyMock.Object);
+
             tokenMock = new Mock<IConfirmationTokenProvider>();
             tokenMock.Setup(m => m.GenerateTokenAsync(It.IsAny<ApplicationUser>())).Returns(Task.FromResult("token"));
 
             emailMock = new Mock<IEmailService>();
 
-            emailConfirmator = new EmailConfirmatorSender(emailMock.Object, bodyMock.Object, repoMock.Object,tokenMock.Object, "type");
+            emailConfirmator = new EmailConfirmatorSender(emailMock.Object, bodyProvMock.Object, repoMock.Object,tokenMock.Object, "type");
         }
 
         [Fact]
