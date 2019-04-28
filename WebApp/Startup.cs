@@ -107,7 +107,48 @@ namespace WebApp
             services.AddTransient<AccountTokenProvider>();
             services.AddTransient<PasswordResetConfirmationProvider>();
             services.AddTransient<PasswordResetTokenProvider>();
-            #endregion
+
+            services.AddTransient<Func<ConfirmatorType, IMessageBodyProvider>>((sp)=>
+            (type)=>
+            {
+                switch (type)
+                {
+                    case ConfirmatorType.Account:
+                        return new AccountMessageProvider();
+                    case ConfirmatorType.PasswordReset:
+                        return new PasswordResetMessageProvider();
+                    default:
+                        return null;
+                }
+            });
+
+            services.AddTransient<Func<ConfirmatorType, IConfirmationProvider>>((sp) =>
+             (type) =>
+             {
+                 switch (type)
+                 {
+                     case ConfirmatorType.Account:
+                         return sp.GetService<AccountConfirmationProvider>();
+                     case ConfirmatorType.PasswordReset:
+                         return sp.GetService<PasswordResetConfirmationProvider>();
+                     default:
+                         return null;
+                 }
+             });
+
+            services.AddTransient<Func<ConfirmatorType, IConfirmationTokenProvider>>((sp) =>
+             (type) =>
+             {
+                 switch (type)
+                 {
+                     case ConfirmatorType.Account:
+                         return sp.GetService<AccountTokenProvider>();
+                     case ConfirmatorType.PasswordReset:
+                         return sp.GetService<PasswordResetTokenProvider>();
+                     default:
+                         return null;
+                 }
+             });
             #endregion
 
             #region EmailServiceSetup
@@ -128,11 +169,14 @@ namespace WebApp
             services.AddTransient<ITemplateProvider>((fac) =>
             {
                 return new JsonTemplateProvider(Configuration.GetValue<string>("TemplateFile"));
-            });           
+            });
+            #endregion
             #endregion
 
+
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-        } 
+        }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
