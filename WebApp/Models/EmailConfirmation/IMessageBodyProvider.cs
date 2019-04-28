@@ -7,6 +7,6 @@ namespace WebApp.Models.EmailConfirmation
     /// </summary>
     interface IMessageBodyProvider
     {
-        IMessageBodyDictionary GetBody();
+        IMessageBodyDictionary GetBody(params object[] par);
     }
 }
