@@ -1,9 +1,7 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using WebApp.Data.Repositories;
 using WebApp.Services;
-using Microsoft.Extensions.DependencyInjection;
-using WebApp.Data;
-using Microsoft.AspNetCore.Identity;
 
 namespace WebApp.Models.EmailConfirmation
 {
@@ -16,6 +14,7 @@ namespace WebApp.Models.EmailConfirmation
     public class PasswordResetFactory : IPasswordResetFactory
     {
         private IServiceProvider serviceProvider;
+        private IMessageBodyProvider messageBodyProvider;
 
         public PasswordResetFactory(IServiceProvider serviceProvider)
         {
@@ -24,20 +23,16 @@ namespace WebApp.Models.EmailConfirmation
 
         public IEmailConfirmator CreatePasswordResetConfirmator()
         {
-            return new EmailConfirmator(new PasswordResetConfirmationProvider(serviceProvider.GetService<UserManager<ApplicationUser>>()),
+            return new EmailConfirmator(serviceProvider.GetService<PasswordResetConfirmationProvider>(),
                                         serviceProvider.GetService<IApplicationUserRepository>());
         }
 
         public IEmailConfirmationSender CreatePasswordResetSender(string name)
         {
-            var body = new MessageBodyDictionary();
-            body.AddReplacement(name, "{Name}")
-                .AddReplacement("to reset your password", "{Purpose}");
-
             return new EmailConfirmatorSender(serviceProvider.GetService<IEmailService>(),
-                body,
+                messageBodyProvider.GetBody(),
                 serviceProvider.GetService<IApplicationUserRepository>(),
-                new PasswordResetTokenProvider(serviceProvider.GetService<UserManager<ApplicationUser>>()),
+                serviceProvider.GetService<PasswordResetTokenProvider>(),
                 "HyperlinkConfirmation");
         }
     }
