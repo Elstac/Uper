@@ -19,6 +19,7 @@ namespace WebApp.Models.EmailConfirmation
         public AccountEmailConfirmatorFactory(IServiceProvider serviceProvider)
         {
             this.serviceProvider = serviceProvider;
+            messageBodyProvider = new AccountMessageProvider();
         }
 
         public IEmailConfirmator CreateAccountConfirmator()

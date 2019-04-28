@@ -18,6 +18,7 @@ namespace WebApp.Models.EmailConfirmation
 
         public PasswordResetFactory(IServiceProvider serviceProvider)
         {
+            messageBodyProvider = new PasswordResetMessageProvider();
             this.serviceProvider = serviceProvider;
         }
 

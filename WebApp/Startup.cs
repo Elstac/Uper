@@ -101,6 +101,7 @@ namespace WebApp
             services.AddTransient<IAccountEmailConfirmatorFactory, AccountEmailConfirmatorFactory>();
             services.AddTransient<IPasswordResetFactory, PasswordResetFactory>();
 
+
             #region EmailConfirmation
             services.AddTransient<AccountConfirmationProvider>();
             services.AddTransient<AccountTokenProvider>();
