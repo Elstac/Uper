@@ -4,7 +4,7 @@
     this.y1=y1;
     this.y2=y2;
 }
-
+var bgimg;
 var lastX;
 var lastY;
 var arr = new Array();
@@ -18,7 +18,7 @@ function mouseDragged() {
 }
 
 function draw() {
-    background(51);
+    background(bgimg);
 
     arr.forEach(drawLine);
 
@@ -27,5 +27,6 @@ function draw() {
 }
 
 function setup() {
-    createCanvas(400, 400);
+    createCanvas(500, 500);
+    bgimg = loadImage('../images/map.jpg');
 }
