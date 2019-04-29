@@ -49,7 +49,7 @@ namespace WebApp.Controllers
 
         public async Task<IActionResult> SignInAsync(string username, string password, string returnUrl)
         {
-            await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
+            await accountManager.SignOutAsync();
 
             try
             {
