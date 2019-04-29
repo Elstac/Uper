@@ -85,12 +85,18 @@ function moveImg(dirX, dirY) {
 }
 
 function zoomIn() {
+    if (imgScale < 0.5)
+        return;
+
     imgScale /= 2;
     invScale = Math.pow(imgScale, -1);
     clampImgPosition(2);
 }
 
 function zoomOut() {
+    if (imgScale >0.5)
+        return;
+
     imgScale *= 2
     invScale = Math.pow(imgScale, -1);
     clampImgPosition(0.5);
