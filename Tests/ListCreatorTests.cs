@@ -24,13 +24,6 @@ namespace Tests
             testQuery.Add(trip);
             trip = new TripDetails()
             {
-                Cost = 210.50f,
-                StartingAddress = new Address() { City = "kAIr" },
-                DestinationAddress = new Address { City = "moSkWa" }
-            };
-            testQuery.Add(trip);
-            trip = new TripDetails()
-            {
                 Cost = 324.86f,
                 StartingAddress = new Address() { City = "Kair" },
                 DestinationAddress = new Address { City = "Hong Kong" }
@@ -41,6 +34,13 @@ namespace Tests
                 Cost = 250.00f,
                 StartingAddress = new Address() { City = "Kair" },
                 DestinationAddress = new Address { City = "MosKwa" }
+            };
+            testQuery.Add(trip);
+            trip = new TripDetails()
+            {
+                Cost = 210.50f,
+                StartingAddress = new Address() { City = "kAIr" },
+                DestinationAddress = new Address { City = "moSkWa" }
             };
             testQuery.Add(trip);
             trip = new TripDetails()
@@ -56,28 +56,14 @@ namespace Tests
                 .Setup(m=>m.GetAll())
                 .Returns(testQuery_);
             ListCreator list = new ListCreator(repository.Object);
+            IQueryable<TripDetails> travelList = list.GetList(210.50f, "Kair", "mosKwa");
 
-            IQueryable<TripDetails> travelList = list.GetList(210.50f, "Kair", "MoSkwa");
-            
-            List<TripDetails> modelTravelList_ = new List<TripDetails>();
-            trip = new TripDetails()
-            {
-                Cost = 100,
-                StartingAddress = new Address() { City = "Kair" },
-                DestinationAddress = new Address { City = "Moskwa" }
-            };
-            testQuery.Add(trip);
-            trip = new TripDetails()
-            {
-                Cost = 210.50f,
-                StartingAddress = new Address() { City = "kAIr" },
-                DestinationAddress = new Address { City = "moSkWa" }
-            };
-            testQuery.Add(trip);
-            IEnumerable<TripDetails> modelTravelList__ = modelTravelList_;
-            IQueryable<TripDetails> modelTravelList = modelTravelList__.AsQueryable();
-
-            Assert.Equal(modelTravelList, travelList);
+            Assert.Equal("Kair", travelList.First().StartingAddress.City);
+            Assert.Equal("Moskwa", travelList.First().DestinationAddress.City);
+            Assert.Equal("kAIr", travelList.Last().StartingAddress.City);
+            Assert.Equal("moSkWa", travelList.Last().DestinationAddress.City);
+            Assert.Equal(100, travelList.First().Cost);
+            Assert.Equal(210.50f, travelList.Last().Cost);
         }
 
         [Fact]
