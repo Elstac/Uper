@@ -11,6 +11,8 @@ var arr = new Array();
 
 function drawLine(value) {
     line(value.x1, value.y1, value.x2, value.y2);
+    stroke(0, 0, 255);
+    strokeWeight(5);
 }
 
 function mouseDragged() {
