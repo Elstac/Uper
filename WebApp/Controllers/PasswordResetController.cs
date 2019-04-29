@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using WebApp.Data;
 using WebApp.Data.Repositories;
 using WebApp.Data.Specifications;
-using WebApp.Data;
 using WebApp.Models.EmailConfirmation;
-using System.Collections.Generic;
-using System;
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebApp.Controllers
@@ -44,14 +43,14 @@ namespace WebApp.Controllers
             var user = userList[0];
             var url = Url.Action("ChangePassword", "PasswordReset", new { }, Request.Scheme);
 
-            await passwordResetFactory.CreatePasswordResetSender(user.UserName).SendConfirmationEmailAsync(user.Id,url);
+            await passwordResetFactory.CreateCofirmationSender().SendConfirmationEmailAsync(user.Id,url, user.UserName);
 
             return Content($"Password reset confirmation email has been sent to {email}", "text/html");
         }
 
         public async Task<IActionResult> ChangePasswordAsync(string id, string token, string newPassword)
         {
-            await passwordResetFactory.CreatePasswordResetConfirmator().ConfirmEmailAsync(id, token, newPassword);
+            await passwordResetFactory.CreateConfirmator().ConfirmEmailAsync(id, token, newPassword);
 
             return Content("Password changed successfully");
         }
