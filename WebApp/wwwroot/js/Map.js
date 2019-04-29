@@ -28,7 +28,7 @@ var imgX = 0;
 var imgY = 0;
 
 var imgScale = 1.0;
-var invScale = 1;
+var invScale = 1.0;
 
 var UI = new Array();
 
@@ -65,15 +65,23 @@ function clampImgPosition(sc) {
 }
 
 function mouseDragged() {
-    if (mode === 'draw')
-        arr.push(new customLine(mouseX * imgScale, lastX * imgScale, mouseY * imgScale, lastY * imgScale));
-    else if (mode === 'move') {
-        var x = clamp(imgX + (lastX - mouseX), bgimg.width * (1 - imgScale), 0) - imgX;
-        var y = clamp(imgY + (lastY - mouseY), bgimg.height * (1 - imgScale), 0) - imgY;
-        imgX += x * 1.45 * imgScale;
-        imgY += y * 1.45 * imgScale;
-        arr.forEach((point) => adjustPointPosition(point, -x * imgScale, -y * imgScale));
+    if (mode === 'draw') {
+        var avgX = (mouseX + lastX) / 2;
+        var avgY = (mouseY + lastY) / 2;
+        arr.push(new customLine(mouseX * imgScale, avgX * imgScale, mouseY * imgScale, avgY * imgScale));
+        arr.push(new customLine(avgX * imgScale,  lastX * imgScale, avgY * imgScale, lastY * imgScale));
     }
+    else if (mode === 'move') {
+        moveImg(lastX - mouseX, lastY - mouseY);
+    }
+}
+
+function moveImg(dirX, dirY) {
+    var x = clamp(imgX + (dirX), bgimg.width * (1 - imgScale), 0) - imgX;
+    var y = clamp(imgY + (dirY), bgimg.height * (1 - imgScale), 0) - imgY;
+    imgX += x * 1.45 * imgScale;
+    imgY += y * 1.45 * imgScale;
+    arr.forEach((point) => adjustPointPosition(point, -x * imgScale, -y * imgScale));
 }
 
 function zoomIn() {
