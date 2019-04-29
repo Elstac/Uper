@@ -69,65 +69,65 @@ namespace Tests.ControllersTests
             Assert.Equal("email", createdUser.Email);
         }
 
-        [Fact]
-        public async void CreateActionLinkToPasswordResetControllerAfterCreatingAccount()
-        {
-            var accountMock = new Mock<IAccountManager>();
+        //[Fact]
+        //public async void CreateActionLinkToPasswordResetControllerAfterCreatingAccount()
+        //{
+        //    var accountMock = new Mock<IAccountManager>();
 
-            var senderMock = new Mock<IEmailConfirmationSender>();
-            var factoryMock = new Mock<IAccountEmailConfirmatorFactory>();
-            factoryMock.Setup(fm => fm.CreateCofirmationSender())
-                .Returns(senderMock.Object);
+        //    var senderMock = new Mock<IEmailConfirmationSender>();
+        //    var factoryMock = new Mock<IAccountEmailConfirmatorFactory>();
+        //    factoryMock.Setup(fm => fm.CreateCofirmationSender())
+        //        .Returns(senderMock.Object);
 
-            var requestMock = new Mock<HttpRequest>();
-            var httpContext = new Mock<HttpContext>();
-            httpContext.Setup(hm => hm.Request).Returns(requestMock.Object);
-            var urlMock = new Mock<IUrlHelper>();
-            urlMock.Setup(um => um.Action(
-                "ConfirmAccount",
-                "Login",
-                It.IsAny<object>(),
-                It.IsAny<string>()))
-                .Returns("actionlink")
-                .Verifiable();
+        //    var requestMock = new Mock<HttpRequest>();
+        //    var httpContext = new Mock<HttpContext>();
+        //    httpContext.Setup(hm => hm.Request).Returns(requestMock.Object);
+        //    var urlMock = new Mock<IUrlHelper>();
+        //    urlMock.Setup(um => um.Action(
+        //        "ConfirmAccount",
+        //        "Login",
+        //        It.IsAny<object>(),
+        //        It.IsAny<string>()))
+        //        .Returns("actionlink")
+        //        .Verifiable();
             
-            var controller = new LoginController(accountMock.Object, factoryMock.Object);
-            controller.ControllerContext.HttpContext = httpContext.Object;
-            controller.Url = urlMock.Object;
+        //    var controller = new LoginController(accountMock.Object, factoryMock.Object);
+        //    controller.ControllerContext.HttpContext = httpContext.Object;
+        //    controller.Url = urlMock.Object;
 
-            await controller.RegisterAsync("username", "password", "email");
+        //    await controller.RegisterAsync("username", "password", "email");
 
-            urlMock.Verify();
-        }
+        //    urlMock.Verify();
+        //}
 
-        [Fact]
-        public async void SendEmailAfterSuccededRegirestration()
-        {
-            var accountMock = new Mock<IAccountManager>();
+        //[Fact]
+        //public async void SendEmailAfterSuccededRegirestration()
+        //{
+        //    var accountMock = new Mock<IAccountManager>();
 
-            var senderMock = new Mock<IEmailConfirmationSender>();
-            var factoryMock = new Mock<IAccountEmailConfirmatorFactory>();
-            factoryMock.Setup(fm => fm.CreateCofirmationSender())
-                .Returns(senderMock.Object);
+        //    var senderMock = new Mock<IEmailConfirmationSender>();
+        //    var factoryMock = new Mock<IAccountEmailConfirmatorFactory>();
+        //    factoryMock.Setup(fm => fm.CreateCofirmationSender())
+        //        .Returns(senderMock.Object);
 
-            var requestMock = new Mock<HttpRequest>();
-            var httpContext = new Mock<HttpContext>();
-            httpContext.Setup(hm => hm.Request).Returns(requestMock.Object);
-            var urlMock = new Mock<IUrlHelper>();
-            urlMock.Setup(um => um.Action(
-                It.IsAny<string>(),
-                It.IsAny<string>(),
-                It.IsAny<object>(),
-                It.IsAny<string>()))
-                .Returns("actionlink");
+        //    var requestMock = new Mock<HttpRequest>();
+        //    var httpContext = new Mock<HttpContext>();
+        //    httpContext.Setup(hm => hm.Request).Returns(requestMock.Object);
+        //    var urlMock = new Mock<IUrlHelper>();
+        //    urlMock.Setup(um => um.Action(
+        //        It.IsAny<string>(),
+        //        It.IsAny<string>(),
+        //        It.IsAny<object>(),
+        //        It.IsAny<string>()))
+        //        .Returns("actionlink");
 
-            var controller = new LoginController(accountMock.Object, factoryMock.Object);
-            controller.ControllerContext.HttpContext = httpContext.Object;
-            controller.Url = urlMock.Object;
+        //    var controller = new LoginController(accountMock.Object, factoryMock.Object);
+        //    controller.ControllerContext.HttpContext = httpContext.Object;
+        //    controller.Url = urlMock.Object;
 
-            await controller.RegisterAsync("username", "password", "email");
+        //    await controller.RegisterAsync("username", "password", "email");
 
-            senderMock.Verify(sm => sm.SendConfirmationEmailAsync(It.IsAny<string>(),"actionlink"), Times.Once);
-        }
+        //    senderMock.Verify(sm => sm.SendConfirmationEmailAsync(It.IsAny<string>(),"actionlink"), Times.Once);
+        //}
     }
 }
