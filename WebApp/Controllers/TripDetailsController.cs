@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApp.Data;
 using WebApp.Data.Entities;
 using WebApp.Data.Repositories;
 using WebApp.Models;
@@ -14,12 +15,18 @@ namespace WebApp.Controllers
         private IAccountManager accountManager;
         private ITripUserRepository tripUserRepository;
         private ITripDetailsRepository tripDetailsRepository;
-        public TripDetailsController(ITripDetailsViewModelProvider generator, IAccountManager accountManager, ITripUserRepository tripUserRepository, ITripDetailsRepository tripDetailsRepository)
+        private IViewerTypeMapper viewerTypeMapper;
+        private IApplicationUserRepository applicationUserRepository;
+
+        public TripDetailsController(ITripDetailsViewModelProvider generator, IAccountManager accountManager, ITripUserRepository tripUserRepository,
+            ITripDetailsRepository tripDetailsRepository,IViewerTypeMapper viewerTypeMapper, IApplicationUserRepository applicationUserRepository)
         {
             this.generator = generator;
             this.accountManager = accountManager;
             this.tripUserRepository = tripUserRepository;
             this.tripDetailsRepository = tripDetailsRepository;
+            this.viewerTypeMapper = viewerTypeMapper;
+            this.applicationUserRepository = applicationUserRepository;
         }
 
         /// <summary>
@@ -29,11 +36,17 @@ namespace WebApp.Controllers
         /// <param name="viewerType">Type of viewer</param>
         /// <returns>Details page</returns>
         [Authorize]
-        public IActionResult Index([FromQuery]int id, [FromQuery]ViewerType viewerType)
+        public IActionResult Index(int id, [FromQuery]ViewerType viewerType)
         {
 
-           // viewerType = (ViewerType)1;
-            var vm = generator.GetViewModel(id,viewerType);
+            // viewerType = (ViewerType)1;
+
+            //var vm = generator.GetViewModel(id,viewerType);
+
+            var userid = accountManager.GetUserId(HttpContext.User);
+            var user = applicationUserRepository.GetById(userid);
+            var data = tripDetailsRepository.GetUserWithTripListById(id);
+            var vm = generator.GetViewModel(id, viewerTypeMapper.GetViewerType(user,data));
 
             ViewData["type"] = viewerType;
             return View(vm);
