@@ -31,7 +31,7 @@ namespace Tests.ImageSavingTests
         }
 
         [Fact]
-        public void ReturnCharacterIfAllNubersAreTaken()
+        public void ReturnColonCharacterIfAllNubersAreTaken()
         {
             idProvider = new FileIdProvider();
             for (int i = 0; i < 10; i++)
@@ -39,7 +39,7 @@ namespace Tests.ImageSavingTests
 
             var @out = idProvider.GetId(path, ".png");
 
-            Assert.Equal("a", @out);
+            Assert.Equal(":", @out);
 
             for (int i = 0; i < 10; i++)
                 File.Delete(path + i + ".png");
