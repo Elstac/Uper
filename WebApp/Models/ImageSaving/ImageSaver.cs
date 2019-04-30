@@ -4,11 +4,20 @@ namespace WebApp.Models
 {
     public interface IImageSaver
     {
-        string SaveImage(string imageName);
+        string SaveImage(string imageData, string fileExtention, string directory);
     }
     public class ImageSaver : IImageSaver
     {
-        public string SaveImage(string imageName)
+        private IImageIdProvider idProvider;
+        private IImageWriter imageWriter;
+
+        public ImageSaver(IImageIdProvider idProvider, IImageWriter imageWriter)
+        {
+            this.idProvider = idProvider;
+            this.imageWriter = imageWriter;
+        }
+
+        public string SaveImage(string imageData, string fileExtention, string directory)
         {
             throw new NotImplementedException();
         }
