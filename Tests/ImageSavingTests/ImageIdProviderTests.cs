@@ -17,7 +17,7 @@ namespace Tests.ImageSavingTests
 
         public void Dispose()
         {
-            Directory.Delete("test/");
+            Directory.Delete("test/",true);
         }
 
         [Fact]
@@ -43,6 +43,21 @@ namespace Tests.ImageSavingTests
 
             for (int i = 0; i < 10; i++)
                 File.Delete(path + i + ".png");
+        }
+
+        [Fact]
+        public void AddNextCharacterIfAllPossibleIdCombitaionTaken()
+        {
+            idProvider = new FileIdProvider();
+            for (int i = 0; i < 123; i++)
+                File.Create(path + (char)i + ".png").Close();
+
+            var @out = idProvider.GetId(path, ".png");
+
+            Assert.Equal("00", @out);
+
+            for (int i = 0; i < 123; i++)
+                File.Delete(path + (char)i + ".png");
         }
 
         [Fact]
