@@ -31,7 +31,7 @@ namespace Tests.ImageSavingTests
         }
 
         [Fact]
-        public void ReturnColonCharacterIfAllNubersAreTaken()
+        public void ReturnCharacterIfAllNubersAreTaken()
         {
             idProvider = new FileIdProvider();
             for (int i = 0; i < 10; i++)
@@ -39,7 +39,7 @@ namespace Tests.ImageSavingTests
 
             var @out = idProvider.GetId(path, ".png");
 
-            Assert.Equal(":", @out);
+            Assert.Equal("A", @out);
 
             for (int i = 0; i < 10; i++)
                 File.Delete(path + i + ".png");
@@ -49,15 +49,17 @@ namespace Tests.ImageSavingTests
         public void AddNextCharacterIfAllPossibleIdCombitaionTaken()
         {
             idProvider = new FileIdProvider();
-            for (int i = 0; i < 123; i++)
-                File.Create(path + (char)i + ".png").Close();
+            for (int i = 48; i < 123; i++)
+                if(!Char.IsLetterOrDigit((char)i))
+                    File.Create(path + (char)i + ".png").Close();
 
             var @out = idProvider.GetId(path, ".png");
 
             Assert.Equal("00", @out);
 
-            for (int i = 0; i < 123; i++)
-                File.Delete(path + (char)i + ".png");
+            for (int i = 48; i < 123; i++)
+                if (!Char.IsLetterOrDigit((char)i))
+                    File.Delete(path + (char)i + ".png");
         }
 
         [Fact]

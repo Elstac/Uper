@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace WebApp.Models
 {
@@ -39,13 +40,17 @@ namespace WebApp.Models
 
         private string GetNextId(string actId)
         {
-            char c;
+            int c;
             string ret = "";
 
             for (int i = 0; i < actId.Length; i++)
             {
                 c = actId[i];
-                if(++c>122)
+
+                while (!Char.IsLetterOrDigit((char)(c+1)))
+                    c++;           
+
+                if (++c>122)
                 {
                     if(i==actId.Length-1)
                     {
@@ -57,7 +62,7 @@ namespace WebApp.Models
                 else
                 {
                     ret = actId.Remove(i);
-                    ret = ret.Insert(i,c.ToString());
+                    ret = ret.Insert(i,((char)c).ToString());
                     break;
                 }
             }
