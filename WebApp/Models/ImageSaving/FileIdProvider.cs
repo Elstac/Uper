@@ -50,7 +50,7 @@ namespace WebApp.Models
                 while (!Char.IsLetterOrDigit((char)(c+1)))
                     c++;           
 
-                if (++c>122)
+                if (++c>90)
                 {
                     if(i==actId.Length-1)
                     {

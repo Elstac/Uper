@@ -49,16 +49,16 @@ namespace Tests.ImageSavingTests
         public void AddNextCharacterIfAllPossibleIdCombitaionTaken()
         {
             idProvider = new FileIdProvider();
-            for (int i = 48; i < 123; i++)
-                if(!Char.IsLetterOrDigit((char)i))
+            for (int i = 48; i < 91; i++)
+                if(Char.IsLetterOrDigit((char)i))
                     File.Create(path + (char)i + ".png").Close();
 
             var @out = idProvider.GetId(path, ".png");
 
             Assert.Equal("00", @out);
 
-            for (int i = 48; i < 123; i++)
-                if (!Char.IsLetterOrDigit((char)i))
+            for (int i = 48; i < 91; i++)
+                if (Char.IsLetterOrDigit((char)i))
                     File.Delete(path + (char)i + ".png");
         }
 
