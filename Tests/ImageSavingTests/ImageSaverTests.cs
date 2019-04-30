@@ -42,5 +42,19 @@ namespace Tests.ImageSavingTests
 
             writerMock.Verify(wm => wm.SaveImage("id.png", "aaa"));
         }
+
+        [Fact]
+        public void ReturnValidFileId()
+        {
+            idMock = new Mock<IFileIdProvider>();
+            idMock.Setup(im => im.GetId(It.IsAny<string>(), It.IsAny<string>())).Returns("id");
+            writerMock = new Mock<IImageWriter>();
+
+            imageSaver = new ImageSaver(idMock.Object, writerMock.Object);
+
+            var @out = imageSaver.SaveImage("aaa", ".png", "test/");
+
+            Assert.Equal("id", @out);
+        }
     }
 }
