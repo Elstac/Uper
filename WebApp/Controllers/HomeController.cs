@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using WebApp.Data;
 
 namespace WebApp.Controllers
@@ -25,12 +24,6 @@ namespace WebApp.Controllers
             mContext.Database.EnsureCreated();
 
             return View();
-        }
-
-        public void Test()
-        {
-
-
         }
     }
 }
