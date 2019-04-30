@@ -8,7 +8,7 @@ namespace Tests.ImageSavingTests
     public class ImageSaverTests
     {
         private ImageSaver imageSaver;
-        private Mock<IImageIdProvider> idMock;
+        private Mock<IFileIdProvider> idMock;
         private Mock<IImageWriter> writerMock;
 
         public ImageSaverTests()
@@ -19,7 +19,7 @@ namespace Tests.ImageSavingTests
         [Fact]
         public void GetIdInGivenDirectoryAndFileExtention()
         {
-            idMock = new Mock<IImageIdProvider>();
+            idMock = new Mock<IFileIdProvider>();
             writerMock = new Mock<IImageWriter>();
 
             imageSaver = new ImageSaver(idMock.Object, writerMock.Object);
@@ -32,7 +32,7 @@ namespace Tests.ImageSavingTests
         [Fact]
         public void PassFileNameBasedOnRecivedIdAndImageDataToWriter()
         {
-            idMock = new Mock<IImageIdProvider>();
+            idMock = new Mock<IFileIdProvider>();
             idMock.Setup(im => im.GetId(It.IsAny<string>(), It.IsAny<string>())).Returns("id");
             writerMock = new Mock<IImageWriter>();
 

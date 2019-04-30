@@ -1,11 +1,11 @@
 ﻿namespace WebApp.Models
 {
-    public interface IImageIdProvider
+    public interface IFileIdProvider
     {
         string GetId(string directory,string extention);
     }
 
-    public class ImageIdProvider : IImageIdProvider
+    public class FileIdProvider : IFileIdProvider
     {
         public string GetId(string directory,string extention)
         {

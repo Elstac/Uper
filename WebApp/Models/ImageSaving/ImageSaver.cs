@@ -8,10 +8,10 @@ namespace WebApp.Models
     }
     public class ImageSaver : IImageSaver
     {
-        private IImageIdProvider idProvider;
+        private IFileIdProvider idProvider;
         private IImageWriter imageWriter;
 
-        public ImageSaver(IImageIdProvider idProvider, IImageWriter imageWriter)
+        public ImageSaver(IFileIdProvider idProvider, IImageWriter imageWriter)
         {
             this.idProvider = idProvider;
             this.imageWriter = imageWriter;

@@ -6,7 +6,7 @@ namespace Tests.ImageSavingTests
 {
     public class ImageIdProviderTests
     {
-        private ImageIdProvider idProvider;
+        private FileIdProvider idProvider;
         private string path = "test/";
 
         public ImageIdProviderTests()
@@ -17,7 +17,7 @@ namespace Tests.ImageSavingTests
         [Fact]
         public void GetFirstFreeIdIfNoFileIsPresent()
         {
-            idProvider = new ImageIdProvider();
+            idProvider = new FileIdProvider();
 
             var @out = idProvider.GetId(path, ".png");
 
@@ -27,7 +27,7 @@ namespace Tests.ImageSavingTests
         [Fact]
         public void ReturnCharacterIfAllNubersAreTaken()
         {
-            idProvider = new ImageIdProvider();
+            idProvider = new FileIdProvider();
             for (int i = 0; i < 10; i++)
                 File.Create(path + i+".png").Close();
 
@@ -46,7 +46,7 @@ namespace Tests.ImageSavingTests
             if (Directory.Exists(nPath))
                 Directory.Delete(nPath);
 
-            idProvider = new ImageIdProvider();
+            idProvider = new FileIdProvider();
 
             Assert.Throws<DirectoryNotFoundException>(()=>idProvider.GetId(nPath, ".png"));
         }
