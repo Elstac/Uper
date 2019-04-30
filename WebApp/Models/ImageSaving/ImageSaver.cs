@@ -19,7 +19,11 @@ namespace WebApp.Models
 
         public string SaveImage(string imageData, string fileExtention, string directory)
         {
-            throw new NotImplementedException();
+            var id = idProvider.GetId(directory, fileExtention);
+
+            imageWriter.SaveImage(id + ".png", imageData);
+
+            return id;
         }
     }
 }
