@@ -1,10 +1,11 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using WebApp.Models;
 using Xunit;
 
 namespace Tests.ImageSavingTests
 {
-    public class ImageIdProviderTests
+    public class ImageIdProviderTests:IDisposable
     {
         private FileIdProvider idProvider;
         private string path = "test/";
@@ -12,6 +13,11 @@ namespace Tests.ImageSavingTests
         public ImageIdProviderTests()
         {
             Directory.CreateDirectory("test/");
+        }
+
+        public void Dispose()
+        {
+            Directory.Delete("test/");
         }
 
         [Fact]
