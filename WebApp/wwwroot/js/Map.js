@@ -31,6 +31,7 @@ var imgScale = 1.0;
 var invScale = 1.0;
 
 var UI = new Array();
+var cnv;
 
 var mode = 'move';
 
@@ -124,6 +125,33 @@ function setMoveMode() {
     mode = 'move';
 }
 
+function saveCnv() {
+    //var ctx = document.getElementById("defaultCanvas0").getContext("2d");
+    //var imggData = ctx.getImageData(0, 0, 5, 5);
+    //var data = { C: imggData };
+
+    //httpPost('https://localhost:44384/home/test', 'json', data,
+    //    function (result) {
+    //        text('sended', 0, 0);
+    //    },
+    //    function (result) {
+    //        text('error', 0, 0);
+    //    });
+
+    var c = document.getElementById('defaultCanvas0');
+    var dataURL = c.toDataURL('image/png');
+    dataURL = dataURL.replace('data:image/png;base64,', '');
+
+    var data = { C: dataURL };
+    httpPost('https://localhost:44384/home/test', 'json', data,
+        function (result) {
+            text('sended', 0, 0);
+        },
+        function (result) {
+            text('error', 0, 0);
+        });
+}
+
 function mouseClicked() {
     for (var i = 0; i < UI.length; i++) {
         UI[i].isClicked();
@@ -149,11 +177,13 @@ function draw() {
 }
 
 function setup() {
-    createCanvas(uiWidth, uiHeight);
+    cnv = createCanvas(uiWidth, uiHeight);
+    cnv.parent('cnv-parent');
     bgimg = loadImage('../images/map.jpg');
 
     UI.push(new button(canvasWidth, 0, 50, 50, { r: 0, g: 255, b: 0 }, zoomIn));
     UI.push(new button(canvasWidth, 50, 50, 50, { r: 255, g: 0, b: 0 }, zoomOut));
     UI.push(new button(canvasWidth, 100, 50, 50, { r: 255, g: 0, b: 255 }, setMoveMode));
     UI.push(new button(canvasWidth, 150, 50, 50, { r: 125, g: 0, b: 255 }, setDrawMode));
+    UI.push(new button(canvasWidth, canvasHeight - 50, 50, 50, { r: 0, g: 0, b: 255 }, saveCnv));
 }
