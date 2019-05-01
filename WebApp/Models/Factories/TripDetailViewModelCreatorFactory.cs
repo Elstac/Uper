@@ -30,6 +30,7 @@ namespace WebApp.Models.Factories
                 ret = new PassengerListDecorator(ret);
             }
 
+            ret = new MapDecorator(ret);
             return ret;
         }
     }

@@ -16,6 +16,7 @@ namespace WebApp.Data
         public string VechicleModel { get; set; }
         public int Size { get; set; }
         public DateTime Date { get; set; }
+        public string MapId { get; set; }
 
         public ICollection<TripUser> Passangers { get; set; }
     }

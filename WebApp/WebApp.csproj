@@ -26,4 +26,8 @@
     <PackageReference Include="Mimekit" Version="2.1.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\maps\" />
+  </ItemGroup>
+
 </Project>

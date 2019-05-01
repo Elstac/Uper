@@ -18,24 +18,29 @@
 
 @if (type != ViewerType.Guest)
 {
-<div class="passangersList">
-    <h2>Passangers</h2>
-    @if (type == ViewerType.Passanger)
-    {
-        <h3>List:</h3>
-        foreach (var username in Model.PassangersUsernames)
+    <div class="passangersList">
+        <h2>Passangers</h2>
+        @if (type == ViewerType.Passanger)
         {
-            <p>@username</p>
+            <h3>List:</h3>
+            foreach (var username in Model.PassangersUsernames)
+            {
+                <p>@username</p>
+            }
         }
-    }
-    @if (type == ViewerType.Driver)
-    {
-        <h3>List for driver:</h3>
-        foreach (var username in Model.PassangersUsernames)
+        @if (type == ViewerType.Driver)
         {
-            <p>@username</p>
+            <h3>List for driver:</h3>
+            foreach (var username in Model.PassangersUsernames)
+            {
+                <p>@username</p>
+            }
+            //TODO add passanger management panel
         }
-        //TODO add passanger management panel
-    }
+    </div>
+}  
+
+<div>
+    <p><b>Trip map:</b></p>
+    <img src="@Model.MapPath"/>
 </div>
-}

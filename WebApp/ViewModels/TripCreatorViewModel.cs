@@ -36,6 +36,8 @@ namespace WebApp.ViewModels
         /// </summary>
         public DateTime Date { get; set; }
 
+        public string MapData { get; set; }
+
         /// <summary>
         /// Check if data is valid
         /// </summary>
