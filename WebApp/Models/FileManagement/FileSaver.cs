@@ -1,37 +1,37 @@
 ﻿using System;
 
-namespace WebApp.Models.ImageManagement
+namespace WebApp.Models.FileManagement
 {
     /// <summary>
     /// Provides saving imageData form string to image file
     /// </summary>
-    public interface IImageSaver
+    public interface IFileSaver
     {
         /// <summary>
         /// Save endoced image data string to new file
         /// </summary>
-        /// <param name="imageData">string containing encoded image data</param>
+        /// <param name="fileData">string containing file data</param>
         /// <param name="fileExtention">Extention of created file</param>
         /// <param name="directory">Path of directory where file will be saved</param>
         /// <returns></returns>
-        string SaveImage(string imageData, string fileExtention, string directory);
+        string SaveImage(string fileData, string fileExtention, string directory);
     }
-    public class ImageSaver : IImageSaver
+    public class FileSaver : IFileSaver
     {
         private IFileIdProvider idProvider;
-        private IImageWriter imageWriter;
+        private IFileWriter fileWriter;
 
-        public ImageSaver(IFileIdProvider idProvider, IImageWriter imageWriter)
+        public FileSaver(IFileIdProvider idProvider, IFileWriter fileWriter)
         {
             this.idProvider = idProvider;
-            this.imageWriter = imageWriter;
+            this.fileWriter = fileWriter;
         }
 
-        public string SaveImage(string imageData, string fileExtention, string directory)
+        public string SaveImage(string fileData, string fileExtention, string directory)
         {
             var id = idProvider.GetId(directory, fileExtention);
 
-            imageWriter.SaveImage(directory+id + ".png", imageData);
+            fileWriter.SaveImage(directory+id + ".json", fileData);
 
             return id;
         }

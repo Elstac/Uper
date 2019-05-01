@@ -1,23 +1,23 @@
 ﻿using Moq;
-using WebApp.Models.ImageManagement;
+using WebApp.Models.FileManagement;
 using Xunit;
 namespace Tests.ImageSavingTests
 {
-    public class ImageManagerTests
+    public class FileManagerTests
     {
         private PngImageManager imageManager;
-        private Mock<IImageSaver> saverMock;
-        private Mock<IImageRemover> removerMock;
+        private Mock<IFileSaver> saverMock;
+        private Mock<IFileRemover> removerMock;
 
         [Fact]
         public void CallSaverForSavingFile()
         {
-            saverMock = new Mock<IImageSaver>();
-            removerMock = new Mock<IImageRemover>();
+            saverMock = new Mock<IFileSaver>();
+            removerMock = new Mock<IFileRemover>();
 
             imageManager = new PngImageManager(saverMock.Object, removerMock.Object);
 
-            imageManager.SaveImage("data", "test/");
+            imageManager.SaveFile("data", "test/");
 
             saverMock.Verify(sm => sm.SaveImage("data", ".png", "test/"));
         }
@@ -25,12 +25,12 @@ namespace Tests.ImageSavingTests
         [Fact]
         public void CallRemoverForRemovingFile()
         {
-            saverMock = new Mock<IImageSaver>();
-            removerMock = new Mock<IImageRemover>();
+            saverMock = new Mock<IFileSaver>();
+            removerMock = new Mock<IFileRemover>();
 
             imageManager = new PngImageManager(saverMock.Object, removerMock.Object);
 
-            imageManager.RemoveImage("id", "test/");
+            imageManager.RemoveFile("id", "test/");
 
             removerMock.Verify(sm => sm.RemoveImage("id","test/",".png"));
         }
@@ -38,18 +38,18 @@ namespace Tests.ImageSavingTests
         [Fact]
         public void ReturnRecivedIdFromSaver()
         {
-            saverMock = new Mock<IImageSaver>();
+            saverMock = new Mock<IFileSaver>();
             saverMock.Setup(sm => sm.SaveImage(
                 It.IsAny<string>(),
                 It.IsAny<string>(),
                 It.IsAny<string>()))
                 .Returns("id");
 
-            removerMock = new Mock<IImageRemover>();
+            removerMock = new Mock<IFileRemover>();
 
             imageManager = new PngImageManager(saverMock.Object, removerMock.Object);
 
-            var id = imageManager.SaveImage("data", "test/");
+            var id = imageManager.SaveFile("data", "test/");
 
             Assert.Equal("id", id);
         }

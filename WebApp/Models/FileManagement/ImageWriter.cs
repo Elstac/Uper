@@ -1,14 +1,9 @@
 ﻿using System;
 using System.IO;
 
-namespace WebApp.Models.ImageManagement
+namespace WebApp.Models.FileManagement
 {
-    public interface IImageWriter
-    {
-        void SaveImage(string imageName, string imageData);
-    }
-
-    public class ImageWriter : IImageWriter
+    public class ImageWriter : IFileWriter
     {
         public void SaveImage(string imageName, string imageData)
         {

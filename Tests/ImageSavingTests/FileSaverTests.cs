@@ -1,17 +1,17 @@
 ﻿using Xunit;
 using Moq;
 using System.IO;
-using WebApp.Models.ImageManagement;
+using WebApp.Models.FileManagement;
 
 namespace Tests.ImageSavingTests
 {
-    public class ImageSaverTests
+    public class FileSaverTests
     {
-        private ImageSaver imageSaver;
+        private FileSaver imageSaver;
         private Mock<IFileIdProvider> idMock;
-        private Mock<IImageWriter> writerMock;
+        private Mock<IFileWriter> writerMock;
 
-        public ImageSaverTests()
+        public FileSaverTests()
         {
             Directory.CreateDirectory("test/");
         }
@@ -20,9 +20,9 @@ namespace Tests.ImageSavingTests
         public void GetIdInGivenDirectoryAndFileExtention()
         {
             idMock = new Mock<IFileIdProvider>();
-            writerMock = new Mock<IImageWriter>();
+            writerMock = new Mock<IFileWriter>();
 
-            imageSaver = new ImageSaver(idMock.Object, writerMock.Object);
+            imageSaver = new FileSaver(idMock.Object, writerMock.Object);
 
             imageSaver.SaveImage("aaa", ".png","test/");
 
@@ -34,9 +34,9 @@ namespace Tests.ImageSavingTests
         {
             idMock = new Mock<IFileIdProvider>();
             idMock.Setup(im => im.GetId(It.IsAny<string>(), It.IsAny<string>())).Returns("id");
-            writerMock = new Mock<IImageWriter>();
+            writerMock = new Mock<IFileWriter>();
 
-            imageSaver = new ImageSaver(idMock.Object, writerMock.Object);
+            imageSaver = new FileSaver(idMock.Object, writerMock.Object);
 
             imageSaver.SaveImage("aaa", ".png", "test/");
 
@@ -48,9 +48,9 @@ namespace Tests.ImageSavingTests
         {
             idMock = new Mock<IFileIdProvider>();
             idMock.Setup(im => im.GetId(It.IsAny<string>(), It.IsAny<string>())).Returns("id");
-            writerMock = new Mock<IImageWriter>();
+            writerMock = new Mock<IFileWriter>();
 
-            imageSaver = new ImageSaver(idMock.Object, writerMock.Object);
+            imageSaver = new FileSaver(idMock.Object, writerMock.Object);
 
             var @out = imageSaver.SaveImage("aaa", ".png", "test/");
 

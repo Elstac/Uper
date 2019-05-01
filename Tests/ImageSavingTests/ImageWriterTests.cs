@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using WebApp.Models.ImageManagement;
+using WebApp.Models.FileManagement;
 using Xunit;
 
 namespace Tests.ImageSavingTests

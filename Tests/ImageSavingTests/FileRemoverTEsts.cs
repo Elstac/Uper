@@ -1,16 +1,16 @@
 ﻿using System.IO;
-using WebApp.Models.ImageManagement;
+using WebApp.Models.FileManagement;
 using Xunit;
 namespace Tests.ImageSavingTests
 {
-    public class ImageRemoverTests: System.IDisposable
+    public class FileRemoverTests: System.IDisposable
     {
-        private ImageRemover imageRemover;
+        private FileRemover imageRemover;
         private string testPath = "test/";
 
-        public ImageRemoverTests()
+        public FileRemoverTests()
         {
-            imageRemover = new ImageRemover();
+            imageRemover = new FileRemover();
             Directory.CreateDirectory(testPath);
         }
 
@@ -22,7 +22,7 @@ namespace Tests.ImageSavingTests
         [Fact]
         public void RemoveOnlyFileWithGivenId()
         {
-            imageRemover = new ImageRemover();
+            imageRemover = new FileRemover();
             File.Create(testPath + "0.png").Close();
             File.Create(testPath + "1.png").Close();
             

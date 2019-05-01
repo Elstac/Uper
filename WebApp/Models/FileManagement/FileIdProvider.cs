@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 
-namespace WebApp.Models.ImageManagement
+namespace WebApp.Models.FileManagement
 {
     /// <summary>
     /// Provides generation of unique file ids
