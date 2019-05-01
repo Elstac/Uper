@@ -268,5 +268,5 @@ __pycache__/
 
 #local file
 **/Local
-
+**/maps
 passwd.json
