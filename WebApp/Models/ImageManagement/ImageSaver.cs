@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebApp.Models
+namespace WebApp.Models.ImageManagement
 {
     /// <summary>
     /// Provides saving imageData form string to image file
