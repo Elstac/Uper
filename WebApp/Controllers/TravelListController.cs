@@ -6,7 +6,6 @@ using System.Linq.Expressions;
 using WebApp.Data;
 using WebApp.Data.Repositories;
 using WebApp.Data.Specifications;
-using WebApp.Models.OfferList;
 using WebApp.ViewModels;
 
 namespace WebApp.Controllers
