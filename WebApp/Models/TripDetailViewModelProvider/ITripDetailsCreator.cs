@@ -19,8 +19,7 @@ namespace WebApp.Models
                 VechicleModel = tripDetails.VechicleModel,
                 Date = tripDetails.Date,
                 DestinationAddress = tripDetails.DestinationAddress,
-                StartingAddress = tripDetails.StartingAddress,
-                MapPath = "/images/maps/" + tripDetails.MapId + ".png"
+                StartingAddress = tripDetails.StartingAddress
             };
 
             return ret;
