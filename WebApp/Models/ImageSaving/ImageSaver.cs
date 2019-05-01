@@ -21,7 +21,7 @@ namespace WebApp.Models
         {
             var id = idProvider.GetId(directory, fileExtention);
 
-            imageWriter.SaveImage(id + ".png", imageData);
+            imageWriter.SaveImage(directory+id + ".png", imageData);
 
             return id;
         }
