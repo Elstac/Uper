@@ -37,7 +37,6 @@ namespace WebApp.Controllers
         /// <param name="id">Trip ID</param>
         /// <param name="viewerType">Type of viewer</param>
         /// <returns>Details page</returns>
-        [Authorize]
         public IActionResult Index(int id , [FromQuery]ViewerType viewerType)
         {
 
