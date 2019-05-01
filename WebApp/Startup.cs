@@ -100,7 +100,9 @@ namespace WebApp
             services.AddScoped<ITripDetailsViewModelCreatorFactory, TripDetailViewModelCreatorFactory>();
             services.AddTransient<IAccountEmailConfirmatorFactory, AccountEmailConfirmatorFactory>();
             services.AddTransient<IPasswordResetFactory, PasswordResetFactory>();
-
+            services.AddTransient<IImageSaver, ImageSaver>();
+            services.AddTransient<IImageWriter, ImageWriter>();
+            services.AddTransient<IFileIdProvider, FileIdProvider>();
 
             #region EmailConfirmation
             services.AddTransient<AccountConfirmationProvider>();
