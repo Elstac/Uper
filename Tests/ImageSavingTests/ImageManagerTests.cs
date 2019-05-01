@@ -34,5 +34,24 @@ namespace Tests.ImageSavingTests
 
             removerMock.Verify(sm => sm.RemoveImage("id","test/",".png"));
         }
+
+        [Fact]
+        public void ReturnRecivedIdFromSaver()
+        {
+            saverMock = new Mock<IImageSaver>();
+            saverMock.Setup(sm => sm.SaveImage(
+                It.IsAny<string>(),
+                It.IsAny<string>(),
+                It.IsAny<string>()))
+                .Returns("id");
+
+            removerMock = new Mock<IImageRemover>();
+
+            imageManager = new PngImageManager(saverMock.Object, removerMock.Object);
+
+            var id = imageManager.SaveImage("data", "test/");
+
+            Assert.Equal("id", id);
+        }
     }
 }
