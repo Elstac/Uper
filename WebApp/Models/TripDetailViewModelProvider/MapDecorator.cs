@@ -7,12 +7,19 @@ namespace WebApp.Models
     {
         ITripDetailsCreator wrape;
 
+        public MapDecorator(ITripDetailsCreator wrape)
+        {
+            this.wrape = wrape;
+        }
+
         public TripDetailsViewModel CreateViewModel(TripDetails tripDetails)
         {
             var vm = wrape.CreateViewModel(tripDetails);
 
             if (tripDetails.MapId != null)
                 vm.MapPath = "/images/maps" + tripDetails.MapId + ".png";
+            else
+                vm.MapPath = "/images/nomap.png";
 
             return vm;
         }
