@@ -139,5 +139,5 @@ function draw() {
 function setup() {
     cnv = createCanvas(canvasWidth, canvasHeight);
     cnv.parent('mapHolder');
-    bgimg = loadImage('../images/map.jpg');
+    bgimg = loadImage('/images/map.jpg');
 }
