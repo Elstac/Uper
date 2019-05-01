@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Identity;
 using WebApp.Middlewares;
 using WebApp.Services;
 using WebApp.Models.EmailConfirmation;
+using WebApp.Models.ImageManagement;
 
 namespace WebApp
 {
@@ -103,6 +104,8 @@ namespace WebApp
             services.AddTransient<IImageSaver, ImageSaver>();
             services.AddTransient<IImageWriter, ImageWriter>();
             services.AddTransient<IFileIdProvider, FileIdProvider>();
+            services.AddTransient<IImageRemover, ImageRemover>();
+            services.AddTransient<IImageManager, PngImageManager>();
 
             #region EmailConfirmation
             services.AddTransient<AccountConfirmationProvider>();

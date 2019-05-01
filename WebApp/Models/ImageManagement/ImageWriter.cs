@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace WebApp.Models
+namespace WebApp.Models.ImageManagement
 {
     public interface IImageWriter
     {

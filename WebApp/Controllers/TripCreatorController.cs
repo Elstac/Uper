@@ -8,6 +8,7 @@ using WebApp.ViewModels;
 using WebApp.Data;
 using WebApp.Data.Repositories;
 using Microsoft.AspNetCore.Authorization;
+using WebApp.Models.ImageManagement;
 
 namespace WebApp.Controllers
 {
@@ -15,16 +16,16 @@ namespace WebApp.Controllers
     {
         protected IAccountManager accountManager;
         protected ITripDetailsRepository tripDetailsRepository;
-        private IImageSaver imageSaver;
+        private IImageManager imageManager;
 
         public TripCreatorController(
             IAccountManager _accountManager, 
             ITripDetailsRepository _tripDetailsRepository,
-            IImageSaver _imageSaver)
+            IImageManager _imageManager)
         {
             accountManager = _accountManager;
             tripDetailsRepository = _tripDetailsRepository;
-            imageSaver = _imageSaver;
+            imageManager = _imageManager;
         }
         /// <summary>
         /// Default HTTPGet 
@@ -97,7 +98,7 @@ namespace WebApp.Controllers
 
                         if (model.MapData != null)
                         {
-                            var id = imageSaver.SaveImage(model.MapData, ".png", "wwwroot/images/maps/");
+                            var id = imageManager.SaveImage(model.MapData, "wwwroot/images/maps/");
                             tripDetails.MapId = id;
                         }
 
