@@ -29,8 +29,12 @@ namespace Tests.ImageSavingTests
             idMock.Verify(im => im.GetId("test/", ".png"));
         }
 
-        [Fact]
-        public void PassFileNameBasedOnRecivedIdAndImageDataToWriter()
+        [Theory]
+        [InlineData(".png")]
+        [InlineData(".jpg")]
+        [InlineData(".json")]
+        [InlineData(".jp2gmd")]
+        public void PassFileNameBasedOnRecivedIdAndFileExtentionFileDataToWriter(string extention)
         {
             idMock = new Mock<IFileIdProvider>();
             idMock.Setup(im => im.GetId(It.IsAny<string>(), It.IsAny<string>())).Returns("id");
@@ -38,9 +42,9 @@ namespace Tests.ImageSavingTests
 
             imageSaver = new FileSaver(idMock.Object, writerMock.Object);
 
-            imageSaver.SaveImage("aaa", ".png", "test/");
+            imageSaver.SaveImage("aaa", extention, "test/");
 
-            writerMock.Verify(wm => wm.SaveImage("id.png", "aaa"));
+            writerMock.Verify(wm => wm.SaveImage("test/id"+extention, "aaa"));
         }
 
         [Fact]
