@@ -2,16 +2,16 @@
 {
     public interface IImageManager
     {
-        void RemoveImage(string id, string directory);
-        void SaveImage(string id, string directory);
+        void RemoveImage(string id,string directory);
+        string SaveImage(string imageData, string directory);
     }
 
-    public class ImageManager:IImageManager
+    public class PngImageManager:IImageManager
     {
         private IImageSaver imageSaver;
         private IImageRemover imageRemover;
 
-        public ImageManager(IImageSaver imageSaver, IImageRemover imageRemover)
+        public PngImageManager(IImageSaver imageSaver, IImageRemover imageRemover)
         {
             this.imageSaver = imageSaver;
             this.imageRemover = imageRemover;
@@ -22,7 +22,7 @@
             throw new System.NotImplementedException();
         }
 
-        public void SaveImage(string id, string directory)
+        public string SaveImage(string imageData, string directory)
         {
             throw new System.NotImplementedException();
         }
