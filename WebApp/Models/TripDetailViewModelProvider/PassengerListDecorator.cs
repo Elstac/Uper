@@ -1,6 +1,8 @@
 ﻿using WebApp.Data;
 using WebApp.ViewModels;
 using System.Linq;
+using WebApp.Data.Entities;
+using WebApp.Data.Repositories;
 
 namespace WebApp.Models
 {
@@ -19,9 +21,15 @@ namespace WebApp.Models
         public TripDetailsViewModel CreateViewModel(TripDetails tripDetails)
         {
             var vm = wrape.CreateViewModel(tripDetails);
-            
-            vm.PassangersUsernames = (from tu in tripDetails.Passangers
+
+            //version that work for others but not for me
+            /*vm.PassangersUsernames = (from tu in tripDetails.Passangers
                                       select tu.User.UserName).ToList();
+         */
+            //My worse but working version , get userid a then in controller convert it into username
+             vm.PassangersUsernames = (from tu in tripDetails.Passangers
+                                      select tu.UserId).ToList();
+
 
             return vm;
         }

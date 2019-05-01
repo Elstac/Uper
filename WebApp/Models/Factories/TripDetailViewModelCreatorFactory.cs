@@ -25,7 +25,7 @@ namespace WebApp.Models.Factories
         {
             var ret = (ITripDetailsCreator)provider.GetService(typeof(ITripDetailsCreator));
 
-            if (viewerType != ViewerType.Guest)
+           if (viewerType != ViewerType.Guest)
             {
                 ret = new PassengerListDecorator(ret);
             }

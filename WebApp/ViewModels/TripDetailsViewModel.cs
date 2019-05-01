@@ -5,6 +5,7 @@ namespace WebApp.ViewModels
 {
     public class TripDetailsViewModel
     {
+        public int TripId { get; set; }
         public Address DestinationAddress { get; set; }
         public Address StartingAddress { get; set; }
         public float Cost { get; set; }
