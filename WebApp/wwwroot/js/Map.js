@@ -5,23 +5,8 @@
     this.y2=y2;
 }
 
-function button(x,y,width,height,color,event) {
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
-    this.color = color;
-    this.event = event;
-
-    this.isClicked = function () {
-        if (mouseX > this.x && mouseX < this.x + this.width
-            && mouseY > this.y && mouseY < this.y + this.height) {
-            this.event();
-        }
-    }
-}
-var uiWidth = 550;
-var uiHeight = 500;
+var changeTicks = 0;
+var changed = false;
 var canvasWidth = 500;
 var canvasHeight = 500;
 var imgX = 0;
@@ -67,6 +52,7 @@ function clampImgPosition(sc) {
 
 function mouseDragged() {
     if (mode === 'draw') {
+        changed = true;
         var avgX = (mouseX + lastX) / 2;
         var avgY = (mouseY + lastY) / 2;
         arr.push(new customLine(mouseX * imgScale, avgX * imgScale, mouseY * imgScale, avgY * imgScale));
@@ -126,64 +112,35 @@ function setMoveMode() {
 }
 
 function saveCnv() {
-    //var ctx = document.getElementById("defaultCanvas0").getContext("2d");
-    //var imggData = ctx.getImageData(0, 0, 5, 5);
-    //var data = { C: imggData };
-
-    //httpPost('https://localhost:44384/home/test', 'json', data,
-    //    function (result) {
-    //        text('sended', 0, 0);
-    //    },
-    //    function (result) {
-    //        text('error', 0, 0);
-    //    });
-
     var c = document.getElementById('defaultCanvas0');
     var dataURL = c.toDataURL('image/png');
     dataURL = dataURL.replace('data:image/png;base64,', '');
 
-    var data = { C: dataURL };
-    httpPost('https://localhost:44384/home/test', 'json', data,
-        function (result) {
-            text('sended', 0, 0);
-        },
-        function (result) {
-            text('error', 0, 0);
-        });
-}
-
-function mouseClicked() {
-    for (var i = 0; i < UI.length; i++) {
-        UI[i].isClicked();
-    }
-}
-
-function drawUI() {
-    for (var i = 0; i < UI.length; i++) {
-        fill(UI[i].color.r, UI[i].color.g, UI[i].color.b);
-        rect(UI[i].x, UI[i].y, UI[i].width, UI[i].height);
-    }
+    var form = document.getElementById("mapInput");
+    form.value = dataURL;
 }
 
 function draw() {
     background(51);
     image(bgimg, 0, 0, canvasHeight, canvasWidth, imgX, imgY, bgimg.width*imgScale, bgimg.height*imgScale);
-    drawUI();
 
     arr.forEach(drawLine);
 
     lastX = mouseX;
     lastY = mouseY;
+
+    if (changed) {
+        changeTicks += 1;
+        if (changeTicks >= 100) {
+            saveCnv();
+            changed = false;
+            changeTicks = 0;
+        }
+    }
 }
 
 function setup() {
-    cnv = createCanvas(uiWidth, uiHeight);
-    cnv.parent('cnv-parent');
+    cnv = createCanvas(canvasWidth, canvasHeight);
+    cnv.parent('mapHolder');
     bgimg = loadImage('../images/map.jpg');
-
-    UI.push(new button(canvasWidth, 0, 50, 50, { r: 0, g: 255, b: 0 }, zoomIn));
-    UI.push(new button(canvasWidth, 50, 50, 50, { r: 255, g: 0, b: 0 }, zoomOut));
-    UI.push(new button(canvasWidth, 100, 50, 50, { r: 255, g: 0, b: 255 }, setMoveMode));
-    UI.push(new button(canvasWidth, 150, 50, 50, { r: 125, g: 0, b: 255 }, setDrawMode));
-    UI.push(new button(canvasWidth, canvasHeight - 50, 50, 50, { r: 0, g: 0, b: 255 }, saveCnv));
 }
