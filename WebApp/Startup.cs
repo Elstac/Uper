@@ -105,7 +105,7 @@ namespace WebApp
             services.AddTransient<IAccountEmailConfirmatorFactory, AccountEmailConfirmatorFactory>();
             services.AddTransient<IPasswordResetFactory, PasswordResetFactory>();
             services.AddTransient<IFileSaver, FileSaver>();
-            services.AddTransient<IFileWriter, ImageWriter>();
+            services.AddTransient<IFileWriter, TextFileWriter>();
             services.AddTransient<IFileIdProvider, FileIdProvider>();
             services.AddTransient<IFileRemover, FileRemover>();
             services.AddTransient<IFileManager, PngImageManager>();
