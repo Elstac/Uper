@@ -31,7 +31,7 @@ namespace WebApp.Models.FileManagement
         {
             var id = idProvider.GetId(directory, fileExtention);
 
-            fileWriter.SaveImage(directory+id + ".json", fileData);
+            fileWriter.SaveImage(directory+id + fileExtention, fileData);
 
             return id;
         }
