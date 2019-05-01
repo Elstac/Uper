@@ -16,7 +16,7 @@ namespace WebApp.Controllers
     {
         protected IAccountManager accountManager;
         protected ITripDetailsRepository tripDetailsRepository;
-        private IFileManager imageManager;
+        private IFileManager fileManager;
 
         public TripCreatorController(
             IAccountManager _accountManager, 
@@ -25,7 +25,7 @@ namespace WebApp.Controllers
         {
             accountManager = _accountManager;
             tripDetailsRepository = _tripDetailsRepository;
-            imageManager = _imageManager;
+            fileManager = _imageManager;
         }
         /// <summary>
         /// Default HTTPGet 
@@ -99,7 +99,7 @@ namespace WebApp.Controllers
 
                         if (model.MapData != null)
                         {
-                            var id = imageManager.SaveFile(model.MapData, "wwwroot/images/maps/");
+                            var id = fileManager.SaveFile(model.MapData, "wwwroot/images/maps/");
                             tripDetails.MapId = id;
                         }
 

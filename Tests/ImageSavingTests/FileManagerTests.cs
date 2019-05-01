@@ -5,7 +5,7 @@ namespace Tests.ImageSavingTests
 {
     public class FileManagerTests
     {
-        private PngImageManager imageManager;
+        private JsonImageManager imageManager;
         private Mock<IFileSaver> saverMock;
         private Mock<IFileRemover> removerMock;
 
@@ -15,7 +15,7 @@ namespace Tests.ImageSavingTests
             saverMock = new Mock<IFileSaver>();
             removerMock = new Mock<IFileRemover>();
 
-            imageManager = new PngImageManager(saverMock.Object, removerMock.Object);
+            imageManager = new JsonImageManager(saverMock.Object, removerMock.Object);
 
             imageManager.SaveFile("data", "test/");
 
@@ -28,7 +28,7 @@ namespace Tests.ImageSavingTests
             saverMock = new Mock<IFileSaver>();
             removerMock = new Mock<IFileRemover>();
 
-            imageManager = new PngImageManager(saverMock.Object, removerMock.Object);
+            imageManager = new JsonImageManager(saverMock.Object, removerMock.Object);
 
             imageManager.RemoveFile("id", "test/");
 
@@ -47,7 +47,7 @@ namespace Tests.ImageSavingTests
 
             removerMock = new Mock<IFileRemover>();
 
-            imageManager = new PngImageManager(saverMock.Object, removerMock.Object);
+            imageManager = new JsonImageManager(saverMock.Object, removerMock.Object);
 
             var id = imageManager.SaveFile("data", "test/");
 
