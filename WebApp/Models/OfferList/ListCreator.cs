@@ -24,17 +24,10 @@ namespace WebApp.Models.OfferList
         {
             IQueryable<TripDetails> TList = repository.GetAll().AsQueryable();
             Expression<Func<TripDetails, bool>> expression = c => c.Cost <= MaxCost && c.DestinationAddress.City.ToUpper() == DestCity.ToUpper() && c.StartingAddress.City.ToUpper() == StartCity.ToUpper() && c.Date >= MinDate && c.Date <= MaxDate;
-            ISpecification< TripDetails > spec = new BaseSpecification(expression);
+            ISpecification< TripDetails > spec = new TravelListSpecification(expression);
             TList = SpecificationEvaluator<TripDetails>.EvaluateSpecification(TList, spec).AsQueryable();
             return TList;
         }
             
-    }
-
-    internal class BaseSpecification : BaseSpecification<TripDetails>
-    {
-        public BaseSpecification(Expression<Func<TripDetails, bool>> criteria) : base(criteria)
-        {
-        }
     }
 }
