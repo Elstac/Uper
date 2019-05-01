@@ -14,19 +14,19 @@
     <form action="/TripCreator/Index" method="post" asp-antiforgery="true">
         <div class="container">
             <p><label for="DestinationAddress.City">Destination City</label></p>
-            <p><input type="text" name="DestinationAddress.City"  /></p>
+            <p><input type="text" name="DestinationAddress.City" /></p>
         </div>
         <div class="container">
             <p><label for="DestinationAddress.Street">Destination City Street</label></p>
-            <p><input type="text" name="DestinationAddress.Street"  /></p>
+            <p><input type="text" name="DestinationAddress.Street" /></p>
         </div>
         <div class="container">
             <p><label for="StartingAddress.City">Starting City</label></p>
-            <p><input type="text" name="StartingAddress.City"  /></p>
+            <p><input type="text" name="StartingAddress.City" /></p>
         </div>
         <div class="container">
             <p><label for="StartingAddress.Street">Starting City Street</label></p>
-            <p><input type="text" name="StartingAddress.Street"  /></p>
+            <p><input type="text" name="StartingAddress.Street" /></p>
         </div>
         <div class="container">
             <p><label for="Cost">Cost per person (in zloty)</label></p>
@@ -37,13 +37,22 @@
             <p><input type="text" name="VechicleModel" /></p>
         </div>
         <div class="container">
-            <p><label for="Date">Date</label></p>
-            <p><input type="datetime-local" name="Date" /></p>
+            <p><label for="DateStart">Date Start</label></p>
+            <p><input type="datetime-local" name="DateStart" /></p>
+            <span class="validity"></span>
+        </div>
+        <div class="container">
+            <p><label for="DateEnd">Date End</label></p>
+            <p><input type="datetime-local" name="DateEnd" /></p>
             <span class="validity"></span>
         </div>
         <div class="container">
             <p><label for="Size">Size</label></p>
             <p><input type="number" name="Size" min="1" max="15" /></p>
+        </div>
+        <div class="container">
+            <p><label for="IsSmokingAllowed">Is Smoking Allowed?</label></p>
+            <p><input type="checkbox" name="IsSmokingAllowed" value="true" /></p>
         </div>
         <div class="container">
             <p><label for="Description">Description</label></p>
@@ -56,7 +65,7 @@
             <button type="button" onclick="zoomOut()">Zoom out</button>
             <button type="button" onclick="setMoveMode()">Move mode</button>
             <button type="button" onclick="setDrawMode()">Draw mode</button>
-            <input type="hidden" name="mapData" id="mapInput"/>
+            <input type="hidden" name="mapData" id="mapInput" />
         </div>
         <div class="container">
             <input type="submit" name="answer" value="Accept" onclick="saveCnv()" class="btn btn-success" />
