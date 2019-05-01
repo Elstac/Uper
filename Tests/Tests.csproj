@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="microsoft.aspnetcore" Version="2.1.1" />
     <PackageReference Include="microsoft.aspnetcore.identity" Version="2.2.0" />
+    <PackageReference Include="microsoft.aspnetcore.mvc" Version="2.1.1" />
     <PackageReference Include="microsoft.extensions.identity.stores" Version="2.2.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="moq" Version="4.10.1" />
