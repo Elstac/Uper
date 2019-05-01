@@ -20,6 +20,8 @@ namespace WebApp.Models
                 Description = tripDetails.Description,
                 VechicleModel = tripDetails.VechicleModel,
                 Date = tripDetails.Date,
+                DateEnd = tripDetails.DateEnd,
+                IsSmokingAllowed = tripDetails.IsSmokingAllowed,
                 DestinationAddress = tripDetails.DestinationAddress,
                 StartingAddress = tripDetails.StartingAddress
             };

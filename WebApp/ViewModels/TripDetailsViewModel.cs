@@ -12,6 +12,8 @@ namespace WebApp.ViewModels
         public string Description { get; set; }
         public string VechicleModel { get; set; }
         public DateTime Date { get; set; }
+        public DateTime DateEnd { get; set; }
+        public bool IsSmokingAllowed { get; set; }
         public string DriverUsername { get; set; }
         public int Size { get; set; }
         public string MapPath { get; set; }
