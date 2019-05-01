@@ -104,6 +104,8 @@ namespace WebApp
             services.AddTransient<IImageSaver, ImageSaver>();
             services.AddTransient<IImageWriter, ImageWriter>();
             services.AddTransient<IFileIdProvider, FileIdProvider>();
+            services.AddTransient<IImageRemover, ImageRemover>();
+            services.AddTransient<IImageManager, PngImageManager>();
 
             #region EmailConfirmation
             services.AddTransient<AccountConfirmationProvider>();
