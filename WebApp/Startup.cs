@@ -19,6 +19,7 @@ using WebApp.Middlewares;
 using WebApp.Services;
 using WebApp.Models.EmailConfirmation;
 using WebApp.Models.ImageManagement;
+using WebApp.Models.OfferList;
 
 namespace WebApp
 {
@@ -109,6 +110,7 @@ namespace WebApp
             services.AddTransient<IFileIdProvider, FileIdProvider>();
             services.AddTransient<IImageRemover, ImageRemover>();
             services.AddTransient<IImageManager, PngImageManager>();
+            services.AddTransient<IListCreator, ListCreator>();
 
             #region EmailConfirmation
             services.AddTransient<AccountConfirmationProvider>();
