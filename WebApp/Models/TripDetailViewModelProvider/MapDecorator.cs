@@ -17,7 +17,7 @@ namespace WebApp.Models
             var vm = wrape.CreateViewModel(tripDetails);
 
             if (tripDetails.MapId != null)
-                vm.MapPath = "/images/maps" + tripDetails.MapId + ".png";
+                vm.MapPath = "/images/maps/" + tripDetails.MapId + ".png";
             else
                 vm.MapPath = "/images/nomap.png";
 
