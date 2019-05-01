@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using WebApp.Data;
+﻿using WebApp.Data;
 using WebApp.ViewModels;
 
 namespace WebApp.Models
@@ -23,7 +19,8 @@ namespace WebApp.Models
                 VechicleModel = tripDetails.VechicleModel,
                 Date = tripDetails.Date,
                 DestinationAddress = tripDetails.DestinationAddress,
-                StartingAddress = tripDetails.StartingAddress
+                StartingAddress = tripDetails.StartingAddress,
+                MapPath = "/images/maps/" + tripDetails.MapId + ".png"
             };
 
             return ret;

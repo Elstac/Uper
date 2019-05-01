@@ -13,6 +13,7 @@ namespace WebApp.ViewModels
         public DateTime Date { get; set; }
         public string DriverUsername { get; set; }
         public int Size { get; set; }
+        public string MapPath { get; set; }
         public List<string> PassangersUsernames { get; set; }
         
     }
