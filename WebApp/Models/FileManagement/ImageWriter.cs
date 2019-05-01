@@ -5,7 +5,7 @@ namespace WebApp.Models.FileManagement
 {
     public class ImageWriter : IFileWriter
     {
-        public void SaveImage(string imageName, string imageData)
+        public void SaveFile(string imageName, string imageData)
         {
             using (var fs = new FileStream(imageName, FileMode.Create))
             {

@@ -44,7 +44,7 @@ namespace Tests.ImageSavingTests
 
             imageSaver.SaveImage("aaa", extention, "test/");
 
-            writerMock.Verify(wm => wm.SaveImage("test/id"+extention, "aaa"));
+            writerMock.Verify(wm => wm.SaveFile("test/id"+extention, "aaa"));
         }
 
         [Fact]
