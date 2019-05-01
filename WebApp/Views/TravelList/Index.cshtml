@@ -40,8 +40,15 @@
                     <p>
                         <h2>
                             <strong>
-                                @trip.StartingAddress.City =>
-                                @trip.DestinationAddress.City  @trip.Date
+                                @Html.ActionLink(
+                                   linkText: $"{trip.StartingAddress.City} => {trip.DestinationAddress.City}  {@trip.Date}",
+                                   actionName: "Index",
+                                   controllerName: "TripDetails",
+                                   routeValues: new
+                                   {
+                                       id = trip.Id
+                                   },
+                                   htmlAttributes: new { })
                             </strong>
                         </h2>
                         <h3>
