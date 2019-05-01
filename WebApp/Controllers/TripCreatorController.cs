@@ -95,8 +95,11 @@ namespace WebApp.Controllers
                         TripDetails tripDetails = model.GetTripDetailsModel();
                         tripDetails.DriverId = accountManager.GetUserId(HttpContext.User);
 
-                        var id = imageSaver.SaveImage(model.MapData, ".png", "wwwroot/images/maps/");
-                        tripDetails.MapId = id;
+                        if (model.MapData != null)
+                        {
+                            var id = imageSaver.SaveImage(model.MapData, ".png", "wwwroot/images/maps/");
+                            tripDetails.MapId = id;
+                        }
 
                         tripDetailsRepository.Add(tripDetails);
                         return RedirectToAction("Index", "Home");
