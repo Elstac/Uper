@@ -19,12 +19,12 @@
 
         public void RemoveImage(string id, string directory)
         {
-            throw new System.NotImplementedException();
+            imageRemover.RemoveImage(id, directory, ".png");
         }
 
         public string SaveImage(string imageData, string directory)
         {
-            throw new System.NotImplementedException();
+            return imageSaver.SaveImage(imageData, ".png", directory);
         }
     }
 }
