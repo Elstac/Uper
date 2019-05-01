@@ -1,0 +1,57 @@
+﻿@model WebApp.ViewModels.TravelListViewModel
+@{
+    ViewData["Title"] = "Travel List";
+}
+
+<div>
+    <h2>Search for our travel offers</h2>
+</div>
+<body>
+    <form action="/TravelList/Index" method="post">
+        <p>
+            <label for="StartCity">Starting City</label>
+            <input type="text" name="StartCity" />
+            <label for="DestCity">Destination City</label>
+            <input type="text" name="DestCity" />
+            <label for="MinDate">Date</label>
+            <input type="datetime-local" name="MinDate" />
+            <label for="MinDate">-</label>
+            <input type="datetime-local" name="MaxDate" />
+            <label for="Cost">Maximum Cost</label>
+            <input type="number" name="Cost" />
+            <input type="submit" value="Search" />
+        </p>
+    </form>
+    @{
+        if (Context.Request.Method == "POST")
+        {
+            if (Model.List.Count() == 0)
+            {
+                <p>
+                    <h2>
+                        We're sorry. There are no offers that match this description.
+                    </h2>
+                </p>
+            }
+            else
+            {
+                foreach(var trip in Model.List)
+                {
+                    <p>
+                        <h2>
+                            <strong>
+                                @trip.StartingAddress.City =>
+                                @trip.DestinationAddress.City  @trip.Date
+                            </strong>
+                        </h2>
+                        <h3>
+                            Cost: @trip.Cost zloty per person
+                        </h3>
+                        @trip.Description
+                    </p>
+                }
+            }
+        }
+    }
+
+</body>
