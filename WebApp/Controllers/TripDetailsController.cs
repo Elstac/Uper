@@ -72,7 +72,9 @@ namespace WebApp.Controllers
             //---------------------------------------------------------
 
             ViewData["type"] = viewerType;
-            ViewData["mapData"] = fileReader.ReadFileContent(vm.MapPath);
+            if (vm.MapPath != null)
+                ViewData["mapData"] = fileReader.ReadFileContent(vm.MapPath);
+
             return View(vm);
         }
 
