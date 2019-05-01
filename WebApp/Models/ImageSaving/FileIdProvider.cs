@@ -5,8 +5,17 @@ using System;
 
 namespace WebApp.Models
 {
+    /// <summary>
+    /// Provides generation of unique file ids
+    /// </summary>
     public interface IFileIdProvider
     {
+        /// <summary>
+        /// Provides unique id for file with given extantion in directory
+        /// </summary>
+        /// <param name="directory">Path to directory</param>
+        /// <param name="extention">File extention to look for</param>
+        /// <returns></returns>
         string GetId(string directory,string extention);
     }
 
@@ -37,7 +46,11 @@ namespace WebApp.Models
 
             return actId;
         }
-
+        /// <summary>
+        /// Generate new id string
+        /// </summary>
+        /// <param name="actId"></param>
+        /// <returns></returns>
         private string GetNextId(string actId)
         {
             int c;
@@ -47,11 +60,13 @@ namespace WebApp.Models
             {
                 c = actId[i];
 
+                //bypas all special characters
                 while (!Char.IsLetterOrDigit((char)(c+1)))
                     c++;           
 
                 if (++c>90)
                 {
+                    //all unique names of lenght 2 taken. Adds new character to id
                     if(i==actId.Length-1)
                     {
                         ret = actId.Remove(i, 1);
