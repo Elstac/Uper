@@ -15,9 +15,9 @@ namespace WebApp.Controllers
     {
         private readonly ApplicationContext _context;
         protected ITripDetailsRepository tripDetailsRepository;
-        private ITripDetailsViewModelGenerator generator;
+        private ITripDetailsViewModelProvider generator;
 
-        public FakeTripListController(ApplicationContext context, ITripDetailsRepository _tripDetailsRepository, ITripDetailsViewModelGenerator _generator)
+        public FakeTripListController(ApplicationContext context, ITripDetailsRepository _tripDetailsRepository, ITripDetailsViewModelProvider _generator)
         {
             _context = context;
             tripDetailsRepository = _tripDetailsRepository;

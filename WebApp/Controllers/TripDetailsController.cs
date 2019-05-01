@@ -4,6 +4,9 @@ using WebApp.Data;
 using WebApp.Data.Entities;
 using WebApp.Data.Repositories;
 using WebApp.Models;
+using System.Linq.Expressions;
+using WebApp.Data.Specifications;
+using System.Collections.Generic;
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebApp.Controllers
@@ -36,18 +39,29 @@ namespace WebApp.Controllers
         /// <param name="viewerType">Type of viewer</param>
         /// <returns>Details page</returns>
         [Authorize]
-        public IActionResult Index(int id, [FromQuery]ViewerType viewerType)
+        public IActionResult Index(int id , [FromQuery]ViewerType viewerType)
         {
 
             // viewerType = (ViewerType)1;
-
-            //var vm = generator.GetViewModel(id,viewerType);
-
             var userid = accountManager.GetUserId(HttpContext.User);
             var user = applicationUserRepository.GetById(userid);
             var data = tripDetailsRepository.GetUserWithTripListById(id);
-            var vm = generator.GetViewModel(id, viewerTypeMapper.GetViewerType(user,data));
+            viewerType = viewerTypeMapper.GetViewerType(user, data);
 
+
+            var vm = generator.GetViewModel(id, viewerType);
+
+            //--------------------------------------------------------
+            if (viewerType != (ViewerType)0)
+            {
+                var x = vm.PassangersUsernames.ConvertAll(p => p);
+                vm.PassangersUsernames.Clear();
+                foreach (string uid in x)
+                {
+                    vm.PassangersUsernames.Add(applicationUserRepository.GetById(uid).UserName);
+                }
+            }
+            //---------------------------------------------------------
             ViewData["type"] = viewerType;
             return View(vm);
         }
@@ -82,6 +96,26 @@ namespace WebApp.Controllers
         public IActionResult Leave(int id)
         {
             tripUserRepository.RemoveUserFromTrip(id,accountManager.GetUserId(HttpContext.User));
+            return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RemoveUserFromTrip(int id,string uname)
+        {
+            
+            var passangers = tripUserRepository.GetList(new TripUserById(id));
+            foreach(TripUser tu in passangers)
+            {
+                var x = applicationUserRepository.GetById(tu.UserId);
+                if (x.UserName == uname)
+                {
+                    tripUserRepository.RemoveUserFromTrip(id,x.Id);
+                    break;
+                }
+            }
+            
             return RedirectToAction("Index", "Home");
         }
     }

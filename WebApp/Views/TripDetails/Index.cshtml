@@ -71,39 +71,53 @@
 
 @if (type != ViewerType.Guest)
 {
-    if (true)
-    {
+
     <div class="passangersList">
         <h2>Passangers</h2>
-        @if (type == ViewerType.Passanger)
-        {
-            <h3>List:</h3>
-            foreach (var username in Model.PassangersUsernames)
-            {
-                <p>@username</p>
-            }
-        }
-        @if (type == ViewerType.Driver)
-        {
-            <h3>List for driver:</h3>
-            foreach (var username in Model.PassangersUsernames)
-            {
-                <p>@username</p>
-            }
-            //TODO add passanger management panel
-        }
-    </div>
-    }
 
-    if (type == ViewerType.Driver)
+
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Passanger Username
+                    </th>
+                    @if (type == ViewerType.Driver)
+                    {
+                        <th>
+                            Options
+                        </th>
+                    }
+                </tr>
+            </thead>
+
+            @foreach (var username in Model.PassangersUsernames)
+            {
+                <tr>
+                    <td><p>@username</p></td>
+                    @if (type == ViewerType.Driver)
+                    {
+                        <form asp-action="RemoveUserFromTrip" asp-controller="TripDetails" method="post" asp-route-id="@Model.TripId" asp-route-uname="@username" asp-antiforgery="true">
+
+                            <td><input type="submit" value="Remove" class="btn btn-danger" /></td>
+
+                        </form>
+                    }
+                </tr>
+            }
+        </table>
+    </div>
+
+    @if (type == ViewerType.Driver)
     {
         <form asp-action="Remove" asp-controller="TripDetails" method="post" asp-route-id="@Model.TripId" asp-antiforgery="true">
             <div>
-                <input type="submit" value="Delete" class="btn btn-success" />
+                <input type="submit" value="Delete Trip" class="btn btn-success" />
             </div>
         </form>
     }
-    if (type == ViewerType.Passanger)
+    @if (type == ViewerType.Passanger)
     {
         <form asp-action="Leave" asp-controller="TripDetails" method="post" asp-route-id="@Model.TripId" asp-antiforgery="true">
             <div>
@@ -111,17 +125,16 @@
             </div>
         </form>
     }
-
 }
 else
 {
-    <form asp-action="Join" asp-controller="TripDetails" method="post" asp-route-id="@Model.TripId" asp-antiforgery="true">
-        <div>
-            <input type="submit" value="Join" class="btn btn-success" />
-        </div>
-    </form>
+<form asp-action="Join" asp-controller="TripDetails" method="post" asp-route-id="@Model.TripId" asp-antiforgery="true">
+    <div>
+        <input type="submit" value="Join" class="btn btn-success" />
+    </div>
+</form>
+   }
 
-}
 <div>
     <a asp-action="Index" asp-controller="FakeTripList">Back to List</a>
 </div>
