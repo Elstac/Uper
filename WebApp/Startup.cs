@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Identity;
 using WebApp.Middlewares;
 using WebApp.Services;
 using WebApp.Models.EmailConfirmation;
+using WebApp.Models.ImageManagement;
 
 namespace WebApp
 {

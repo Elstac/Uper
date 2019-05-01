@@ -1,7 +1,7 @@
 ﻿using Xunit;
 using Moq;
-using WebApp.Models;
 using System.IO;
+using WebApp.Models.ImageManagement;
 
 namespace Tests.ImageSavingTests
 {
