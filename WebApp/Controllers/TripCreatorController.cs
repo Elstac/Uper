@@ -13,15 +13,18 @@ namespace WebApp.Controllers
 {
     public class TripCreatorController : Controller
     {
-        protected ApplicationContext mContext;
         protected IAccountManager accountManager;
         protected ITripDetailsRepository tripDetailsRepository;
+        private IImageSaver imageSaver;
 
-        public TripCreatorController(ApplicationContext context,IAccountManager _accountManager, ITripDetailsRepository _tripDetailsRepository)
+        public TripCreatorController(
+            IAccountManager _accountManager, 
+            ITripDetailsRepository _tripDetailsRepository,
+            IImageSaver _imageSaver)
         {
-            mContext = context;
             accountManager = _accountManager;
             tripDetailsRepository = _tripDetailsRepository;
+            imageSaver = _imageSaver;
         }
         /// <summary>
         /// Default HTTPGet 
@@ -91,6 +94,10 @@ namespace WebApp.Controllers
                     case "Accept":
                         TripDetails tripDetails = model.GetTripDetailsModel();
                         tripDetails.DriverId = accountManager.GetUserId(HttpContext.User);
+
+                        var id = imageSaver.SaveImage(model.MapData, ".png", "wwwroot/images/maps/");
+                        tripDetails.MapId = id;
+
                         tripDetailsRepository.Add(tripDetails);
                         return RedirectToAction("Index", "Home");
                     case "Decline":
