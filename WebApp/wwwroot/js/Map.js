@@ -112,12 +112,17 @@ function setMoveMode() {
 }
 
 function saveCnv() {
-    var c = document.getElementById('defaultCanvas0');
-    var dataURL = c.toDataURL('image/png');
-    dataURL = dataURL.replace('data:image/png;base64,', '');
+    //var c = document.getElementById('defaultCanvas0');
+    //var dataURL = c.toDataURL('image/png');
+    //dataURL = dataURL.replace('data:image/png;base64,', '');
 
+    //var form = document.getElementById("mapInput");
+    //form.value = dataURL;
+
+    var json = JSON.stringify(arr);
     var form = document.getElementById("mapInput");
-    form.value = dataURL;
+
+    form.value = json;
 }
 
 function draw() {
@@ -128,15 +133,6 @@ function draw() {
 
     lastX = mouseX;
     lastY = mouseY;
-
-    if (changed) {
-        changeTicks += 1;
-        if (changeTicks >= 100) {
-            saveCnv();
-            changed = false;
-            changeTicks = 0;
-        }
-    }
 }
 
 function setup() {
