@@ -2,6 +2,8 @@
 @{
     ViewData["Title"] = "TripCreator";
 }
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/p5.js"></script>
+<script src="~/js/Map.js"></script>
 
 <div class="container">
     <h1>Trip Creator</h1>
@@ -46,6 +48,15 @@
         <div class="container">
             <p><label for="Description">Description</label></p>
             <p><textarea name="Description" rows="4" cols="40"></textarea></p>
+        </div>
+        <div>
+            <p>Map:</p>
+            <div id="mapHolder"></div>
+            <button type="button" onclick="zoomIn()">Zoom in</button>
+            <button type="button" onclick="zoomOut()">Zoom out</button>
+            <button type="button" onclick="setMoveMode()">Move mode</button>
+            <button type="button" onclick="setDrawMode()">Draw mode</button>
+            <input type="hidden" name="mapData" id="mapInput"/>
         </div>
         <div class="container">
             <input type="submit" name="answer" value="Accept" class="btn btn-success" />
