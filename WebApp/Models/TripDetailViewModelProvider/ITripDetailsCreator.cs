@@ -19,7 +19,7 @@ namespace WebApp.Models
                 Cost = tripDetails.Cost,
                 Description = tripDetails.Description,
                 VechicleModel = tripDetails.VechicleModel,
-                DateStart = tripDetails.DateStart,
+                Date = tripDetails.Date,
                 DateEnd = tripDetails.DateEnd,
                 IsSmokingAllowed = tripDetails.IsSmokingAllowed,
                 DestinationAddress = tripDetails.DestinationAddress,

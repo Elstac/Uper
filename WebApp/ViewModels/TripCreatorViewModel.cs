@@ -34,7 +34,7 @@ namespace WebApp.ViewModels
         /// <summary>
         /// Get, Set Date
         /// </summary>
-        public DateTime DateStart { get; set; }
+        public DateTime Date { get; set; }
         /// <summary>
         /// Get, Set Date
         /// </summary>
@@ -102,8 +102,8 @@ namespace WebApp.ViewModels
             }
             else IsValid = false;
 
-            if (model.DateStart.CompareTo(DateTime.Now) < 0) IsValid = false;
-            if (model.DateEnd.CompareTo(model.DateStart) < 0) IsValid = false;
+            if (model.Date.CompareTo(DateTime.Now) < 0) IsValid = false;
+            if (model.DateEnd.CompareTo(model.Date) < 0) IsValid = false;
 
             if(IsSmokingAllowed!=true && IsSmokingAllowed != false) IsValid = false;
             return IsValid;
@@ -117,7 +117,7 @@ namespace WebApp.ViewModels
             tripDetails.Cost = float.Parse(this.Cost, CultureInfo.InvariantCulture.NumberFormat);
             tripDetails.Description = this.Description;
             tripDetails.VechicleModel = this.VechicleModel;
-            tripDetails.DateStart = this.DateStart;
+            tripDetails.Date = this.Date;
             tripDetails.DateEnd = this.DateEnd;
             tripDetails.IsSmokingAllowed = this.IsSmokingAllowed;
             tripDetails.Size = this.Size;

@@ -11,7 +11,7 @@ namespace WebApp.ViewModels
         public float Cost { get; set; }
         public string Description { get; set; }
         public string VechicleModel { get; set; }
-        public DateTime DateStart { get; set; }
+        public DateTime Date { get; set; }
         public DateTime DateEnd { get; set; }
         public bool IsSmokingAllowed { get; set; }
         public string DriverUsername { get; set; }
