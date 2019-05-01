@@ -22,13 +22,14 @@ namespace WebApp.Models
         {
             var vm = wrape.CreateViewModel(tripDetails);
 
-            //Kuba Łotko version that work for him but not for me
+            //version that work for others but not for me
             /*vm.PassangersUsernames = (from tu in tripDetails.Passangers
                                       select tu.User.UserName).ToList();
          */
             //My worse but working version , get userid a then in controller convert it into username
              vm.PassangersUsernames = (from tu in tripDetails.Passangers
                                       select tu.UserId).ToList();
+
 
             return vm;
         }

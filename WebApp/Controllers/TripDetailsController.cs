@@ -13,7 +13,6 @@ namespace WebApp.Controllers
 {
     public class TripDetailsController : Controller
     {
-
         private ITripDetailsViewModelProvider generator;
         private IAccountManager accountManager;
         private ITripUserRepository tripUserRepository;
@@ -62,6 +61,7 @@ namespace WebApp.Controllers
                 }
             }
             //---------------------------------------------------------
+
             ViewData["type"] = viewerType;
             return View(vm);
         }
@@ -118,5 +118,6 @@ namespace WebApp.Controllers
             
             return RedirectToAction("Index", "Home");
         }
+
     }
 }

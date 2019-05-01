@@ -33,6 +33,5 @@ namespace WebApp.Data.Repositories
             context.Set<TripUser>().RemoveRange(context.TripUser.Where(tu => tu.TripId == id));
             context.SaveChanges();
         }
-
     }
 }
