@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace WebApp.Models.ImageManagement
 {
@@ -10,7 +11,9 @@ namespace WebApp.Models.ImageManagement
     {
         public void RemoveImage(string imageId, string directory, string fileExtention)
         {
-            throw new NotImplementedException();
+            var name = directory + imageId + fileExtention;
+
+            File.Delete(name);
         }
     }
 }
