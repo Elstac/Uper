@@ -2,6 +2,8 @@
 @{
     ViewData["Title"] = "ConfirmationPositive";
 }
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/p5.js"></script>
+<script src="~/js/Map.js"></script>
 
 <h3>Please check your trip data below and confirm if everything is correct!</h3>
 
@@ -18,6 +20,16 @@
     <p>Date End: @Model.DateEnd</p>
     <p>Is Smoking Allowed?: @Model.IsSmokingAllowed</p>
     <p>Description: @Model.Description</p>
+    @if (Model.MapData != null)
+    {
+    <script type="text/javascript">
+        loadCnv('@ViewData["mapData"]');
+    </script>
+    <div>
+        <p><b>Trip map:</b></p>
+        <div id="mapHolder"></div>
+    </div>
+    }
     <form action="/TripCreator/ConfirmationPositive" method="post" asp-antiforgery="true">
         <input type="hidden" name="DestinationAddress.City" value="@Model.DestinationAddress.City" />
         <input type="hidden" name="DestinationAddress.Street" value="@Model.DestinationAddress.Street" />
