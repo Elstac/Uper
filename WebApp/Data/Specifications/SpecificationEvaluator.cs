@@ -15,7 +15,7 @@ namespace WebApp.Data.Specifications
         /// <param name="query">Base query</param>
         /// <param name="specification">Specification to apply</param>
         /// <returns>New query containing specification</returns>
-        public static IEnumerable<T> EvaluateSpecification(IQueryable<T> query, ITravelListSpecification<T> specification)
+        public static IEnumerable<T> EvaluateSpecification(IQueryable<T> query, ISpecification<T> specification)
         {
             var ret = query;
 
