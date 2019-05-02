@@ -72,6 +72,7 @@ function moveImg(dirX, dirY) {
 }
 
 function zoomIn() {
+    mode = 'move';
     if (imgScale < 0.5)
         return;
 
@@ -81,6 +82,7 @@ function zoomIn() {
 }
 
 function zoomOut() {
+    mode = 'move';
     if (imgScale >0.5)
         return;
 
@@ -112,12 +114,20 @@ function setMoveMode() {
 }
 
 function saveCnv() {
-    var c = document.getElementById('defaultCanvas0');
-    var dataURL = c.toDataURL('image/png');
-    dataURL = dataURL.replace('data:image/png;base64,', '');
 
+    var json = JSON.stringify(arr);
     var form = document.getElementById("mapInput");
-    form.value = dataURL;
+
+    form.value = json;
+}
+
+function loadCnv(json) {
+    jsron = json.split('&quot;').join('"');
+    arr = JSON.parse(jsron);
+}
+
+function clearCnv() {
+    arr = new Array();
 }
 
 function draw() {
@@ -128,19 +138,10 @@ function draw() {
 
     lastX = mouseX;
     lastY = mouseY;
-
-    if (changed) {
-        changeTicks += 1;
-        if (changeTicks >= 100) {
-            saveCnv();
-            changed = false;
-            changeTicks = 0;
-        }
-    }
 }
 
 function setup() {
     cnv = createCanvas(canvasWidth, canvasHeight);
     cnv.parent('mapHolder');
-    bgimg = loadImage('../images/map.jpg');
+    bgimg = loadImage('/images/map.jpg');
 }

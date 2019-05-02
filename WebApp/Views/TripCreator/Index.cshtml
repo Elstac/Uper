@@ -4,6 +4,7 @@
 }
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/p5.js"></script>
 <script src="~/js/Map.js"></script>
+<script src="~/js/MapManagement.js"></script>
 
 <div class="container">
     <h1>Trip Creator</h1>
@@ -58,17 +59,20 @@
             <p><label for="Description">Description</label></p>
             <p><textarea name="Description" rows="4" cols="40"></textarea></p>
         </div>
-        <div>
+        <button id="createBtn" type="button" onclick="showMap()">Add map</button>
+        <button id="removeBtn" type="button" onclick="hideMap()" style="display:none">Remove map</button>
+        <div id="mapDiv" style="display:none">
             <p>Map:</p>
             <div id="mapHolder"></div>
             <button type="button" onclick="zoomIn()">Zoom in</button>
             <button type="button" onclick="zoomOut()">Zoom out</button>
             <button type="button" onclick="setMoveMode()">Move mode</button>
             <button type="button" onclick="setDrawMode()">Draw mode</button>
+            <button type="button" onclick="clearCnv()">Clear map</button>
             <input type="hidden" name="mapData" id="mapInput" />
         </div>
         <div class="container">
-            <input type="submit" name="answer" value="Accept" onclick="saveCnv()" class="btn btn-success" />
+            <input id="confirmBtn" type="submit" name="answer" value="Accept" class="btn btn-success" />
             <input type="submit" name="answer" value="Decline" class="btn btn-danger" />
         </div>
     </form>

@@ -8,7 +8,7 @@ using WebApp.ViewModels;
 using WebApp.Data;
 using WebApp.Data.Repositories;
 using Microsoft.AspNetCore.Authorization;
-using WebApp.Models.ImageManagement;
+using WebApp.Models.FileManagement;
 
 namespace WebApp.Controllers
 {
@@ -16,16 +16,16 @@ namespace WebApp.Controllers
     {
         protected IAccountManager accountManager;
         protected ITripDetailsRepository tripDetailsRepository;
-        private IImageManager imageManager;
+        private IFileManager fileManager;
 
         public TripCreatorController(
             IAccountManager _accountManager, 
             ITripDetailsRepository _tripDetailsRepository,
-            IImageManager _imageManager)
+            IFileManager _imageManager)
         {
             accountManager = _accountManager;
             tripDetailsRepository = _tripDetailsRepository;
-            imageManager = _imageManager;
+            fileManager = _imageManager;
         }
         /// <summary>
         /// Default HTTPGet 
@@ -59,6 +59,7 @@ namespace WebApp.Controllers
                     case "Accept":
                         if (ModelState.IsValid && model.IsValid(model))
                         {
+                            ViewData["mapData"] = model.MapData;
                             return View("ConfirmationPositive", model);
                         }
                         else
@@ -99,7 +100,7 @@ namespace WebApp.Controllers
 
                         if (model.MapData != null)
                         {
-                            var id = imageManager.SaveImage(model.MapData, "wwwroot/images/maps/");
+                            var id = fileManager.SaveFile(model.MapData, "wwwroot/images/maps/");
                             tripDetails.MapId = id;
                         }
 

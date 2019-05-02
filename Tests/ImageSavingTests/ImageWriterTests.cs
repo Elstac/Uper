@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using WebApp.Models.ImageManagement;
+using WebApp.Models.FileManagement;
 using Xunit;
 
 namespace Tests.ImageSavingTests
@@ -20,7 +20,7 @@ namespace Tests.ImageSavingTests
         {
             imageWriter = new ImageWriter();
 
-            imageWriter.SaveImage("image.png", "");
+            imageWriter.SaveFile("image.png", "");
 
             Assert.True(File.Exists("image.png"));
 
@@ -34,7 +34,7 @@ namespace Tests.ImageSavingTests
             var expected = "imagedata";
             var encoded = Encoding.UTF8.GetBytes(expected);
 
-            imageWriter.SaveImage("image.png", Convert.ToBase64String(encoded));
+            imageWriter.SaveFile("image.png", Convert.ToBase64String(encoded));
 
             string output;
             using (var sr = new StreamReader("image.png"))

@@ -1,16 +1,16 @@
 ﻿using System;
 using System.IO;
-using WebApp.Models.ImageManagement;
+using WebApp.Models.FileManagement;
 using Xunit;
 
 namespace Tests.ImageSavingTests
 {
-    public class ImageIdProviderTests:IDisposable
+    public class FileIdProviderTests:IDisposable
     {
         private FileIdProvider idProvider;
         private string path = "test/";
 
-        public ImageIdProviderTests()
+        public FileIdProviderTests()
         {
             Directory.CreateDirectory("test/");
         }

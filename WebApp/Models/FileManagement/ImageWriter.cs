@@ -1,16 +1,11 @@
 ﻿using System;
 using System.IO;
 
-namespace WebApp.Models.ImageManagement
+namespace WebApp.Models.FileManagement
 {
-    public interface IImageWriter
+    public class ImageWriter : IFileWriter
     {
-        void SaveImage(string imageName, string imageData);
-    }
-
-    public class ImageWriter : IImageWriter
-    {
-        public void SaveImage(string imageName, string imageData)
+        public void SaveFile(string imageName, string imageData)
         {
             using (var fs = new FileStream(imageName, FileMode.Create))
             {

@@ -1,5 +1,9 @@
 ﻿@model WebApp.ViewModels.TripDetailsViewModel
 @{var type = (ViewerType)ViewData["type"]; }
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/p5.js"></script>
+<script src="~/js/Map.js"></script>
+
 <div>
     <h1>Trip from @Model.StartingAddress.City to @Model.DestinationAddress.City </h1>
 </div>
@@ -76,11 +80,18 @@
     </dl>
 </div>
 
-<div>
-    <p><b>Trip map:</b></p>
-    <img src="@Model.MapPath" />
-
-
+@if (Model.MapPath != null)
+{
+    <script type="text/javascript">
+        loadCnv('@ViewData["mapData"]');
+    </script>
+    <div>
+        <p><b>Trip map:</b></p>
+        <div id="mapHolder"></div>
+        <button type="button" onclick="zoomIn()">ZoomIn</button>
+        <button type="button" onclick="zoomOut()">ZoomOut</button>
+    </div>
+}
 @if (type != ViewerType.Guest)
 {
 
@@ -140,13 +151,9 @@
 }
 else
 {
-<form asp-action="Join" asp-controller="TripDetails" method="post" asp-route-id="@Model.TripId" asp-antiforgery="true">
-    <div>
-        <input type="submit" value="Join" class="btn btn-success" />
-    </div>
-</form>
-   }
-
-<div>
-    <a asp-action="Index" asp-controller="FakeTripList">Back to List</a>
-</div>
+    <form asp-action="Join" asp-controller="TripDetails" method="post" asp-route-id="@Model.TripId" asp-antiforgery="true">
+        <div>
+            <input type="submit" value="Join" class="btn btn-success" />
+        </div>
+    </form>
+}
