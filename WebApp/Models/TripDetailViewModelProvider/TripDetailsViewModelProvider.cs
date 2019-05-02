@@ -47,7 +47,7 @@ namespace WebApp.Models
         /// <returns>viewmodel</returns>
         public TripDetailsViewModel GetViewModel(int tripId, ViewerType viewerType)
         {
-            var dataModel = detailsRepository.GetUserWithTripListById(tripId);
+            var dataModel = detailsRepository.GetTripWithPassengersById(tripId);
             
             return factory.CreateCreator(viewerType).CreateViewModel(dataModel);
         }
