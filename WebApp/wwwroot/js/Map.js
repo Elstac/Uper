@@ -72,6 +72,7 @@ function moveImg(dirX, dirY) {
 }
 
 function zoomIn() {
+    mode = 'move';
     if (imgScale < 0.5)
         return;
 
@@ -81,6 +82,7 @@ function zoomIn() {
 }
 
 function zoomOut() {
+    mode = 'move';
     if (imgScale >0.5)
         return;
 
@@ -123,6 +125,11 @@ function saveCnv() {
     var form = document.getElementById("mapInput");
 
     form.value = json;
+}
+
+function loadCnv(json) {
+    jsron = json.split('&quot;').join('"');
+    arr = JSON.parse(jsron);
 }
 
 function draw() {
