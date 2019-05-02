@@ -109,6 +109,7 @@ namespace WebApp
             services.AddTransient<IFileIdProvider, FileIdProvider>();
             services.AddTransient<IFileRemover, FileRemover>();
             services.AddTransient<IFileManager, JsonImageManager>();
+            services.AddTransient<IFileReader<string>, TextFileReader>();
 
             #region EmailConfirmation
             services.AddTransient<AccountConfirmationProvider>();
