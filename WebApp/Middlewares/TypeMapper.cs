@@ -33,7 +33,7 @@ namespace WebApp.Middlewares
                     return;
                 }
                 var user = await accountManager.GetUserAsync(context.User);
-                var data = repository.GetUserWithTripListById(id);
+                var data = repository.GetTripWithPassengersById(id);
                 var type = typeMapper.GetViewerType(user,data);
                 
                 context.Request.QueryString = new QueryString($"?id={id}&viewerType={type}");

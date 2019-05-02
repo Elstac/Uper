@@ -44,7 +44,7 @@ namespace WebApp.Controllers
             // viewerType = (ViewerType)1;
             var userid = accountManager.GetUserId(HttpContext.User);
             var user = applicationUserRepository.GetById(userid);
-            var data = tripDetailsRepository.GetUserWithTripListById(id);
+            var data = tripDetailsRepository.GetTripWithPassengersById(id);
             viewerType = viewerTypeMapper.GetViewerType(user, data);
 
 

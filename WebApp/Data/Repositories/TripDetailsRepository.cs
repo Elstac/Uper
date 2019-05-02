@@ -10,7 +10,7 @@ namespace WebApp.Data.Repositories
     /// </summary>
     public interface ITripDetailsRepository : IRepository<TripDetails,int>
     {
-        TripDetails GetUserWithTripListById(int id);
+        TripDetails GetTripWithPassengersById(int id);
     }
 
     public class TripDetailsRepository:BaseRepository<TripDetails,int>, ITripDetailsRepository
@@ -20,10 +20,12 @@ namespace WebApp.Data.Repositories
 
         }
 
-        public TripDetails GetUserWithTripListById(int id)
+        public TripDetails GetTripWithPassengersById(int id)
         {
-             return context.TripDetails.Include(td => td.Passangers).Where(td => td.Id == id).FirstOrDefault();
-
+             return context.TripDetails.Include(td => td.Passangers)
+                .ThenInclude(td  => td.User)
+                .Where(td => td.Id == id)
+                .FirstOrDefault();
         }
     }
 }
