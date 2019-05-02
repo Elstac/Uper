@@ -7,6 +7,7 @@ using WebApp.Data;
 using WebApp.Data.Repositories;
 using WebApp.Data.Specifications;
 using WebApp.ViewModels;
+using X.PagedList;
 
 namespace WebApp.Controllers
 {
@@ -18,17 +19,26 @@ namespace WebApp.Controllers
         {
             this.repository = repository;
         }
-
-        [HttpGet]
-        public IActionResult Index()
+      
+        public IActionResult Index(string StartCity,string DestCity,DateTime MinDate, DateTime MaxDate,float Cost,bool Smoking,int? page,string SearchString)
         {
-            return View();
-        }
+            #region Viewbagowanie
+            if(SearchString != null)
+            {
+                ViewBag.StartCity = StartCity;
+                ViewBag.DestCity = DestCity;
+                ViewBag.MinDate = MinDate;
+                ViewBag.MaxDate = MaxDate;
+                ViewBag.Cost = Cost;
+                ViewBag.Smoking = Smoking;
+            }
+            #endregion
 
-        [HttpPost]
-        public IActionResult Index(string StartCity,string DestCity,DateTime MinDate, DateTime MaxDate,float Cost,bool Smoking,int? page)
-        {
             page = page ?? 1;
+
+            if (String.IsNullOrEmpty(SearchString))
+                return View(null);
+
             Expression<Func<TripDetails, bool>> criteria =
                 c => c.Cost <= Cost && c.DestinationAddress.City.ToUpper() == DestCity.ToUpper() &&
                 c.StartingAddress.City.ToUpper() == StartCity.ToUpper() &&
@@ -40,9 +50,11 @@ namespace WebApp.Controllers
                 criteria = c => com(c) && c.IsSmokingAllowed == Smoking;
             }
             ISpecification<TripDetails> Specification = new TravelListSpecification(criteria);
-            IQueryable < TripDetails > List = repository.GetList(Specification).AsQueryable();
-            TravelListViewModel vm = new TravelListViewModel(List);
-            return View(vm);
+            var List = repository.GetList(Specification);
+
+            int pageSize = 1;
+            int pageNumber = (page ?? 1);
+            return View(List.ToPagedList(pageNumber,pageSize));
         }
     }
 }
