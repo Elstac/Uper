@@ -19,6 +19,7 @@ namespace WebApp.Controllers
         private ITripDetailsRepository tripDetailsRepository;
         private IViewerTypeMapper viewerTypeMapper;
         private IApplicationUserRepository applicationUserRepository;
+        private IFileReader<string> fileReader;
 
         public TripDetailsController(ITripDetailsViewModelProvider generator, IAccountManager accountManager, ITripUserRepository tripUserRepository,
             ITripDetailsRepository tripDetailsRepository,IViewerTypeMapper viewerTypeMapper, IApplicationUserRepository applicationUserRepository)
@@ -29,6 +30,7 @@ namespace WebApp.Controllers
             this.tripDetailsRepository = tripDetailsRepository;
             this.viewerTypeMapper = viewerTypeMapper;
             this.applicationUserRepository = applicationUserRepository;
+            this.fileReader = fileReader;
         }
 
         /// <summary>
@@ -63,6 +65,7 @@ namespace WebApp.Controllers
             //---------------------------------------------------------
 
             ViewData["type"] = viewerType;
+            ViewData["mapData"] = fileReader.ReadFileContent(vm.MapPath);
             return View(vm);
         }
 
