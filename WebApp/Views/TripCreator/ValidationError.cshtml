@@ -5,6 +5,6 @@
 <h2>Error!</h2>
 <p>There was problem with your data, please try again.</p>
 <p>Remember that all fields are required!</p>
-<form action="/TripCreator/ValidationError" method="post">
-    <input type="submit" value="Return" class="btn btn-success" />
-</form>
+<form asp-action="ValidationError" asp-controller="TripCreator" method="post" asp-antiforgery="true">
+        <input type="submit" value="Return" class="btn btn-success" />
+    </form>
