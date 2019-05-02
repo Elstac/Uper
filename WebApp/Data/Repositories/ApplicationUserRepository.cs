@@ -17,7 +17,10 @@ namespace WebApp.Data.Repositories
 
         public ApplicationUser GetUserWithTripListById(string id)
         {
-            return context.Users.Include(au => au.TripList).Where(au => au.Id == id).FirstOrDefault();
+            return context.Users.Include(au => au.TripList)
+                .ThenInclude(td => td.Trip)
+                .Where(au => au.Id == id)
+                .FirstOrDefault();
         }
     }
 }
