@@ -4,17 +4,25 @@
     {
         void RemoveFile(string id,string directory);
         string SaveFile(string fileData, string directory);
+        string ReadFile(string id, string directory);
     }
 
     public class JsonImageManager:IFileManager
     {
-        private IFileSaver imageSaver;
+        private IFileSaver fileSaver;
         private IFileRemover imageRemover;
+        private IFileReader<string> fileReader;
 
-        public JsonImageManager(IFileSaver fileSaver, IFileRemover imageRemover)
+        public JsonImageManager(IFileSaver fileSaver, IFileRemover imageRemover, IFileReader<string> fileReader)
         {
-            this.imageSaver = fileSaver;
+            this.fileSaver = fileSaver;
             this.imageRemover = imageRemover;
+            this.fileReader = fileReader;
+        }
+
+        public string ReadFile(string id, string directory)
+        {
+            return fileReader.ReadFileContent(directory + id + ".json");
         }
 
         public void RemoveFile(string id, string directory)
@@ -24,7 +32,7 @@
 
         public string SaveFile(string fileData, string directory)
         {
-            return imageSaver.SaveImage(fileData, ".json", directory);
+            return fileSaver.SaveImage(fileData, ".json", directory);
         }
     }
 }
