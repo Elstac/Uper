@@ -21,6 +21,7 @@ namespace WebApp.Controllers
         private IViewerTypeMapper viewerTypeMapper;
         private IApplicationUserRepository applicationUserRepository;
         private IFileReader<string> fileReader;
+        private IFileManager fileManager;
 
         public TripDetailsController(
             ITripDetailsViewModelProvider generator,
@@ -29,7 +30,8 @@ namespace WebApp.Controllers
             ITripDetailsRepository tripDetailsRepository,
             IViewerTypeMapper viewerTypeMapper, 
             IApplicationUserRepository applicationUserRepository,
-            IFileReader<string> fileReader)
+            IFileReader<string> fileReader,
+            IFileManager fileManager)
         {
             this.generator = generator;
             this.accountManager = accountManager;
@@ -38,6 +40,7 @@ namespace WebApp.Controllers
             this.viewerTypeMapper = viewerTypeMapper;
             this.applicationUserRepository = applicationUserRepository;
             this.fileReader = fileReader;
+            this.fileManager = fileManager;
         }
 
         /// <summary>
@@ -83,9 +86,14 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Remove(int id)
         {
+            var td = tripDetailsRepository.GetById(id);
+            if (td.MapId != null)
+            {
+                fileManager.RemoveFile(td.MapId, "wwwroot/images/maps/");
+            }
             tripUserRepository.RemoveTripUsers(id);
-            tripDetailsRepository.Remove(tripDetailsRepository.GetById(id));
-            return RedirectToAction("index", "TripDetails", new { id });
+            tripDetailsRepository.Remove(td);
+            return RedirectToAction("Index", "Home");
         }
 
         [Authorize]
