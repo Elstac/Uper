@@ -76,11 +76,6 @@
     </dl>
 </div>
 
-<div>
-    <p><b>Trip map:</b></p>
-    <img src="@Model.MapPath" />
-
-
 @if (type != ViewerType.Guest)
 {
 
@@ -144,6 +139,7 @@ else
     <div>
         <input type="submit" value="Join" class="btn btn-success" />
     </div>
+</form>
 }
 @if (Model.MapPath != null)
 {
