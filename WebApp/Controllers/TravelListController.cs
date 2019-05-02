@@ -23,7 +23,10 @@ namespace WebApp.Controllers
       
         public IActionResult Index(string StartCity,string DestCity,DateTime? MinDate, DateTime? MaxDate,float? Cost,bool Smoking,int? page,string SearchString)
         {
-            #region Viewbagowanie
+            if (MaxDate != null && MinDate != null && MaxDate >= MinDate)
+                return Content("Wrong Date");
+
+            #region Viewbaging
             if(SearchString != null)
             {
                 ViewBag.StartCity = StartCity;
@@ -35,7 +38,7 @@ namespace WebApp.Controllers
             }
             #endregion
 
-            #region EmptyInput
+            #region EmptyInput/ListAllTrips
             if(String.IsNullOrWhiteSpace(StartCity) && 
                 String.IsNullOrWhiteSpace(DestCity) 
                 && MinDate == null 
