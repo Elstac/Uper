@@ -126,6 +126,10 @@ function loadCnv(json) {
     arr = JSON.parse(jsron);
 }
 
+function clearCnv() {
+    arr = new Array();
+}
+
 function draw() {
     background(51);
     image(bgimg, 0, 0, canvasHeight, canvasWidth, imgX, imgY, bgimg.width*imgScale, bgimg.height*imgScale);
