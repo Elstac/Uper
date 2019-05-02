@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using WebApp.Data;
 using WebApp.Data.Repositories;
 using WebApp.Data.Specifications;
+using WebApp.Models.TravelList;
 using WebApp.ViewModels;
 using X.PagedList;
 
@@ -20,7 +21,7 @@ namespace WebApp.Controllers
             this.repository = repository;
         }
       
-        public IActionResult Index(string StartCity,string DestCity,DateTime MinDate, DateTime MaxDate,float Cost,bool Smoking,int? page,string SearchString)
+        public IActionResult Index(string StartCity,string DestCity,DateTime? MinDate, DateTime? MaxDate,float? Cost,bool Smoking,int? page,string SearchString)
         {
             #region Viewbagowanie
             if(SearchString != null)
@@ -34,25 +35,32 @@ namespace WebApp.Controllers
             }
             #endregion
 
+            #region EmptyInput
+            if(String.IsNullOrWhiteSpace(StartCity) && 
+                String.IsNullOrWhiteSpace(DestCity) 
+                && MinDate == null 
+                && MaxDate == null 
+                && Cost == null)
+            {
+                var _List = repository.GetAll();
+
+                page = page ?? 1;
+                int _pageSize = 10;
+                int _pageNumber = (page ?? 1);
+                return View(_List.ToPagedList(_pageNumber, _pageSize));
+            }         
+            #endregion
+
             page = page ?? 1;
 
             if (String.IsNullOrEmpty(SearchString))
                 return View(null);
 
-            Expression<Func<TripDetails, bool>> criteria =
-                c => c.Cost <= Cost && c.DestinationAddress.City.ToUpper() == DestCity.ToUpper() &&
-                c.StartingAddress.City.ToUpper() == StartCity.ToUpper() &&
-                c.Date >= MinDate &&
-                c.Date <= MaxDate;
-            if(Smoking)
-            {
-                var com = criteria.Compile();
-                criteria = c => com(c) && c.IsSmokingAllowed == Smoking;
-            }
-            ISpecification<TripDetails> Specification = new TravelListSpecification(criteria);
+            Expression<Func<TripDetails, bool>> criteria = TravelListCriteriaProvider.GetCriteria(StartCity,DestCity, MinDate, MaxDate, Cost, Smoking);
+            ITravelListSpecification<TripDetails> Specification = new TravelListSpecification(criteria);
             var List = repository.GetList(Specification);
 
-            int pageSize = 1;
+            int pageSize = 10;
             int pageNumber = (page ?? 1);
             return View(List.ToPagedList(pageNumber,pageSize));
         }

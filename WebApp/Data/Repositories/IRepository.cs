@@ -9,6 +9,6 @@ namespace WebApp.Data
         void Add(EntityType toAdd);
         void Remove(EntityType toRemove);
         EntityType GetById(IdType id);
-        IEnumerable<EntityType> GetList(ISpecification<EntityType> specification);
+        IEnumerable<EntityType> GetList(ITravelListSpecification<EntityType> specification);
     }
 }
