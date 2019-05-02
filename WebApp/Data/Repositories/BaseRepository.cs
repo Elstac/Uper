@@ -32,7 +32,7 @@ namespace WebApp.Data.Repositories
             return context.Set<EntityType>().Find(id);
         }
 
-        public IEnumerable<EntityType> GetList(ISpecification<EntityType> specification)
+        public IEnumerable<EntityType> GetList(ITravelListSpecification<EntityType> specification)
         {
             return SpecificationEvaluator<EntityType>.EvaluateSpecification(
                 context.Set<EntityType>(),

@@ -26,7 +26,7 @@ namespace Tests.ControllersTests
         private void SetupEmailSenderTest()
         {
             repoMock = new Mock<IApplicationUserRepository>();
-            repoMock.Setup(rm => rm.GetList(It.IsAny<ISpecification<ApplicationUser>>())).Returns(
+            repoMock.Setup(rm => rm.GetList(It.IsAny<ITravelListSpecification<ApplicationUser>>())).Returns(
                 new List<ApplicationUser>
                 {
                     new ApplicationUser{Id = "userId", UserName = "userName"}
@@ -73,7 +73,7 @@ namespace Tests.ControllersTests
 
             await controller.SendPasswordResetAsync("email@email.com");
 
-            repoMock.Verify(rm => rm.GetList(It.IsAny<ISpecification<ApplicationUser>>()), Times.Once());
+            repoMock.Verify(rm => rm.GetList(It.IsAny<ITravelListSpecification<ApplicationUser>>()), Times.Once());
         }
 
         [Fact]

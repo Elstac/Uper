@@ -11,5 +11,10 @@ namespace WebApp.Data.Specifications
         public TravelListSpecification(Expression<Func<TripDetails, bool>> criteria) : base(criteria)
         {
         }
+        
+        public new void ApplyPageing(int take, int skip)
+        {
+            base.ApplyPageing(take, skip);
+        }
     }
 }

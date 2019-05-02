@@ -1,6 +1,5 @@
 ﻿@model X.PagedList.IPagedList<WebApp.Data.TripDetails>
 @using X.PagedList.Mvc.Core;
-@using System.Web;
 @{
     ViewData["Title"] = "Travel List";
 }
@@ -54,7 +53,7 @@
                         <h2>
                             <strong>
                                 @Html.ActionLink(
-                                   linkText: $"{trip.StartingAddress.City} => {trip.DestinationAddress.City}  {@trip.Date}",
+                                   linkText: $"{trip.StartingAddress.City} => {trip.DestinationAddress.City}  {@trip.Date} - {trip.DateEnd}",
                                    actionName: "Index",
                                    controllerName: "TripDetails",
                                    routeValues: new
@@ -70,7 +69,7 @@
                         @trip.Description
                     </p>
                 }
-                <text>Page</text> @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) <text>of</text> @Model.PageCount
+                <text>Page </text> @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) <text> of </text> @Model.PageCount
 
                 @Html.PagedListPager(Model, page => Url.Action("Index",
                     new { page, StartCity = ViewBag.StartCity,MinDate = ViewBag.MinDate,MaxDate = ViewBag.MaxDate, DestCity = ViewBag.DestCity, Smoking = ViewBag.Smoking, Cost = ViewBag.Cost, SearchString = ViewBag.StartCity}))

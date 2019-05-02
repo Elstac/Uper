@@ -37,10 +37,4 @@
     <Folder Include="wwwroot\images\maps\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="System.Web">
-      <HintPath>..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.netcore.app\2.1.0\ref\netcoreapp2.1\System.Web.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>
