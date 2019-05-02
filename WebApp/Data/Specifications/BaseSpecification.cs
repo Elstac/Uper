@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebApp.Data.Specifications
 {
-    public abstract class BaseSpecification<T> : ITravelListSpecification<T>
+    public abstract class BaseSpecification<T> : ISpecification<T>
     {
         public BaseSpecification(Expression<Func<T, bool>> criteria)
         {

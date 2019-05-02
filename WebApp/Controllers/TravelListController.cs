@@ -57,7 +57,7 @@ namespace WebApp.Controllers
                 return View(null);
 
             Expression<Func<TripDetails, bool>> criteria = TravelListCriteriaProvider.GetCriteria(StartCity,DestCity, MinDate, MaxDate, Cost, Smoking);
-            ITravelListSpecification<TripDetails> Specification = new TravelListSpecification(criteria);
+            ISpecification<TripDetails> Specification = new TravelListSpecification(criteria);
             var List = repository.GetList(Specification);
 
             int pageSize = 10;

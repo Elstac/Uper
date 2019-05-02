@@ -7,7 +7,7 @@ namespace WebApp.Data
     /// Provides inteface for classes containing where expressions for bd queries
     /// </summary>
     /// <typeparam name="T">Type of entity</typeparam>
-    public interface ITravelListSpecification<T> 
+    public interface ISpecification<T> 
     {
         /// <summary>
         /// Where clause in query
