@@ -59,6 +59,7 @@ namespace WebApp.Controllers
                     case "Accept":
                         if (ModelState.IsValid && model.IsValid(model))
                         {
+                            ViewData["mapData"] = model.MapData;
                             return View("ConfirmationPositive", model);
                         }
                         else
