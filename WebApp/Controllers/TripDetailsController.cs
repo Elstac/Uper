@@ -7,6 +7,7 @@ using WebApp.Models;
 using System.Linq.Expressions;
 using WebApp.Data.Specifications;
 using System.Collections.Generic;
+using WebApp.Models.FileManagement;
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebApp.Controllers
@@ -21,8 +22,14 @@ namespace WebApp.Controllers
         private IApplicationUserRepository applicationUserRepository;
         private IFileReader<string> fileReader;
 
-        public TripDetailsController(ITripDetailsViewModelProvider generator, IAccountManager accountManager, ITripUserRepository tripUserRepository,
-            ITripDetailsRepository tripDetailsRepository,IViewerTypeMapper viewerTypeMapper, IApplicationUserRepository applicationUserRepository)
+        public TripDetailsController(
+            ITripDetailsViewModelProvider generator,
+            IAccountManager accountManager,
+            ITripUserRepository tripUserRepository,
+            ITripDetailsRepository tripDetailsRepository,
+            IViewerTypeMapper viewerTypeMapper, 
+            IApplicationUserRepository applicationUserRepository,
+            IFileReader<string> fileReader)
         {
             this.generator = generator;
             this.accountManager = accountManager;
