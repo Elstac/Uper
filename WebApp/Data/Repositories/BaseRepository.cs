@@ -44,5 +44,11 @@ namespace WebApp.Data.Repositories
             context.Set<EntityType>().Remove(toRemove);
             context.SaveChanges();
         }
+
+        public void Update(EntityType entity)
+        {
+            context.Entry(entity).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            context.SaveChanges();
+        }
     }
 }
