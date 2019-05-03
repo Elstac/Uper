@@ -1,13 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
 using WebApp.Data;
 using WebApp.Data.Repositories;
 using WebApp.Data.Specifications;
-using WebApp.Models.TravelList;
-using WebApp.ViewModels;
 using X.PagedList;
 
 namespace WebApp.Controllers
@@ -20,26 +16,25 @@ namespace WebApp.Controllers
         {
             this.repository = repository;
         }
-      
-        public IActionResult Index(string StartCity,string DestCity,DateTime? MinDate, DateTime? MaxDate,float? Cost,bool Smoking,int? page,string SearchString)
+        /// <param name="Smoking">Smoker or non-Smoker</param>
+        /// <param name="page">current page</param>
+        public IActionResult Index(string StartCity,string DestCity,DateTime? MinDate, DateTime? MaxDate,float? Cost,bool Smoking,int? page)
         {
             if (MaxDate != null && MinDate != null && MaxDate >= MinDate)
                 return Content("Wrong Date");
 
             #region Viewbaging
-            if(SearchString != null)
-            {
                 ViewBag.StartCity = StartCity;
                 ViewBag.DestCity = DestCity;
                 ViewBag.MinDate = MinDate;
                 ViewBag.MaxDate = MaxDate;
                 ViewBag.Cost = Cost;
                 ViewBag.Smoking = Smoking;
-            }
             #endregion
 
+            //if there is no input display all travel offers
             #region EmptyInput/ListAllTrips
-            if(String.IsNullOrWhiteSpace(StartCity) && 
+            if (String.IsNullOrWhiteSpace(StartCity) && 
                 String.IsNullOrWhiteSpace(DestCity) 
                 && MinDate == null 
                 && MaxDate == null 
@@ -53,17 +48,16 @@ namespace WebApp.Controllers
                 return View(_List.ToPagedList(_pageNumber, _pageSize));
             }         
             #endregion
-
+            //if page is null it's sets it as 1
+            //page starts at null when 'Search' is pressed
             page = page ?? 1;
-
-            if (String.IsNullOrEmpty(SearchString))
-                return View(null);
-
-            Expression<Func<TripDetails, bool>> criteria = TravelListCriteriaProvider.GetCriteria(StartCity,DestCity, MinDate, MaxDate, Cost, Smoking);
-            ISpecification<TripDetails> Specification = new TravelListSpecification(criteria);
+            
+            ISpecification<TripDetails> Specification = new TravelListSpecification(StartCity, DestCity, MinDate, MaxDate, Cost, Smoking);
             var List = repository.GetList(Specification);
-
+            
+            // the number of elements displayed on a single page of list
             int pageSize = 10;
+            // the number of a page currently displayed
             int pageNumber = (page ?? 1);
             return View(List.ToPagedList(pageNumber,pageSize));
         }

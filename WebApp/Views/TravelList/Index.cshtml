@@ -28,8 +28,7 @@
             <label for="Smoking">Smoker</label>
             <input type="checkbox" name="Smoking" value="true" />
 
-            <label for="SearchString"></label>
-            <input type="submit" name="SearchString" value="Search" />
+            <input type="submit" value="Search" />
         </p>
     </form>
 
@@ -72,7 +71,7 @@
                 <text>Page </text> @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) <text> of </text> @Model.PageCount
 
                 @Html.PagedListPager(Model, page => Url.Action("Index",
-                    new { page, StartCity = ViewBag.StartCity,MinDate = ViewBag.MinDate,MaxDate = ViewBag.MaxDate, DestCity = ViewBag.DestCity, Smoking = ViewBag.Smoking, Cost = ViewBag.Cost, SearchString = ViewBag.StartCity}))
+                    new { page, StartCity = ViewBag.StartCity,MinDate = ViewBag.MinDate,MaxDate = ViewBag.MaxDate, DestCity = ViewBag.DestCity, Smoking = ViewBag.Smoking, Cost = ViewBag.Cost}))
             }
         }
     }
