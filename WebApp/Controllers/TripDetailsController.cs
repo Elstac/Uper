@@ -103,7 +103,7 @@ namespace WebApp.Controllers
         public IActionResult RemoveUserFromTrip(int id,string uname)
         {
             
-            var passangers = tripUserRepository.GetList(new TripUserById(id));
+            var passangers = tripUserRepository.GetList(new TripUserByTripId(id));
             foreach(TripUser tu in passangers)
             {
                 var x = applicationUserRepository.GetById(tu.UserId);
