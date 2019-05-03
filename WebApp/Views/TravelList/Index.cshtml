@@ -1,0 +1,79 @@
+﻿@model X.PagedList.IPagedList<WebApp.Data.TripDetails>
+@using X.PagedList.Mvc.Core;
+@{
+    ViewData["Title"] = "Travel List";
+}
+
+<div>
+    <h2>Search for our travel offers</h2>
+</div>
+<body>
+    <form action="/TravelList/Index" method="post">
+        <p>
+            <label for="StartCity">Starting City</label>
+            <input type="text" name="StartCity" />
+
+            <label for="DestCity">Destination City</label>
+            <input type="text" name="DestCity" />
+
+            <label for="MinDate">Date</label>
+            <input type="datetime-local" name="MinDate" />
+
+            <label for="MinDate">-</label>
+            <input type="datetime-local" name="MaxDate" />
+
+            <label for="Cost">Maximum Cost</label>
+            <input type="number" name="Cost" />
+
+            <label for="Smoking">Smoker</label>
+            <input type="checkbox" name="Smoking" value="true" />
+
+            <input type="submit" value="Search" />
+        </p>
+    </form>
+
+
+    @{
+        if(Model != null)
+        {
+            if (Model.Count == 0)
+            {
+                <p>
+                    <h2>
+                        We're sorry. There are no offers that match this description.
+                    </h2>
+                </p>
+            }
+            else
+            {
+                foreach (var trip in Model)
+                {
+                    <p>
+                        <h2>
+                            <strong>
+                                @Html.ActionLink(
+                                   linkText: $"{trip.StartingAddress.City} => {trip.DestinationAddress.City}  {@trip.Date} - {trip.DateEnd}",
+                                   actionName: "Index",
+                                   controllerName: "TripDetails",
+                                   routeValues: new
+                                   {
+                                       id = trip.Id
+                                   },
+                                   htmlAttributes: new { })
+                            </strong>
+                        </h2>
+                        <h3>
+                            Cost: @trip.Cost zloty per person
+                        </h3>
+                        @trip.Description
+                    </p>
+                }
+                <text>Page </text> @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) <text> of </text> @Model.PageCount
+
+                @Html.PagedListPager(Model, page => Url.Action("Index",
+                    new { page, StartCity = ViewBag.StartCity,MinDate = ViewBag.MinDate,MaxDate = ViewBag.MaxDate, DestCity = ViewBag.DestCity, Smoking = ViewBag.Smoking, Cost = ViewBag.Cost}))
+            }
+        }
+    }
+
+</body>
