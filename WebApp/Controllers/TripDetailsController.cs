@@ -47,31 +47,18 @@ namespace WebApp.Controllers
         /// <param name="viewerType">Type of viewer</param>
         /// <returns>Details page</returns>
         [Authorize]
-        public IActionResult Index(int id , [FromQuery]ViewerType viewerType)
+        public IActionResult Index(int id)
         {
-
-            // viewerType = (ViewerType)1;
             var userid = accountManager.GetUserId(HttpContext.User);
             var user = applicationUserRepository.GetById(userid);
             var data = tripDetailsRepository.GetTripWithPassengersById(id);
-            viewerType = viewerTypeMapper.GetViewerType(user, data);
+            var viewerType = viewerTypeMapper.GetViewerType(user, data);
 
 
             var vm = generator.GetViewModel(id, viewerType);
 
-            //--------------------------------------------------------
-            if (viewerType != (ViewerType)0)
-            {
-                var x = vm.PassangersUsernames.ConvertAll(p => p);
-                vm.PassangersUsernames.Clear();
-                foreach (string uid in x)
-                {
-                    vm.PassangersUsernames.Add(applicationUserRepository.GetById(uid).UserName);
-                }
-            }
-            //---------------------------------------------------------
-
             ViewData["type"] = viewerType;
+
             if (vm.MapPath != null)
                 ViewData["mapData"] = fileReader.ReadFileContent(vm.MapPath);
 
