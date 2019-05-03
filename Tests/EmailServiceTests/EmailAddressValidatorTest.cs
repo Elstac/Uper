@@ -19,6 +19,12 @@ namespace Tests
             Assert.True(validator.ValidateEmailAddress("test@testmail.com"));
         }
 
+        [Fact]
+        public void ValidateAddressWithDot()
+        {
+            Assert.True(validator.ValidateEmailAddress("te.st@testmail.com"));
+        }
+
         [Theory]
         [InlineData("@testmail.com")]
         [InlineData("testtestmail.com")]
@@ -26,7 +32,6 @@ namespace Tests
         [InlineData("test@testmail")]
         [InlineData("test@testmail.")]
         [InlineData("t@est@testmail.com")]
-        [InlineData("t.est@testmail.com")]
         public void ThrowException(string address)
         {
             Assert.Throws<InvalidEmailAddressException>(() => validator.ValidateEmailAddress(address));
