@@ -27,7 +27,7 @@ namespace WebApp.Data.Repositories
             return context.Set<EntityType>().ToList();
         }
 
-        public EntityType GetById(IdType id)
+        public virtual EntityType GetById(IdType id)
         {
             return context.Set<EntityType>().Find(id);
         }
