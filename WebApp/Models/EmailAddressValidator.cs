@@ -10,7 +10,7 @@ namespace WebApp.Models
 
     public class EmailAddressValidator : IEmailAddressValidator
     {
-        private string pattern = @"^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$";
+        private string pattern = @"^[a-zA-Z\.0-9]+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$";
 
         public bool ValidateEmailAddress(string emailAddress)
         {
