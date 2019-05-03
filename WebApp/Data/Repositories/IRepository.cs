@@ -10,5 +10,6 @@ namespace WebApp.Data
         void Remove(EntityType toRemove);
         EntityType GetById(IdType id);
         IEnumerable<EntityType> GetList(ISpecification<EntityType> specification);
+        void Update(EntityType entity);
     }
 }
