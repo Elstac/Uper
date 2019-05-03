@@ -9,13 +9,13 @@ namespace WebApp.Data.Repositories
     /// <summary>
     /// Provides access to TripDetails table in database
     /// </summary>
-    public interface ITripUserRepository : IRepository<TripUser, int>
+    public interface ITripUserRepository : IRepository<TripUser, (int, string)>
     {
         void RemoveUserFromTrip(int id,string userid);
         void RemoveTripUsers(int id);
     }
 
-    public class TripUserRepository : BaseRepository<TripUser, int>, ITripUserRepository
+    public class TripUserRepository : BaseRepository<TripUser, (int,string)>, ITripUserRepository
     {
         public TripUserRepository(ApplicationContext context) : base(context)
         {
@@ -32,6 +32,11 @@ namespace WebApp.Data.Repositories
         {
             context.Set<TripUser>().RemoveRange(context.TripUser.Where(tu => tu.TripId == id));
             context.SaveChanges();
+        }
+
+        public override TripUser GetById((int, string) id)
+        {
+            return context.Set<TripUser>().Find(id.Item1, id.Item2);
         }
     }
 }
