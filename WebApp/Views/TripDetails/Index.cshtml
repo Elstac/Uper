@@ -97,9 +97,6 @@
 
     <div class="passangersList">
         <h2>Passangers</h2>
-
-
-
         <table class="table">
             <thead>
                 <tr>
@@ -121,7 +118,7 @@
                     <td><p>@username</p></td>
                     @if (type == ViewerType.Driver)
                     {
-                        <form asp-action="RemoveUserFromTrip" asp-controller="TripDetails" method="post" asp-route-id="@Model.TripId" asp-route-uname="@username" asp-antiforgery="true">
+                        <form asp-action="RemoveUserFromTrip" asp-controller="TripDetails" method="post" asp-route-id="@Model.TripId" asp-route-username="@username" asp-antiforgery="true">
 
                             <td><input type="submit" value="Remove" class="btn btn-danger" /></td>
 
@@ -131,6 +128,33 @@
             }
         </table>
     </div>
+    @if (type == ViewerType.Driver)
+    {
+        <script type="text/javascript">
+            document.getElementById('requestForm').submit();
+        </script>
+        <div class="requestsList">
+                <h2>Join requests</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                        </tr>
+                    </thead>
+                    @foreach (var username in Model.RequestsUsernames)
+                    {
+                        <tr>
+                            <td><p>@username</p></td>
+                            <form asp-action="ConfirmRequest" asp-controller="TripDetails" method="post" asp-route-tripId="@Model.TripId" asp-route-username="@username" asp-antiforgery="true">
+
+                                <td><input type="submit" value="Confirm"/></td>
+
+                            </form>
+                        </tr>
+                    }
+                </table>
+        </div>
+    }
 
     @if (type == ViewerType.Driver)
     {
