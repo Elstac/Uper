@@ -47,15 +47,60 @@ namespace WebApp.Data.Specifications
                 var memberType = ((PropertyInfo)member).PropertyType;
                 var enumMemberTypes = memberType.IsGenericType ? memberType.GetGenericArguments() : null;
 
-                if(enumMemberTypes.Count() != 1)
-                    throw new InvalidOperationException(
-                         $"Member generic type has {enumMemberTypes.Count()} gneric arguments. Should be 1");
+                if (enumMemberTypes != null)
+                {
+                    if (enumMemberTypes.Count() != 1)
+                        throw new InvalidOperationException(
+                             $"Member generic type has {enumMemberTypes.Count()} gneric arguments. Should be 1");
+                }
 
                 if(chain.ThenIncludes.Count == 0)
                 {
-                    var convInclude = chain.Include as Expression<Func<T, object>>;
-                    
-                    return ret.Include(convInclude);
+                    if (memberType == typeof(TripUser))
+                    {
+                        if (enumMemberTypes != null)
+                        {
+                            var convInclude = chain.Include as Expression<Func<T, IEnumerable<TripUser>>>;
+
+                            ret = ret.Include(convInclude);
+                        }
+                        else
+                        {
+                            var convInclude = chain.Include as Expression<Func<T, TripUser>>;
+
+                            ret = ret.Include(convInclude);
+                        }
+                    }
+                    else if (memberType == typeof(ApplicationUser))
+                    {
+                        if (enumMemberTypes != null)
+                        {
+                            var convInclude = chain.Include as Expression<Func<T, IEnumerable<ApplicationUser>>>;
+
+                            ret = ret.Include(convInclude);
+                        }
+                        else
+                        {
+                            var convInclude = chain.Include as Expression<Func<T, ApplicationUser>>;
+
+                            ret = ret.Include(convInclude);
+                        }
+                    }
+                    else if (memberType == typeof(TripDetails))
+                    {
+                        if (enumMemberTypes != null)
+                        {
+                            var convInclude = chain.Include as Expression<Func<T, IEnumerable<TripDetails>>>;
+
+                            ret = ret.Include(convInclude);
+                        }
+                        else
+                        {
+                            var convInclude = chain.Include as Expression<Func<T, TripDetails>>;
+
+                            ret = ret.Include(convInclude);
+                        }
+                    }
                 }
 
                 foreach (var thenInclude in chain.ThenIncludes)
