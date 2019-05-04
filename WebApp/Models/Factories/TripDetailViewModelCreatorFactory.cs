@@ -1,4 +1,5 @@
 ﻿using System;
+using WebApp.Models.TripDetailViewModelProvider;
 
 namespace WebApp.Models.Factories
 {
@@ -29,8 +30,11 @@ namespace WebApp.Models.Factories
             {
                 ret = new PassengerListDecorator(ret);
             }
+            if (viewerType == ViewerType.Driver)
+                ret = new RequestListDecorator(ret);
 
             ret = new MapDecorator(ret);
+
             return ret;
         }
     }

@@ -18,6 +18,7 @@ namespace WebApp.ViewModels
         public int Size { get; set; }
         public string MapPath { get; set; }
         public List<string> PassangersUsernames { get; set; }
+        public List<string> RequestsUsernames { get; set; }
         
     }
 }

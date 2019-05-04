@@ -100,22 +100,27 @@ namespace WebApp.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult RemoveUserFromTrip(int id,string uname)
+        public IActionResult RemoveUserFromTrip(int id,string username)
         {
-            
-            var passangers = tripUserRepository.GetList(new TripUserByTripId(id));
-            foreach(TripUser tu in passangers)
-            {
-                var x = applicationUserRepository.GetById(tu.UserId);
-                if (x.UserName == uname)
-                {
-                    tripUserRepository.RemoveUserFromTrip(id,x.Id);
-                    break;
-                }
-            }
-            
+            List<TripUser> toRm = tripUserRepository.GetList(new TripUserByUsernameAndTripId(id,username)) as List<TripUser>;
+            tripUserRepository.Remove(toRm[0]);
             return RedirectToAction("Index", "Home");
         }
 
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ConfirmRequest(int tripId, string username)
+        {
+            var tu = tripUserRepository.GetList(new TripUserByUsernameAndTripId(tripId,username)) as List<TripUser>;
+
+            if (tu == null)
+                return BadRequest(new { error = "invalid user ot trip id" });
+
+            tu[0].Accepted = true;
+            tripUserRepository.Update(tu[0]);
+
+            return RedirectToAction("index", "TripDetails", new { id = tripId });
+        }
     }
 }
