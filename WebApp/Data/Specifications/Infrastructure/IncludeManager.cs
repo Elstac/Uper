@@ -1,19 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
-using System;
 using System.Reflection;
-using WebApp.Data.Entities;
 
-namespace WebApp.Data.Specifications
+namespace WebApp.Data.Specifications.Infrastructure
 {
     public class IncludeManager
     {
         private List<IncludeChain> includeChains;
+        private IIncluder chainStart;
 
-        public IncludeManager()
+        public IncludeManager(IIncludeChainProvider chainProvider)
         {
+            chainStart = chainProvider.GetIncluder();
             includeChains = new List<IncludeChain>();
         }
 
@@ -56,51 +56,7 @@ namespace WebApp.Data.Specifications
 
                 if(chain.ThenIncludes.Count == 0)
                 {
-                    if (memberType == typeof(TripUser))
-                    {
-                        if (enumMemberTypes != null)
-                        {
-                            var convInclude = chain.Include as Expression<Func<T, IEnumerable<TripUser>>>;
-
-                            ret = ret.Include(convInclude);
-                        }
-                        else
-                        {
-                            var convInclude = chain.Include as Expression<Func<T, TripUser>>;
-
-                            ret = ret.Include(convInclude);
-                        }
-                    }
-                    else if (memberType == typeof(ApplicationUser))
-                    {
-                        if (enumMemberTypes != null)
-                        {
-                            var convInclude = chain.Include as Expression<Func<T, IEnumerable<ApplicationUser>>>;
-
-                            ret = ret.Include(convInclude);
-                        }
-                        else
-                        {
-                            var convInclude = chain.Include as Expression<Func<T, ApplicationUser>>;
-
-                            ret = ret.Include(convInclude);
-                        }
-                    }
-                    else if (memberType == typeof(TripDetails))
-                    {
-                        if (enumMemberTypes != null)
-                        {
-                            var convInclude = chain.Include as Expression<Func<T, IEnumerable<TripDetails>>>;
-
-                            ret = ret.Include(convInclude);
-                        }
-                        else
-                        {
-                            var convInclude = chain.Include as Expression<Func<T, TripDetails>>;
-
-                            ret = ret.Include(convInclude);
-                        }
-                    }
+                    return chainStart.ApplyInclude(ret, chain.Include, null, memberType);
                 }
 
                 foreach (var thenInclude in chain.ThenIncludes)
@@ -126,23 +82,7 @@ namespace WebApp.Data.Specifications
                         throw new InvalidOperationException(
                             $"Given lambda expression is not member expression. Expression :{chain.Include.ToString()}");
 
-                    if (tParam.Type == typeof(TripUser))
-                    {
-                        if (enumMemberTypes != null)
-                        {
-                            var convInclude = chain.Include as Expression<Func<T,IEnumerable <TripUser>>>;
-                            var convTInclude = thenInclude as Expression<Func<TripUser, object>>;
-
-                            ret = ret.Include(convInclude).ThenInclude(convTInclude);
-                        }
-                        else
-                        {
-                            var convInclude = chain.Include as Expression<Func<T, TripUser>>;
-                            var convTInclude = thenInclude as Expression<Func<TripUser, object>>;
-
-                            ret = ret.Include(convInclude).ThenInclude(convTInclude);
-                        }
-                    }
+                    return chainStart.ApplyInclude(ret, chain.Include, thenInclude, memberType);
                 }
             }
 

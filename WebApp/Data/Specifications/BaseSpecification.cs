@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using WebApp.Data.Specifications.Infrastructure;
 
 namespace WebApp.Data.Specifications
 {
@@ -9,7 +10,7 @@ namespace WebApp.Data.Specifications
         public BaseSpecification(Expression<Func<T, bool>> criteria)
         {
             Criteria = criteria;
-            IncludeManager = new IncludeManager();
+            IncludeManager = new IncludeManager(new IncludeChainProvider());
         }
 
         public Expression<Func<T, bool>> Criteria { get; }
