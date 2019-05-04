@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using WebApp.Data.Specifications;
-using WebApp.Data.Specifications.Infrestructure;
+using WebApp.Data.Specifications.Infrastructure;
 
 namespace WebApp.Data.Repositories
 {

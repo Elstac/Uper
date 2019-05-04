@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace WebApp.Data.Specifications.Infrestructure
+namespace WebApp.Data.Specifications.Infrastructure
 {
     public class IncludeChain
     {
