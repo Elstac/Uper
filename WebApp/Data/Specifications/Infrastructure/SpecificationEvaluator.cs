@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace WebApp.Data.Specifications
+namespace WebApp.Data.Specifications.Infrestructure
 {
     /// <summary>
     /// Generic class for applaying specification to given queries

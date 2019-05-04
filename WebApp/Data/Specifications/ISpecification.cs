@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using WebApp.Data.Specifications;
+using WebApp.Data.Specifications.Infrestructure;
 
-namespace WebApp.Data
+namespace WebApp.Data.Specifications
 {
     /// <summary>
     /// Provides inteface for classes containing where expressions for bd queries

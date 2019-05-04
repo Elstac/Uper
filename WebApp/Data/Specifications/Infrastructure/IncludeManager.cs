@@ -6,7 +6,7 @@ using System;
 using System.Reflection;
 using WebApp.Data.Entities;
 
-namespace WebApp.Data.Specifications
+namespace WebApp.Data.Specifications.Infrestructure
 {
     public class IncludeManager
     {

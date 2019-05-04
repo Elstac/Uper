@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using WebApp.Data.Specifications.Infrestructure;
 
 namespace WebApp.Data.Specifications
 {
