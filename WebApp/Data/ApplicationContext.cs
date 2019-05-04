@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using WebApp.Data.Entities;
 
 namespace WebApp.Data
@@ -24,18 +23,25 @@ namespace WebApp.Data
             modelBuilder.Entity<TripDetails>().OwnsOne(c => c.DestinationAddress);
             modelBuilder.Entity<TripDetails>().OwnsOne(c => c.StartingAddress);
 
-            modelBuilder.Entity<TripUser>()
-                .HasKey(tu => new { tu.TripId, tu.UserId });
-            modelBuilder.Entity<TripUser>()
-                .HasOne(tu => tu.User)
+            BuildTripUserEntity(modelBuilder.Entity<TripUser>());
+
+            modelBuilder.Entity<ApplicationUser>();
+        }
+
+        private void BuildTripUserEntity(EntityTypeBuilder<TripUser> builder)
+        {
+            builder.HasKey(tu => new { tu.TripId, tu.UserId });
+
+            builder.HasOne(tu => tu.User)
                 .WithMany(u => u.TripList)
                 .HasForeignKey(tu => tu.UserId);
-            modelBuilder.Entity<TripUser>()
-                 .HasOne(tu => tu.Trip)
+
+            builder.HasOne(tu => tu.Trip)
                  .WithMany(u => u.Passangers)
                  .HasForeignKey(tu => tu.TripId);
 
-            modelBuilder.Entity<ApplicationUser>();
+            builder.Property(td => td.Accepted)
+                .HasDefaultValue(false);
         }
     }
 }
