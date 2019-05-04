@@ -51,6 +51,13 @@ namespace WebApp.Data.Specifications
                     throw new InvalidOperationException(
                          $"Member generic type has {enumMemberTypes.Count()} gneric arguments. Should be 1");
 
+                if(chain.ThenIncludes.Count == 0)
+                {
+                    var convInclude = chain.Include as Expression<Func<T, object>>;
+                    
+                    return ret.Include(convInclude);
+                }
+
                 foreach (var thenInclude in chain.ThenIncludes)
                 {
                     var tParam = thenInclude.Parameters[0];
