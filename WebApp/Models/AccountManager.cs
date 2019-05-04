@@ -17,6 +17,7 @@ namespace WebApp.Models
         string GetUserName(ClaimsPrincipal principal);
         bool CheckPassword(ApplicationUser user, string currentPassword);
         void ChangePassword(ApplicationUser user, string oldPassword, string newPassword);
+        IdentityResult ValidatePassword(ApplicationUser user, string password);
     }
 
     public class AccountManager : IAccountManager
@@ -25,16 +26,19 @@ namespace WebApp.Models
         private SignInManager<ApplicationUser> signInManager;
         private IIdentityResultErrorHtmlCreator errorCreator;
         private IEmailAddressValidator validator;
+        private IPasswordValidator<ApplicationUser> passwordValidator;
 
         public AccountManager(UserManager<ApplicationUser> userManager,
                               SignInManager<ApplicationUser> signInManager,
                               IIdentityResultErrorHtmlCreator errorCreator,
-                              IEmailAddressValidator validator)
+                              IEmailAddressValidator validator,
+                              IPasswordValidator<ApplicationUser> passwordValidator)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.errorCreator = errorCreator;
             this.validator = validator;
+            this.passwordValidator = passwordValidator;
         }
 
         public async Task CreateAccountAsync(ApplicationUser user,string password)
@@ -89,6 +93,13 @@ namespace WebApp.Models
         public bool CheckPassword(ApplicationUser user,string currentPassword)
         {
             var result = userManager.CheckPasswordAsync(user, currentPassword);
+
+            return result.Result;
+        }
+
+        public IdentityResult ValidatePassword(ApplicationUser user, string password)
+        {
+            var result = passwordValidator.ValidateAsync(userManager,user,password);
 
             return result.Result;
         }
