@@ -74,7 +74,7 @@ namespace WebApp.Controllers
             return View(vm);
         }
 
-        [Authorize]
+        [Authorize(Policy = "test")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Join(int id)
