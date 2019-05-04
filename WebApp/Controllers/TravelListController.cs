@@ -20,34 +20,22 @@ namespace WebApp.Controllers
         /// <param name="page">current page</param>
         public IActionResult Index(string StartCity,string DestCity,DateTime? MinDate, DateTime? MaxDate,float? Cost,bool Smoking,int? page)
         {
-            if (MaxDate != null && MinDate != null && MaxDate >= MinDate)
+            if (MaxDate != null && MinDate != null && MaxDate <= MinDate)
                 return Content("Wrong Date");
 
+            if (Cost != null && Cost < 0)
+            if (Cost != null && Cost < 0)
+                return Content("Wrong Cost");
+
             #region Viewbaging
-                ViewBag.StartCity = StartCity;
+            ViewBag.StartCity = StartCity;
                 ViewBag.DestCity = DestCity;
                 ViewBag.MinDate = MinDate;
                 ViewBag.MaxDate = MaxDate;
                 ViewBag.Cost = Cost;
                 ViewBag.Smoking = Smoking;
             #endregion
-
-            //if there is no input display all travel offers
-            #region EmptyInput/ListAllTrips
-            if (String.IsNullOrWhiteSpace(StartCity) && 
-                String.IsNullOrWhiteSpace(DestCity) 
-                && MinDate == null 
-                && MaxDate == null 
-                && Cost == null)
-            {
-                var _List = repository.GetAll();
-
-                page = page ?? 1;
-                int _pageSize = 10;
-                int _pageNumber = (page ?? 1);
-                return View(_List.ToPagedList(_pageNumber, _pageSize));
-            }         
-            #endregion
+            
             //if page is null it's sets it as 1
             //page starts at null when 'Search' is pressed
             page = page ?? 1;

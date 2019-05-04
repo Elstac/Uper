@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LinqKit;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -14,39 +15,32 @@ namespace WebApp.Data.Specifications
 
         private static Expression<Func<TripDetails,bool>> GetCriteria(string StartCity,string DestCity,DateTime? MinDate,DateTime? MaxDate,float? Cost,bool Smoking)
         {
-
-            Expression<Func<TripDetails, bool>> criteria = c => true;
+            var pred = PredicateBuilder.New<TripDetails>(c => true);
             if (!String.IsNullOrWhiteSpace(StartCity))
             {
-                var com = criteria.Compile();
-                criteria = c => com(c) && c.StartingAddress.City.ToUpper() == StartCity.ToUpper();
+                pred = pred.And(c => c.StartingAddress.City.ToUpper() == StartCity.ToUpper());
             }
             if (!String.IsNullOrWhiteSpace(DestCity))
             {
-                var com = criteria.Compile();
-                criteria = c => com(c) && c.DestinationAddress.City.ToUpper() == DestCity.ToUpper();
+                pred = pred.And(c => c.DestinationAddress.City.ToUpper() == DestCity.ToUpper());
             }
             if (MinDate != null)
             {
-                var com = criteria.Compile();
-                criteria = c => com(c) && c.Date >= MinDate;
+                pred = pred.And(c => c.Date >= MinDate);
             }
             if (MaxDate != null)
             {
-                var com = criteria.Compile();
-                criteria = c => com(c) && c.Date <= MaxDate;
+                pred = pred.And(c => c.Date <= MaxDate);
             }
             if (Cost != null)
             {
-                var com = criteria.Compile();
-                criteria = c => com(c) && c.Cost <= Cost;
+                pred = pred.And(c => c.Cost == Cost);
             }
             if (Smoking)
             {
-                var com = criteria.Compile();
-                criteria = c => com(c) && c.IsSmokingAllowed == Smoking;
+                pred = pred.And(c => c.IsSmokingAllowed == Smoking);
             }
-            return criteria;
+            return pred;
         }
     }
 }
