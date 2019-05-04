@@ -21,6 +21,10 @@ namespace WebApp.Data.Specifications
         {
             Include = include;
         }
+        public IncludeChain(Expression<Func<IncludeT, ThenIncludeT>> include) : base() 
+        {
+            Include = include;
+        }
 
 
         public IncludeChain<IncludeT,ThenIncludeT> AddThenInclude(Expression<Func<ThenIncludeT, object>> thenInclude)

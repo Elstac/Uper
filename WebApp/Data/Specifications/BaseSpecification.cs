@@ -56,5 +56,11 @@ namespace WebApp.Data.Specifications
             IncludeManager.AddIncludeChain(ret);
             return ret;
         }
+        protected IncludeChain<T, IT> AddInclude<IT>(Expression<Func<T, IT>> includeExpression)
+        {
+            var ret = new IncludeChain<T, IT>(includeExpression);
+            IncludeManager.AddIncludeChain(ret);
+            return ret;
+        }
     }
 }
