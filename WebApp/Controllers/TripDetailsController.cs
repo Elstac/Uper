@@ -107,5 +107,20 @@ namespace WebApp.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ConfirmRequest(int tripId, string username)
+        {
+            var tu = tripUserRepository.GetList(new TripUserByUsernameAndTripId(tripId,username)) as List<TripUser>;
+
+            if (tu == null)
+                return BadRequest(new { error = "invalid user ot trip id" });
+
+            tu[0].Accepted = true;
+            tripUserRepository.Update(tu[0]);
+
+            return RedirectToAction("index", "TripDetails", new { id = tripId });
+        }
     }
 }
