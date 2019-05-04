@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LinqKit;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -8,45 +9,42 @@ namespace WebApp.Data.Specifications
 {
     public class TravelListSpecification : BaseSpecification<TripDetails>
     {
-        public TravelListSpecification(string StartCity, string DestCity, DateTime? MinDate, DateTime? MaxDate, float? Cost, bool Smoking)
-            : base(GetCriteria(StartCity, DestCity, MinDate, MaxDate, Cost, Smoking))
+        public TravelListSpecification(string StartCity, string DestCity, DateTime? MinDate, DateTime? MaxDate, float? Cost, bool Smoking,int? Seats)
+            : base(GetCriteria(StartCity, DestCity, MinDate, MaxDate, Cost, Smoking, Seats))
         { }
 
-        private static Expression<Func<TripDetails,bool>> GetCriteria(string StartCity,string DestCity,DateTime? MinDate,DateTime? MaxDate,float? Cost,bool Smoking)
+        private static Expression<Func<TripDetails,bool>> GetCriteria(string StartCity,string DestCity,DateTime? MinDate,DateTime? MaxDate,float? Cost,bool Smoking, int? Seats)
         {
-
-            Expression<Func<TripDetails, bool>> criteria = c => true;
+            var pred = PredicateBuilder.New<TripDetails>(c => true);
             if (!String.IsNullOrWhiteSpace(StartCity))
             {
-                var com = criteria.Compile();
-                criteria = c => com(c) && c.StartingAddress.City.ToUpper() == StartCity.ToUpper();
+                pred = pred.And(c => c.StartingAddress.City.ToUpper() == StartCity.ToUpper());
             }
             if (!String.IsNullOrWhiteSpace(DestCity))
             {
-                var com = criteria.Compile();
-                criteria = c => com(c) && c.DestinationAddress.City.ToUpper() == DestCity.ToUpper();
+                pred = pred.And(c => c.DestinationAddress.City.ToUpper() == DestCity.ToUpper());
             }
             if (MinDate != null)
             {
-                var com = criteria.Compile();
-                criteria = c => com(c) && c.Date >= MinDate;
+                pred = pred.And(c => c.Date >= MinDate);
             }
             if (MaxDate != null)
             {
-                var com = criteria.Compile();
-                criteria = c => com(c) && c.Date <= MaxDate;
+                pred = pred.And(c => c.Date <= MaxDate);
             }
             if (Cost != null)
             {
-                var com = criteria.Compile();
-                criteria = c => com(c) && c.Cost <= Cost;
+                pred = pred.And(c => c.Cost <= Cost);
+            }
+            if (Seats != null)
+            {
+                pred = pred.And(c => (c.Size - c.Passangers.Count()) >= Seats);
             }
             if (Smoking)
             {
-                var com = criteria.Compile();
-                criteria = c => com(c) && c.IsSmokingAllowed == Smoking;
+                pred = pred.And(c => c.IsSmokingAllowed == Smoking);
             }
-            return criteria;
+            return pred;
         }
     }
 }
