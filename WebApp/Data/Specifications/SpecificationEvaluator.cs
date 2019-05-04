@@ -7,7 +7,7 @@ namespace WebApp.Data.Specifications
     /// Generic class for applaying specification to given queries
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class SpecificationEvaluator<T>
+    public class SpecificationEvaluator<T>where T:class
     {
         /// <summary>
         /// Apply given specification to given query
@@ -18,11 +18,12 @@ namespace WebApp.Data.Specifications
         public static IEnumerable<T> EvaluateSpecification(IQueryable<T> query, ISpecification<T> specification)
         {
             var ret = query;
-
             if(specification.Criteria !=null)
             {
                 ret = ret.Where(specification.Criteria);
             }
+
+            ret = specification.IncludeManager.ApplyIncludeChains(ret);
 
             if (specification.Take != 0)
                 ret = ret.Take(specification.Take);

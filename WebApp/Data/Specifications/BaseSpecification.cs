@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace WebApp.Data.Specifications
 {
@@ -11,9 +9,11 @@ namespace WebApp.Data.Specifications
         public BaseSpecification(Expression<Func<T, bool>> criteria)
         {
             Criteria = criteria;
+            IncludeManager = new IncludeManager();
         }
 
         public Expression<Func<T, bool>> Criteria { get; }
+        public IncludeManager IncludeManager { get; }
 
         public Expression<Func<T, object>> OrderBy { get; private set; }
 
@@ -48,6 +48,13 @@ namespace WebApp.Data.Specifications
         {
             Take = take;
             Skip = skip; 
+        }
+
+        protected IncludeChain<T,IT> AddInclude<IT>(Expression<Func<T, IEnumerable<IT> >> includeExpression)
+        {
+            var ret = new IncludeChain<T,IT>(includeExpression);
+            IncludeManager.AddIncludeChain(ret);
+            return ret;
         }
     }
 }

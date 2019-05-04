@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
+using WebApp.Data.Specifications;
 
 namespace WebApp.Data
 {
@@ -13,6 +15,10 @@ namespace WebApp.Data
         /// Where clause in query
         /// </summary>
         Expression<Func<T,bool>> Criteria { get; }
+        /// <summary>
+        /// List of includesChains to apply to query
+        /// </summary>
+        IncludeManager IncludeManager { get; }
         /// <summary>
         /// Order by clause in query
         /// </summary>
