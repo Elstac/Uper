@@ -34,7 +34,7 @@ namespace WebApp.Data.Specifications
             }
             if (Cost != null)
             {
-                pred = pred.And(c => c.Cost == Cost);
+                pred = pred.And(c => c.Cost <= Cost);
             }
             if (Smoking)
             {
