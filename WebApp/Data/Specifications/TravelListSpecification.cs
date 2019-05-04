@@ -9,11 +9,11 @@ namespace WebApp.Data.Specifications
 {
     public class TravelListSpecification : BaseSpecification<TripDetails>
     {
-        public TravelListSpecification(string StartCity, string DestCity, DateTime? MinDate, DateTime? MaxDate, float? Cost, bool Smoking)
-            : base(GetCriteria(StartCity, DestCity, MinDate, MaxDate, Cost, Smoking))
+        public TravelListSpecification(string StartCity, string DestCity, DateTime? MinDate, DateTime? MaxDate, float? Cost, bool Smoking,int? Seats)
+            : base(GetCriteria(StartCity, DestCity, MinDate, MaxDate, Cost, Smoking, Seats))
         { }
 
-        private static Expression<Func<TripDetails,bool>> GetCriteria(string StartCity,string DestCity,DateTime? MinDate,DateTime? MaxDate,float? Cost,bool Smoking)
+        private static Expression<Func<TripDetails,bool>> GetCriteria(string StartCity,string DestCity,DateTime? MinDate,DateTime? MaxDate,float? Cost,bool Smoking, int? Seats)
         {
             var pred = PredicateBuilder.New<TripDetails>(c => true);
             if (!String.IsNullOrWhiteSpace(StartCity))
@@ -35,6 +35,10 @@ namespace WebApp.Data.Specifications
             if (Cost != null)
             {
                 pred = pred.And(c => c.Cost <= Cost);
+            }
+            if (Seats != null)
+            {
+                pred = pred.And(c => (c.Size - c.Passangers.Count()) >= Seats);
             }
             if (Smoking)
             {
