@@ -11,9 +11,11 @@ namespace WebApp.Data.Specifications
         public BaseSpecification(Expression<Func<T, bool>> criteria)
         {
             Criteria = criteria;
+            IncludeManager = new IncludeManager();
         }
 
         public Expression<Func<T, bool>> Criteria { get; }
+        public IncludeManager IncludeManager { get; }
 
         public Expression<Func<T, object>> OrderBy { get; private set; }
 
@@ -48,6 +50,17 @@ namespace WebApp.Data.Specifications
         {
             Take = take;
             Skip = skip; 
+        }
+
+        protected IncludeChain<T,IT> StartIncludeChain<IT>(Expression<Func<T, IEnumerable<IT> >> includeExpression)
+        {
+            var ret = new IncludeChain<T,IT>(includeExpression);
+            return ret;
+        }
+
+        protected void AddIncludeChain<IT>(IncludeChain<T, IT> includeChain)
+        {
+            IncludeManager.AddIncludeChain(includeChain);
         }
     }
 }
