@@ -50,15 +50,11 @@ namespace WebApp.Data.Specifications
             Skip = skip; 
         }
 
-        protected IncludeChain<T,IT> StartIncludeChain<IT>(Expression<Func<T, IEnumerable<IT> >> includeExpression)
+        protected IncludeChain<T,IT> AddInclude<IT>(Expression<Func<T, IEnumerable<IT> >> includeExpression)
         {
             var ret = new IncludeChain<T,IT>(includeExpression);
+            IncludeManager.AddIncludeChain(ret);
             return ret;
-        }
-
-        protected void AddIncludeChain<IT>(IncludeChain<T, IT> includeChain)
-        {
-            IncludeManager.AddIncludeChain(includeChain);
         }
     }
 }
