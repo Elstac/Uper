@@ -75,7 +75,7 @@ namespace WebApp.Controllers
             };
 
             tripUserRepository.Add(tripUser);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("index", "TripDetails", new { id });
         }
 
         [Authorize]
@@ -85,7 +85,7 @@ namespace WebApp.Controllers
         {
             tripUserRepository.RemoveTripUsers(id);
             tripDetailsRepository.Remove(tripDetailsRepository.GetById(id));
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("index", "TripDetails", new { id });
         }
 
         [Authorize]
@@ -94,7 +94,7 @@ namespace WebApp.Controllers
         public IActionResult Leave(int id)
         {
             tripUserRepository.RemoveUserFromTrip(id,accountManager.GetUserId(HttpContext.User));
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("index", "TripDetails", new { id });
         }
 
         [Authorize]
@@ -104,7 +104,7 @@ namespace WebApp.Controllers
         {
             List<TripUser> toRm = tripUserRepository.GetList(new TripUserByUsernameAndTripId(id,username)) as List<TripUser>;
             tripUserRepository.Remove(toRm[0]);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("index", "TripDetails", new { id });
         }
 
         [Authorize]
