@@ -61,20 +61,6 @@ namespace WebApp.Controllers
 
             var vm = generator.GetViewModel(id, viewerType);
 
-            #region Replacing PassengersUsernames which contains UserId instead of usernames which usernames 
-            //--------------------------------------------------------
-            if (viewerType != (ViewerType)0)
-            {
-                var x = vm.PassangersUsernames.ConvertAll(p => p);
-                vm.PassangersUsernames.Clear();
-                foreach (string uid in x)
-                {
-                    vm.PassangersUsernames.Add(applicationUserRepository.GetById(uid).UserName);
-                }
-            }
-            //---------------------------------------------------------
-            #endregion
-
             if (vm.DateEnd.CompareTo(DateTime.Now) <= 0) ViewBag.IsActive = false;
             else ViewBag.IsActive = true;
 
@@ -113,7 +99,7 @@ namespace WebApp.Controllers
             }
             tripUserRepository.RemoveTripUsers(id);
             tripDetailsRepository.Remove(td);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("index", "TripDetails", new { id });
         }
 
         [Authorize]

@@ -110,11 +110,19 @@ namespace WebApp.Controllers
         public IActionResult RateAndComment(string driverId,int tripId)
         {
             List<RatesAndComment> entry = ratesAndCommentRepository.GetList(new RatesAndCommentByTripIdAndUserId(accountManager.GetUserId(HttpContext.User), tripId)).ToList();
+            TripUser x = tripUserRepository.GetById((tripId, accountManager.GetUserId(HttpContext.User)));
+            
             if (entry.Count == 0)
             {
-                ViewBag.driverId = driverId;
-                ViewBag.tripId = tripId;
-                return View("RatesAndComment");
+                if (x.Accepted)
+                {
+                    ViewBag.driverId = driverId;
+                    ViewBag.tripId = tripId;
+                    return View("RatesAndComment");
+                }else
+                {
+                    return Content("You weren't passenger in this trip!!!");
+                }
             }
 
             return Content("You have already rated and commented this profile. You can rate and comment driver profile only once after every trip.");

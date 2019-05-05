@@ -128,7 +128,7 @@
                         <td><p>@username</p></td>
                         @if (type == ViewerType.Driver)
                         {
-                            <form asp-action="RemoveUserFromTrip" asp-controller="TripDetails" method="post" asp-route-id="@Model.TripId" asp-route-uname="@username" asp-antiforgery="true">
+                            <form asp-action="RemoveUserFromTrip" asp-controller="TripDetails" method="post" asp-route-id="@Model.TripId" asp-route-username="@username" asp-antiforgery="true">
                                 <td><input type="submit" value="Remove" class="btn btn-danger" /></td>
                             </form>
                         }
