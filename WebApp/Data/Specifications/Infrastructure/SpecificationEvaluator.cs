@@ -14,6 +14,13 @@ namespace WebApp.Data.Specifications.Infrastructure
     /// <typeparam name="T"></typeparam>
     public class SpecificationEvaluator<T> : ISpecificationEvaluator<T> where T:class
     {
+        private IIncludeManager includeManager;
+
+        public SpecificationEvaluator(IIncludeManager includeManager)
+        {
+            this.includeManager = includeManager;
+        }
+
         /// <summary>
         /// Apply given specification to given query
         /// </summary>
@@ -28,7 +35,7 @@ namespace WebApp.Data.Specifications.Infrastructure
                 ret = ret.Where(specification.Criteria);
             }
 
-            ret = specification.IncludeManager.ApplyIncludeChains(ret);
+            ret = includeManager.ApplyIncludeChains(ret,specification.IncludeChains);
 
             if (specification.Take != 0)
                 ret = ret.Take(specification.Take);
