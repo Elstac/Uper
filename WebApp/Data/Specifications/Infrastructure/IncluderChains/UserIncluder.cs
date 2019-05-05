@@ -7,7 +7,7 @@ namespace WebApp.Data.Specifications.Infrastructure
 {
     public class UserIncluder : BaseIncluder
     {
-        public UserIncluder(IIncluder next) : base(next)
+        public UserIncluder() : base()
         {
         }
 

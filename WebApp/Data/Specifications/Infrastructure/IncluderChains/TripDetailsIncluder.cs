@@ -7,7 +7,7 @@ namespace WebApp.Data.Specifications.Infrastructure
 {
     public class TripDetailsIncluder : BaseIncluder
     {
-        public TripDetailsIncluder(IIncluder next):base(next)
+        public TripDetailsIncluder():base()
         {
         }
 
