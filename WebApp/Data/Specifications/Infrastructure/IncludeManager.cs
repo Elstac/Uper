@@ -6,23 +6,21 @@ using System.Reflection;
 
 namespace WebApp.Data.Specifications.Infrastructure
 {
-    public class IncludeManager
+    public interface IIncludeManager
     {
-        private List<IncludeChain> includeChains;
+        IQueryable<T> ApplyIncludeChains<T>(IQueryable<T> query,List<IncludeChain> includeChains) where T : class;
+    }
+
+    public class IncludeManager :IIncludeManager
+    {
         private IIncluder chainStart;
 
         public IncludeManager(IIncludeChainProvider chainProvider)
         {
             chainStart = chainProvider.GetIncluder();
-            includeChains = new List<IncludeChain>();
         }
 
-        public void AddIncludeChain(IncludeChain includeChain)
-        {
-            includeChains.Add(includeChain);
-        }
-
-        public virtual IQueryable<T> ApplyIncludeChains<T>(IQueryable<T> query) where T:class
+        public virtual IQueryable<T> ApplyIncludeChains<T>(IQueryable<T> query, List<IncludeChain> includeChains) where T:class
         {
             var ret = query;
 
