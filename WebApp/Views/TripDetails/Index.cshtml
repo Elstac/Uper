@@ -4,10 +4,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/p5.js"></script>
 <script src="~/js/Map.js"></script>
 
-@if (ViewBag.IsActive == false)
+@if (ViewBag.IsActive.Equals("false"))
 {
     <div>
         <h1>The offer is closed.</h1>
+    </div>
+}
+@if (ViewBag.IsActive.Equals("ongoing"))
+{
+    <div>
+        <h1>The trip is ongoing.</h1>
     </div>
 }
 
@@ -110,7 +116,7 @@
         <button type="button" onclick="zoomOut()">ZoomOut</button>
     </div>
 }
-@if (ViewBag.IsActive == true)
+@if (ViewBag.IsActive.Equals("true"))
 {
     @if (type != ViewerType.Guest)
     {
