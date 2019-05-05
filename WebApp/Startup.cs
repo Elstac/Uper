@@ -19,6 +19,7 @@ using WebApp.Middlewares;
 using WebApp.Services;
 using WebApp.Models.EmailConfirmation;
 using WebApp.Models.FileManagement;
+using WebApp.Data.Specifications.Infrastructure;
 
 namespace WebApp
 {
@@ -110,6 +111,14 @@ namespace WebApp
             services.AddTransient<IFileRemover, FileRemover>();
             services.AddTransient<IFileManager, JsonImageManager>();
             services.AddTransient<IFileReader<string>, TextFileReader>();
+
+            services.AddSingleton<IIncludeChainProvider>(sp =>
+            {
+                return new IncludeChainProvider()
+                .AddChain(new TripDetailsIncluder())
+                .AddChain(new UserIncluder())
+                .AddChain(new TripUserCollectionIncluder());
+            });
 
             #region EmailConfirmation
             services.AddTransient<AccountConfirmationProvider>();
