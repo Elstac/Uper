@@ -18,7 +18,7 @@ namespace WebApp.Data.Specifications
         /// <summary>
         /// List of includesChains to apply to query
         /// </summary>
-        IncludeManager IncludeManager { get; }
+        List<IncludeChain> IncludeChains { get; }
         /// <summary>
         /// Order by clause in query
         /// </summary>
