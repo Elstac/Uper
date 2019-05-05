@@ -19,7 +19,9 @@ namespace WebApp.Data.Repositories
 
     public class TripDetailsRepository:BaseRepository<TripDetails,int>, ITripDetailsRepository
     {
-        public TripDetailsRepository(ApplicationContext context):base(context)
+        public TripDetailsRepository(ApplicationContext context
+            ,ISpecificationEvaluator<TripDetails> specificationEvaluator)
+            :base(context,specificationEvaluator)
         {
 
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApp.Data.Entities;
+using WebApp.Data.Specifications.Infrastructure;
 
 namespace WebApp.Data.Repositories
 {
@@ -17,7 +18,9 @@ namespace WebApp.Data.Repositories
 
     public class TripUserRepository : BaseRepository<TripUser, (int,string)>, ITripUserRepository
     {
-        public TripUserRepository(ApplicationContext context) : base(context)
+        public TripUserRepository(ApplicationContext context
+            ,ISpecificationEvaluator<TripUser> specificationEvaluator)
+            : base(context,specificationEvaluator)
         {
 
         }
