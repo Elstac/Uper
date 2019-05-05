@@ -1,0 +1,134 @@
+﻿@model IEnumerable<WebApp.Data.TripDetails>
+@{
+    ViewData["Title"] = "UserTravelOffersList";
+}
+
+    <h2>TravelOffers</h2>
+
+<table class="table">
+    <tr>
+        <td>
+            @Html.ActionLink(
+                                               linkText: "My travel offers",
+                                               actionName: "MyTravelOffers",
+                                               controllerName: "Profiles",
+                                               routeValues: new { },
+                                               htmlAttributes: new { })
+        </td>
+        <td>
+            @Html.ActionLink(
+                                               linkText: "My finished travel offers",
+                                               actionName: "MyFinishedTravelOffers",
+                                               controllerName: "Profiles",
+                                               routeValues: new { },
+                                               htmlAttributes: new { })
+        </td>
+        <td>
+            @Html.ActionLink(
+                                               linkText: "Joined travel offers",
+                                               actionName: "JoinedTravelOffers",
+                                               controllerName: "Profiles",
+                                               routeValues: new { },
+                                               htmlAttributes: new { })
+        </td>
+        <td>
+            @Html.ActionLink(
+                                               linkText: "Joined finished travel offers",
+                                               actionName: "JoinedFinishedTravelOffers",
+                                               controllerName: "Profiles",
+                                               routeValues: new { },
+                                               htmlAttributes: new { })
+        </td>
+    </tr>
+</table>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Starting City
+            </th>
+            <th>
+                Starting City Street
+            </th>
+            <th>
+                Destination City
+            </th>
+            <th>
+                Destination City Street
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DriverId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VechicleModel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Size)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateEnd)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsSmokingAllowed)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartingAddress.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartingAddress.Street)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DestinationAddress.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DestinationAddress.Street)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DriverId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cost)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VechicleModel)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Size)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateEnd)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsSmokingAllowed)
+                </td>
+                <td>
+                    <a asp-action="Index" asp-controller="TripDetails" asp-route-id="@item.Id">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

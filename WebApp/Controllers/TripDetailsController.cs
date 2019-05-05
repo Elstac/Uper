@@ -8,6 +8,7 @@ using System.Linq.Expressions;
 using WebApp.Data.Specifications;
 using System.Collections.Generic;
 using WebApp.Models.FileManagement;
+using System;
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebApp.Controllers
@@ -21,6 +22,7 @@ namespace WebApp.Controllers
         private IViewerTypeMapper viewerTypeMapper;
         private IApplicationUserRepository applicationUserRepository;
         private IFileReader<string> fileReader;
+        private IFileManager fileManager;
 
         public TripDetailsController(
             ITripDetailsViewModelProvider generator,
@@ -29,7 +31,8 @@ namespace WebApp.Controllers
             ITripDetailsRepository tripDetailsRepository,
             IViewerTypeMapper viewerTypeMapper, 
             IApplicationUserRepository applicationUserRepository,
-            IFileReader<string> fileReader)
+            IFileReader<string> fileReader,
+            IFileManager fileManager)
         {
             this.generator = generator;
             this.accountManager = accountManager;
@@ -38,6 +41,7 @@ namespace WebApp.Controllers
             this.viewerTypeMapper = viewerTypeMapper;
             this.applicationUserRepository = applicationUserRepository;
             this.fileReader = fileReader;
+            this.fileManager = fileManager;
         }
 
         /// <summary>
@@ -48,18 +52,24 @@ namespace WebApp.Controllers
         /// <returns>Details page</returns>
         public IActionResult Index(int id)
         {
+            #region Getting ViewerType
             var userid = accountManager.GetUserId(HttpContext.User);
             var user = applicationUserRepository.GetById(userid);
             var data = tripDetailsRepository.GetTripWithPassengersById(id);
             var viewerType = viewerTypeMapper.GetViewerType(user, data);
-
+            #endregion
 
             var vm = generator.GetViewModel(id, viewerType);
 
-            ViewData["type"] = viewerType;
+            if (vm.DateEnd.CompareTo(DateTime.Now) <= 0) ViewBag.IsActive = "false";
+            else if(vm.DateEnd.CompareTo(DateTime.Now) > 0 && vm.Date.CompareTo(DateTime.Now) <= 0)ViewBag.IsActive = "ongoing";
+            else ViewBag.IsActive ="true";
 
+            ViewData["type"] = viewerType;
             if (vm.MapPath != null)
                 ViewData["mapData"] = fileReader.ReadFileContent(vm.MapPath);
+
+
 
             return View(vm);
         }
@@ -83,8 +93,13 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Remove(int id)
         {
+            var td = tripDetailsRepository.GetById(id);
+            if (td.MapId != null)
+            {
+                fileManager.RemoveFile(td.MapId, "wwwroot/images/maps/");
+            }
             tripUserRepository.RemoveTripUsers(id);
-            tripDetailsRepository.Remove(tripDetailsRepository.GetById(id));
+            tripDetailsRepository.Remove(td);
             return RedirectToAction("index", "TripDetails", new { id });
         }
 
@@ -105,6 +120,7 @@ namespace WebApp.Controllers
             List<TripUser> toRm = tripUserRepository.GetList(new TripUserByUsernameAndTripId(id,username)) as List<TripUser>;
             tripUserRepository.Remove(toRm[0]);
             return RedirectToAction("index", "TripDetails", new { id });
+
         }
 
         [Authorize]

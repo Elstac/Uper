@@ -10,6 +10,7 @@ namespace WebApp.Data
         //public  DbSet<ApplicationUser> Users { get; set; }
         public DbSet<TripDetails> TripDetails { get; set; }
         public DbSet<TripUser> TripUser { get; set; }
+        public DbSet<RatesAndComment> RatesAndComment { get; set; }
         public ApplicationContext(DbContextOptions<ApplicationContext> options):base(options)
         {
             
@@ -26,6 +27,8 @@ namespace WebApp.Data
             BuildTripUserEntity(modelBuilder.Entity<TripUser>());
 
             modelBuilder.Entity<ApplicationUser>();
+            modelBuilder.Entity<RatesAndComment>();
+
         }
 
         private void BuildTripUserEntity(EntityTypeBuilder<TripUser> builder)
@@ -42,6 +45,7 @@ namespace WebApp.Data
 
             builder.Property(td => td.Accepted)
                 .HasDefaultValue(false);
+
         }
     }
 }

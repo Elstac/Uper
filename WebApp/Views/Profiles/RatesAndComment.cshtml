@@ -1,0 +1,37 @@
+﻿@model WebApp.ViewModels.RatesAndCommentViewModel
+@{
+    ViewData["Title"] = "RatesAndComment";
+
+}
+
+<h2>RateAndComment</h2>
+
+<form asp-action="RatesAndComment" asp-controller="Profiles" method="post" asp-antiforgery="true">
+    <div class="container">
+        <p><label for="DrivingSafety">Driving Safety Rating</label></p>
+        <p><input type="number" name="DrivingSafety" max="5" min="0" /></p>
+    </div>
+    <div class="container">
+        <p><label for="PersonalCulture">Personal Culture Rating</label></p>
+        <p><input type="number" name="PersonalCulture" max="5" min="0" /></p>
+    </div>
+    <div class="container">
+        <p><label for="Punctuality">Punctuality Rating</label></p>
+        <p><input type="number" name="Punctuality" max="5" min="0" /></p>
+    </div>
+    <div class="container">
+        <p><label for="Comment">Comment</label></p>
+        <p><textarea name="Comment" rows="4" cols="40"></textarea></p>
+    </div>
+    <div class="container">
+        <p><input type="hidden" name="DriverId" value="@ViewBag.driverId" /></p>
+    </div>
+    <div class="container">
+        <p><input type="hidden" name="TripId" value="@ViewBag.tripId" /></p>
+    </div>
+    <div class="container">
+        <input id="confirmBtn" type="submit" name="answer" value="Accept" class="btn btn-success" />
+        <input type="submit" name="answer" value="Decline" class="btn btn-danger" />
+    </div>
+
+</form>
