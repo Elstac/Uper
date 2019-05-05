@@ -4,6 +4,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/p5.js"></script>
 <script src="~/js/Map.js"></script>
 
+@if (ViewBag.IsActive == false)
+{
+    <div>
+        <h1>The offer is closed.</h1>
+    </div>
+}
+
 <div>
     <h1>Trip from @Model.StartingAddress.City to @Model.DestinationAddress.City </h1>
 </div>
@@ -13,7 +20,8 @@
                                                linkText: "View Driver Profile",
                                                actionName: "DriverProfile",
                                                controllerName: "Profiles",
-                                               routeValues: new {
+                                               routeValues: new
+                                                   {
                                                    driverId = Model.DriverId
                                                },
                                                htmlAttributes: new { })
