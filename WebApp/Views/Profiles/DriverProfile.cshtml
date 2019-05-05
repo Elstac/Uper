@@ -1,0 +1,71 @@
+﻿@model WebApp.ViewModels.DriverProfileViewModel
+@{
+    ViewData["Title"] = "DriverProfile";
+
+}
+
+<h2>DriverProfile</h2>
+
+<h2>Info:</h2>
+<p>Name: @Model.ApplicationUserViewModel.Name @Model.ApplicationUserViewModel.Surname</p>
+<p>UserName: @Model.ApplicationUserViewModel.UserName</p>
+<p>Email: @Model.ApplicationUserViewModel.Email</p>
+<p>PhoneNumber: @Model.ApplicationUserViewModel.PhoneNumber</p>
+<p>Description: @Model.ApplicationUserViewModel.Description</p>
+<p>Driving Safety Average Rates: @Model.DrivingSafetyAverage</p>
+<p>Personal Culture Average Rates: @Model.PersonalCultureAverage </p>
+<p>Punctuality Average Rates: @Model.PunctualityAverage</p>
+<p>Number of Votes: @Model.NumberOfVotes</p>
+
+<table style="table-layout: fixed; width: 100%">
+    <thead>
+        <tr>
+            <th>
+                Date
+            </th>
+            <th>
+                Username
+            </th>
+            <th>
+                Driving Safety Rate
+            </th>
+            <th>
+                Personal Culture Rate
+            </th>
+            <th>
+                Punctuality Rate
+            </th>
+            <th>
+                Comment
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model.RatesAndCommentList)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @ViewBag.Username
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DrivingSafety)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PersonalCulture)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Punctuality)
+                </td>
+                <td  style="word-wrap: break-word">
+                    @Html.DisplayFor(modelItem => item.Comment)
+                </td>
+            </tr>
+        }
+         </tbody>
+</table>
+
+   

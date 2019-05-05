@@ -23,7 +23,8 @@ namespace WebApp.Models
                 DateEnd = tripDetails.DateEnd,
                 IsSmokingAllowed = tripDetails.IsSmokingAllowed,
                 DestinationAddress = tripDetails.DestinationAddress,
-                StartingAddress = tripDetails.StartingAddress
+                StartingAddress = tripDetails.StartingAddress,
+                DriverId = tripDetails.DriverId
             };
 
             return ret;

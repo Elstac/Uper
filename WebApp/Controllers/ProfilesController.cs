@@ -4,10 +4,11 @@ using WebApp.Data.Repositories;
 using WebApp.Models;
 using WebApp.Data.Specifications;
 using WebApp.Data;
-using System.Globalization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WebApp.Data.Entities;
+using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
@@ -18,15 +19,21 @@ namespace WebApp.Controllers
         private IApplicationUserRepository repository;
         private ITripDetailsRepository tripDetailsRepository;
         private ITripUserRepository tripUserRepository;
+        private IRatesAndCommentRepository ratesAndCommentRepository;
 
-        public ProfilesController(IApplicationUserViewModelGenerator generator, IAccountManager accountManager,IApplicationUserRepository repository,
-            ITripDetailsRepository tripDetailsRepository, ITripUserRepository tripUserRepository)
+        public ProfilesController(
+            IApplicationUserViewModelGenerator generator,
+            IAccountManager accountManager,IApplicationUserRepository repository,
+            ITripDetailsRepository tripDetailsRepository, 
+            ITripUserRepository tripUserRepository, 
+            IRatesAndCommentRepository ratesAndCommentRepository)
         {
             this.generator = generator;
             this.accountManager = accountManager;
             this.repository = repository;
             this.tripDetailsRepository = tripDetailsRepository;
             this.tripUserRepository = tripUserRepository;
+            this.ratesAndCommentRepository = ratesAndCommentRepository;
         }
         [Authorize]
         public IActionResult MyProfile()
@@ -55,7 +62,7 @@ namespace WebApp.Controllers
             {
                 if (myTravelOffers[i].DateEnd.CompareTo(DateTime.Now) <= 0) myTravelOffers.RemoveAt(i--);
             }
-            return View("UserTravelOffersList", myTravelOffers);
+            return View("UserTravelOffersList", myTravelOffers.OrderByDescending(trip => trip.DateEnd));
         }
 
         [Authorize]
@@ -66,7 +73,7 @@ namespace WebApp.Controllers
             {
                 if (myTravelOffers[i].DateEnd.CompareTo(DateTime.Now) > 0) myTravelOffers.RemoveAt(i--);
             }
-            return View("UserTravelOffersList", myTravelOffers);
+            return View("UserTravelOffersList", myTravelOffers.OrderByDescending(trip => trip.DateEnd));
         }
 
         [Authorize]
@@ -80,9 +87,7 @@ namespace WebApp.Controllers
                 td = tripDetailsRepository.GetById(tu.TripId);
                 if (td.DateEnd.CompareTo(DateTime.Now) > 0) joinedTravelOffers.Add(td);
             }
-
-
-            return View("UserTravelOffersList", joinedTravelOffers);
+            return View("UserTravelOffersList", joinedTravelOffers.OrderByDescending(trip => trip.DateEnd));
         }
 
         [Authorize]
@@ -96,9 +101,78 @@ namespace WebApp.Controllers
                 td = tripDetailsRepository.GetById(tu.TripId);
                 if (td.DateEnd.CompareTo(DateTime.Now) <= 0) joinedTravelOffers.Add(td);
             }
+            return View("UserTravelOffersList", joinedTravelOffers.OrderByDescending(trip => trip.DateEnd));
+        }
+
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        [HttpPost]
+        public IActionResult RateAndComment(string driverId,int tripId)
+        {
+            List<RatesAndComment> entry = ratesAndCommentRepository.GetList(new RatesAndCommentByTripIdAndUserId(accountManager.GetUserId(HttpContext.User), tripId)).ToList();
+            if (entry.Count == 0)
+            {
+                ViewBag.driverId = driverId;
+                ViewBag.tripId = tripId;
+                return View("RatesAndComment");
+            }
+
+            return Content("You have already rated and commented this profile. You can rate and comment driver profile only once after every trip.");
+        }
+
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        [HttpPost]
+        public IActionResult RatesAndComment(RatesAndComment ratesAndComment, string answer)
+        {
+            if (!String.IsNullOrWhiteSpace(answer))
+            {
+                switch (answer)
+                {
+                    case "Accept":
+                        if (ModelState.IsValid && 
+                            ratesAndCommentRepository.GetList(new RatesAndCommentByTripIdAndUserId(accountManager.GetUserId(HttpContext.User), ratesAndComment.TripId)).ToList().Count == 0)
+                        {
+                            RatesAndComment rac = new RatesAndComment
+                            {
+                                PersonalCulture = ratesAndComment.PersonalCulture,
+                                DrivingSafety = ratesAndComment.DrivingSafety,
+                                Punctuality = ratesAndComment.Punctuality,
+                                Comment = ratesAndComment.Comment,
+                                Date = DateTime.Now,
+                                DriverId = ratesAndComment.DriverId,
+                                UserId = accountManager.GetUserId(HttpContext.User),
+                                TripId = ratesAndComment.TripId
+                            };
+
+                            ratesAndCommentRepository.Add(rac);
+                            return RedirectToAction("DriverProfile",new { ratesAndComment.DriverId });
+                        }
+                        else return Content("Error with rates. Please try again!");
+                case "Decline":
+                        return RedirectToAction("Index", "Home");
+                    default:
+                        return RedirectToAction("Index", "Home");
+                }
+            }
+            return RedirectToAction("Index", "Home");
+        }
+            
+    
 
 
-            return View("UserTravelOffersList", joinedTravelOffers);
+        [Authorize]
+        public IActionResult DriverProfile(string driverId)
+        {
+            ViewBag.Username = accountManager.GetUserName(HttpContext.User);
+            DriverProfileViewModel model = new DriverProfileViewModel
+            {
+            ApplicationUserViewModel = generator.ConvertAppUserToViewModel(repository.GetById(driverId)),
+            RatesAndCommentList = ratesAndCommentRepository.GetList(new RatesAndCommentByDriverId(driverId)).ToList()
+            };
+            model.SetAverages();
+
+            return View("DriverProfile",model);
         }
     }
 }

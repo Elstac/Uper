@@ -89,7 +89,6 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult ConfirmationPositive(string answer, TripCreatorViewModel model)
         {
-            if(model.IsSmokingAllowed);
             if (!String.IsNullOrWhiteSpace(answer))
             {
                 switch (answer)

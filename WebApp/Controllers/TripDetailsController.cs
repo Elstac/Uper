@@ -8,6 +8,7 @@ using System.Linq.Expressions;
 using WebApp.Data.Specifications;
 using System.Collections.Generic;
 using WebApp.Models.FileManagement;
+using System;
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebApp.Controllers
@@ -51,18 +52,37 @@ namespace WebApp.Controllers
         /// <returns>Details page</returns>
         public IActionResult Index(int id)
         {
+            #region Getting ViewerType
             var userid = accountManager.GetUserId(HttpContext.User);
             var user = applicationUserRepository.GetById(userid);
             var data = tripDetailsRepository.GetTripWithPassengersById(id);
             var viewerType = viewerTypeMapper.GetViewerType(user, data);
-
+            #endregion
 
             var vm = generator.GetViewModel(id, viewerType);
 
-            ViewData["type"] = viewerType;
+            #region Replacing PassengersUsernames which contains UserId instead of usernames which usernames 
+            //--------------------------------------------------------
+            if (viewerType != (ViewerType)0)
+            {
+                var x = vm.PassangersUsernames.ConvertAll(p => p);
+                vm.PassangersUsernames.Clear();
+                foreach (string uid in x)
+                {
+                    vm.PassangersUsernames.Add(applicationUserRepository.GetById(uid).UserName);
+                }
+            }
+            //---------------------------------------------------------
+            #endregion
 
+            if (vm.DateEnd.CompareTo(DateTime.Now) <= 0) ViewBag.IsActive = false;
+            else ViewBag.IsActive = true;
+
+             ViewData["type"] = viewerType;
             if (vm.MapPath != null)
                 ViewData["mapData"] = fileReader.ReadFileContent(vm.MapPath);
+
+
 
             return View(vm);
         }
@@ -113,6 +133,7 @@ namespace WebApp.Controllers
             List<TripUser> toRm = tripUserRepository.GetList(new TripUserByUsernameAndTripId(id,username)) as List<TripUser>;
             tripUserRepository.Remove(toRm[0]);
             return RedirectToAction("index", "TripDetails", new { id });
+
         }
 
         [Authorize]
