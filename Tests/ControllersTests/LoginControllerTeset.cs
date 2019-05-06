@@ -1,16 +1,10 @@
-﻿using Moq;
+﻿using Microsoft.AspNetCore.Mvc;
+using Moq;
 using WebApp.Controllers;
 using WebApp.Data;
-using WebApp.Data.Repositories;
-using WebApp.Data.Specifications;
-using WebApp.Models.EmailConfirmation;
-using Microsoft.AspNetCore.Mvc;
-using Xunit;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Http;
 using WebApp.Models;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
+using WebApp.Models.EmailConfirmation;
+using Xunit;
 
 namespace Tests.ControllersTests
 {
@@ -77,7 +71,6 @@ namespace Tests.ControllersTests
             var urlMock = new Mock<IUrlHelper>();
 
             var controller = new LoginController(accountMock.Object, factoryMock.Object);
-            controller.Url = urlMock.Object;
 
             var @out = await controller.SignInAsync("username", "password", "ret") as RedirectResult;
 
@@ -93,7 +86,6 @@ namespace Tests.ControllersTests
             var urlMock = new Mock<IUrlHelper>();
 
             var controller = new LoginController(accountMock.Object, factoryMock.Object);
-            controller.Url = urlMock.Object;
 
             var @out = await controller.SignInAsync("username", "password", returnUrl) as RedirectToRouteResult;
 
@@ -108,7 +100,6 @@ namespace Tests.ControllersTests
             var urlMock = new Mock<IUrlHelper>();
 
             var controller = new LoginController(accountMock.Object, factoryMock.Object);
-            controller.Url = urlMock.Object;
 
             var @out = controller.SignOut("ret") as RedirectResult;
 
@@ -124,7 +115,6 @@ namespace Tests.ControllersTests
             var urlMock = new Mock<IUrlHelper>();
 
             var controller = new LoginController(accountMock.Object, factoryMock.Object);
-            controller.Url = urlMock.Object;
 
             var @out = controller.SignOut(returnUrl) as RedirectToRouteResult;
 
