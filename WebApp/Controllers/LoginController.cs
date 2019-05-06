@@ -35,14 +35,9 @@ namespace WebApp.Controllers
 
         public IActionResult SignOut(string returnUrl)
         {
-            if (!accountManager.IsSignedIn(User))
-            {
-                Content("Co ty w ogole robisz wylogowujac sie nie bedac zalogowany lepiej przemysl swoje akcje");
-            }
-
             accountManager.SignOutAsync();
 
-            if (string.IsNullOrEmpty(returnUrl) || !Url.IsLocalUrl(returnUrl))
+            if (string.IsNullOrEmpty(returnUrl))
                 return RedirectToRoute("Home");
 
             return Redirect(returnUrl);
