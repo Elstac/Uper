@@ -10,7 +10,11 @@ namespace WebApp.Data.Specifications.Infrastructure
     {
         private IIncluder next;
 
-        public BaseIncluder(IIncluder next)
+        public BaseIncluder()
+        {
+        }
+
+        public void SetNext(IIncluder next)
         {
             this.next = next;
         }

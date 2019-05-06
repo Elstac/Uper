@@ -9,7 +9,7 @@ namespace WebApp.Data.Specifications.Infrastructure
 {
     public class TripUserCollectionIncluder : BaseIncluder
     {
-        public TripUserCollectionIncluder(IIncluder next) : base(next)
+        public TripUserCollectionIncluder() : base()
         {
         }
 

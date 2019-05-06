@@ -12,10 +12,14 @@ namespace WebApp.Data.Repositories
     public abstract class BaseRepository<EntityType,IdType> : IRepository<EntityType,IdType> where EntityType : class
     {
         protected ApplicationContext context;
+        private ISpecificationEvaluator specificationEvaluator;
         
-        public BaseRepository(ApplicationContext context)
+        public BaseRepository(
+            ApplicationContext context,
+            ISpecificationEvaluator specificationEvaluator)
         {
             this.context = context;
+            this.specificationEvaluator = specificationEvaluator;
         }
 
         public void Add(EntityType toAdd)
@@ -36,7 +40,7 @@ namespace WebApp.Data.Repositories
 
         public IEnumerable<EntityType> GetList(ISpecification<EntityType> specification)
         {
-            return SpecificationEvaluator<EntityType>.EvaluateSpecification(
+            return specificationEvaluator.EvaluateSpecification(
                 context.Set<EntityType>(),
                 specification);
         }

@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using WebApp.Data;
 using WebApp.Data.Repositories;
 using WebApp.Data.Specifications;
 using X.PagedList;
@@ -18,7 +16,14 @@ namespace WebApp.Controllers
         }
         /// <param name="Smoking">Smoker or non-Smoker</param>
         /// <param name="page">current page</param>
-        public IActionResult Index(string StartCity,string DestCity,DateTime? MinDate, DateTime? MaxDate,float? Cost,bool Smoking,int? page,int? Seats)
+        public IActionResult Index(
+            string StartCity,
+            string DestCity,
+            DateTime? MinDate, 
+            DateTime? MaxDate,
+            float? Cost,
+            bool Smoking,int?
+            page,int? Seats)
         {
             if (MaxDate != null && MinDate != null && MaxDate <= MinDate)
                 return Content("Wrong Date");
@@ -43,8 +48,8 @@ namespace WebApp.Controllers
             //page starts at null when 'Search' is pressed
             page = page ?? 1;
             
-            ISpecification<TripDetails> Specification = new TravelListSpecification(StartCity, DestCity, MinDate, MaxDate, Cost, Smoking,Seats);
-            var List = repository.GetListWithPassengers(Specification);
+            var List = repository.GetList(
+                new TravelListSpecification(StartCity, DestCity, MinDate, MaxDate, Cost, Smoking, Seats));
             
             // the number of elements displayed on a single page of list
             int pageSize = 10;

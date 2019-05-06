@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using WebApp.Data.Specifications.Infrastructure;
 
 namespace WebApp.Data.Repositories
 {
@@ -10,7 +11,10 @@ namespace WebApp.Data.Repositories
 
     public class ApplicationUserRepository : BaseRepository<ApplicationUser, string>, IApplicationUserRepository
     {
-        public ApplicationUserRepository(ApplicationContext context):base(context)
+        public ApplicationUserRepository(
+            ApplicationContext context
+            ,ISpecificationEvaluator specificationEvaluator)
+            :base(context,specificationEvaluator)
         {
 
         }

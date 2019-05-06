@@ -1,19 +1,42 @@
 ﻿using LinqKit;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
+using WebApp.Data.Entities;
 
 namespace WebApp.Data.Specifications
 {
     public class TravelListSpecification : BaseSpecification<TripDetails>
     {
-        public TravelListSpecification(string StartCity, string DestCity, DateTime? MinDate, DateTime? MaxDate, float? Cost, bool Smoking,int? Seats)
-            : base(GetCriteria(StartCity, DestCity, MinDate, MaxDate, Cost, Smoking, Seats))
-        { }
+        public TravelListSpecification(
+            string StartCity,
+            string DestCity,
+            DateTime? MinDate, 
+            DateTime? MaxDate,
+            float? Cost, 
+            bool Smoking,
+            int? Seats)
+            : base(
+                  GetCriteria(
+                StartCity,
+                DestCity,
+                MinDate,
+                MaxDate, 
+                Cost, Smoking,
+                Seats))
+        {
+            AddInclude<TripUser>(td => td.Passangers)
+                .AddThenInclude(tu => tu.User);
+        }
 
-        private static Expression<Func<TripDetails,bool>> GetCriteria(string StartCity,string DestCity,DateTime? MinDate,DateTime? MaxDate,float? Cost,bool Smoking, int? Seats)
+        private static Expression<Func<TripDetails,bool>> GetCriteria(
+            string StartCity,
+            string DestCity,
+            DateTime? MinDate,
+            DateTime? MaxDate,
+            float? Cost,
+            bool Smoking,
+            int? Seats)
         {
             var pred = PredicateBuilder.New<TripDetails>(c => true);
             if (!String.IsNullOrWhiteSpace(StartCity))
