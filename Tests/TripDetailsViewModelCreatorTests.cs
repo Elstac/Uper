@@ -26,7 +26,16 @@ namespace Tests
                         User = new ApplicationUser
                         {
                             UserName = "Piecia"
-                        }
+                        },
+                        Accepted =true
+                    },
+                    new TripUser
+                    {
+                        User = new ApplicationUser
+                        {
+                            UserName ="PieciaNotAccepted"
+                        },
+                        Accepted = false
                     }
                 },
                 Description = "des",
@@ -50,7 +59,7 @@ namespace Tests
         }
 
         [Fact]
-        public void ReturnViewModelWithPassangersListWhenUsedPassengerListDecorator()
+        public void ReturnViewModelWithConfirmedPassangersListWhenUsedPassengerListDecorator()
         {
             detailsCreator = new PassengerListDecorator(new TripDetailsCreator());
             var vm = detailsCreator.CreateViewModel(testModel);
@@ -62,9 +71,9 @@ namespace Tests
             Assert.Equal(testModel.Cost, vm.Cost);
 
             int i = 0;
-            foreach (var user in testModel.Passangers)
+            foreach (var userName in new string []{ "Piecia" })
             {
-                Assert.Equal(user.User.UserName, vm.PassangersUsernames[i++]);
+                Assert.Equal(userName, vm.PassangersUsernames[i++]);
             }
         }
     }
