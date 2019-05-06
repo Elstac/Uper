@@ -20,6 +20,8 @@ using WebApp.Services;
 using WebApp.Models.EmailConfirmation;
 using WebApp.Models.FileManagement;
 using WebApp.Data.Specifications.Infrastructure;
+using WebApp.AuthenticationPolicies;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp
 {
@@ -88,9 +90,15 @@ namespace WebApp
 
                 
             }
-            
-            #region SetupDI
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("test",
+                    policy => policy.Requirements.Add(new ConfirmedEmailRequirement()));
+            });
+
+            #region SetupDI
+            services.AddScoped<IAuthorizationHandler, ConfirmedEmailHandler>();
             services.AddTransient<ITripDetailsViewModelProvider, TripDetailsViewModelProvider>();
             services.AddTransient<IRatesAndCommentRepository, RatesAndCommentRepository>();
             services.AddTransient<ITripUserRepository, TripUserRepository>();
