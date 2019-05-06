@@ -117,7 +117,7 @@ namespace WebApp
             services.AddTransient<IFileWriter, TextFileWriter>();
             services.AddTransient<IFileIdProvider, FileIdProvider>();
             services.AddTransient<IFileRemover, FileRemover>();
-            services.AddTransient<IFileManager, JsonImageManager>();
+            services.AddTransient<IFileManager, JsonFileManager>();
             services.AddTransient<IFileReader<string>, TextFileReader>();
             services.AddTransient<ISpecificationEvaluator, SpecificationEvaluator>();
             services.AddTransient<IIncludeManager, IncludeManager>();

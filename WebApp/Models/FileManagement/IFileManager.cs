@@ -6,12 +6,12 @@
         string SaveFile(string fileData, string directory);
     }
 
-    public class JsonImageManager:IFileManager
+    public class JsonFileManager:IFileManager
     {
         private IFileSaver fileSaver;
         private IFileRemover imageRemover;
 
-        public JsonImageManager(IFileSaver fileSaver, IFileRemover imageRemover)
+        public JsonFileManager(IFileSaver fileSaver, IFileRemover imageRemover)
         {
             this.fileSaver = fileSaver;
             this.imageRemover = imageRemover;

@@ -3,9 +3,9 @@ using WebApp.Models.FileManagement;
 using Xunit;
 namespace Tests.ImageSavingTests
 {
-    public class FileManagerTests
+    public class JsonFileManagerTests
     {
-        private JsonImageManager imageManager;
+        private JsonFileManager imageManager;
         private Mock<IFileSaver> saverMock;
         private Mock<IFileRemover> removerMock;
 
