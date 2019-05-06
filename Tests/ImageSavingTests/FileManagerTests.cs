@@ -15,11 +15,11 @@ namespace Tests.ImageSavingTests
             saverMock = new Mock<IFileSaver>();
             removerMock = new Mock<IFileRemover>();
 
-            imageManager = new JsonImageManager(saverMock.Object, removerMock.Object);
+            imageManager = new JsonFileManager(saverMock.Object, removerMock.Object);
 
             imageManager.SaveFile("data", "test/");
 
-            saverMock.Verify(sm => sm.SaveImage("data", ".png", "test/"));
+            saverMock.Verify(sm => sm.SaveImage("data", ".json", "test/"));
         }
 
         [Fact]
@@ -28,11 +28,11 @@ namespace Tests.ImageSavingTests
             saverMock = new Mock<IFileSaver>();
             removerMock = new Mock<IFileRemover>();
 
-            imageManager = new JsonImageManager(saverMock.Object, removerMock.Object);
+            imageManager = new JsonFileManager(saverMock.Object, removerMock.Object);
 
             imageManager.RemoveFile("id", "test/");
 
-            removerMock.Verify(sm => sm.RemoveImage("id","test/",".png"));
+            removerMock.Verify(sm => sm.RemoveImage("id","test/",".json"));
         }
 
         [Fact]
@@ -47,7 +47,7 @@ namespace Tests.ImageSavingTests
 
             removerMock = new Mock<IFileRemover>();
 
-            imageManager = new JsonImageManager(saverMock.Object, removerMock.Object);
+            imageManager = new JsonFileManager(saverMock.Object, removerMock.Object);
 
             var id = imageManager.SaveFile("data", "test/");
 
