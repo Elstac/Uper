@@ -111,6 +111,8 @@ namespace WebApp
             services.AddTransient<IFileRemover, FileRemover>();
             services.AddTransient<IFileManager, JsonImageManager>();
             services.AddTransient<IFileReader<string>, TextFileReader>();
+            services.AddTransient<ISpecificationEvaluator, SpecificationEvaluator>();
+            services.AddTransient<IIncludeManager, IncludeManager>();
 
             services.AddSingleton<IIncludeChainProvider>(sp =>
             {
