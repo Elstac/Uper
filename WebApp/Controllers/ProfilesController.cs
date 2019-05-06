@@ -105,50 +105,44 @@ namespace WebApp.Controllers
         [Authorize]
         public IActionResult MyTravelOffers()
         {
-            List<TripDetails> myTravelOffers = tripDetailsRepository.GetList(new TripDetailsByDriverId(accountManager.GetUserId(HttpContext.User))).ToList(); ;
-            for(int i =0;i<myTravelOffers.Count;i++)
-            {
-                if (myTravelOffers[i].DateEnd.CompareTo(DateTime.Now) <= 0) myTravelOffers.RemoveAt(i--);
-            }
+            List<TripDetails> myTravelOffers = tripDetailsRepository.GetList(new TripDetailsByDriverIdAndDateEndHigherThanDateNow(accountManager.GetUserId(HttpContext.User))).ToList(); ;
             return View("UserTravelOffersList", myTravelOffers.OrderByDescending(trip => trip.DateEnd));
         }
 
         [Authorize]
         public IActionResult MyFinishedTravelOffers()
         {
-            List<TripDetails> myTravelOffers = tripDetailsRepository.GetList(new TripDetailsByDriverId(accountManager.GetUserId(HttpContext.User))).ToList(); ;
-            for (int i = 0; i < myTravelOffers.Count; i++)
-            {
-                if (myTravelOffers[i].DateEnd.CompareTo(DateTime.Now) > 0) myTravelOffers.RemoveAt(i--);
-            }
+            List<TripDetails> myTravelOffers = tripDetailsRepository.GetList(new TripDetailsByDriverIdAndDateEndLowerThanDateNow(accountManager.GetUserId(HttpContext.User))).ToList(); ;
             return View("UserTravelOffersList", myTravelOffers.OrderByDescending(trip => trip.DateEnd));
         }
 
         [Authorize]
         public IActionResult JoinedTravelOffers()
         {
-            var tripUser = tripUserRepository.GetList(new TripUserByUserId(accountManager.GetUserId(HttpContext.User)));
-            List<TripDetails> joinedTravelOffers = new List<TripDetails>();
+            var tripUsers = tripUserRepository.GetList(new TripUserByUserId(accountManager.GetUserId(HttpContext.User)));
+            List<TripDetails> joinedTravelOffers = tripDetailsRepository.GetList(new TripDetailsByListOfTripUserAndDateEndHigherThanDateNow(tripUsers.ToList())).ToList();
+            /*new List<TripDetails>();
             TripDetails td;
             foreach(var tu in tripUser)
             {
                 td = tripDetailsRepository.GetById(tu.TripId);
                 if (td.DateEnd.CompareTo(DateTime.Now) > 0) joinedTravelOffers.Add(td);
-            }
+            }*/
             return View("UserTravelOffersList", joinedTravelOffers.OrderByDescending(trip => trip.DateEnd));
         }
 
         [Authorize]
         public IActionResult JoinedFinishedTravelOffers()
         {
-            var tripUser = tripUserRepository.GetList(new TripUserByUserId(accountManager.GetUserId(HttpContext.User)));
-            List<TripDetails> joinedTravelOffers = new List<TripDetails>();
-            TripDetails td;
-            foreach (var tu in tripUser)
-            {
-                td = tripDetailsRepository.GetById(tu.TripId);
-                if (td.DateEnd.CompareTo(DateTime.Now) <= 0) joinedTravelOffers.Add(td);
-            }
+            var tripUsers = tripUserRepository.GetList(new TripUserByUserId(accountManager.GetUserId(HttpContext.User)));
+            List<TripDetails> joinedTravelOffers = tripDetailsRepository.GetList(new TripDetailsByListOfTripUserAndDateEndLowerThanDateNow(tripUsers.ToList())).ToList();
+            /*= new List<TripDetails>();
+        TripDetails td;
+        foreach (var tu in tripUser)
+        {
+            td = tripDetailsRepository.GetById(tu.TripId);
+            if (td.DateEnd.CompareTo(DateTime.Now) <= 0) joinedTravelOffers.Add(td);
+        }*/
             return View("UserTravelOffersList", joinedTravelOffers.OrderByDescending(trip => trip.DateEnd));
         }
 
@@ -179,7 +173,7 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         [Authorize]
         [HttpPost]
-        public IActionResult RatesAndComment(RatesAndComment ratesAndComment, string answer)
+        public IActionResult RatesAndComment(RatesAndCommentViewModel ratesAndComment, string answer)
         {
             if (!String.IsNullOrWhiteSpace(answer))
             {
