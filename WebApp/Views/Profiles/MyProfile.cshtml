@@ -1,5 +1,19 @@
 ﻿@model WebApp.ViewModels.ApplicationUserViewModel
 @inject IAccountManager  AccountManager
+@if (!Model.Confirmed)
+{
+    <div class="account-cnf-rem">
+        <p >
+            Your email address need confirmation.
+            @Html.ActionLink(
+            linkText: "Use this link",
+            actionName: "SendConfirmationEmail",
+            controllerName:"EmailConfirm",
+            routeValues: new { returnUrl = $"{Context.Request.Host + Context.Request.Path}" })
+            to send confirmation email again.
+        </p>
+    </div>
+}
 <head>
     <h1>UserProfile</h1>
 </head>
