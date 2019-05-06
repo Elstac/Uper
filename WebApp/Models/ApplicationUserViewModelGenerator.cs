@@ -34,7 +34,8 @@ namespace WebApp.Models
                 PhoneNumber = AppUser.PhoneNumber,
                 Rating = AppUser.Rating,
                 NumOfVotes = AppUser.NumOfVote,
-                Description = AppUser.Description
+                Description = AppUser.Description,
+                Confirmed = AppUser.EmailConfirmed
             };
             return ret;
         }
