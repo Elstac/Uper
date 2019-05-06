@@ -3,16 +3,16 @@ using System.Linq;
 
 namespace WebApp.Data.Specifications.Infrastructure
 {
-    public interface ISpecificationEvaluator<T> where T : class
+    public interface ISpecificationEvaluator
     {
-        IEnumerable<T> EvaluateSpecification(IQueryable<T> query, ISpecification<T> specification);
+        IEnumerable<T> EvaluateSpecification<T>(IQueryable<T> query, ISpecification<T> specification) where T : class;
     }
 
     /// <summary>
     /// Generic class for applaying specification to given queries
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class SpecificationEvaluator<T> : ISpecificationEvaluator<T> where T:class
+    public class SpecificationEvaluator : ISpecificationEvaluator
     {
         private IIncludeManager includeManager;
 
@@ -27,7 +27,7 @@ namespace WebApp.Data.Specifications.Infrastructure
         /// <param name="query">Base query</param>
         /// <param name="specification">Specification to apply</param>
         /// <returns>New query containing specification</returns>
-        public IEnumerable<T> EvaluateSpecification(IQueryable<T> query, ISpecification<T> specification)
+        public IEnumerable<T> EvaluateSpecification<T>(IQueryable<T> query, ISpecification<T> specification) where T:class
         {
             var ret = query;
             if(specification.Criteria !=null)

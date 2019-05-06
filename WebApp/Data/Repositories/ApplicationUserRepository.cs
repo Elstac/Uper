@@ -13,7 +13,7 @@ namespace WebApp.Data.Repositories
     {
         public ApplicationUserRepository(
             ApplicationContext context
-            ,ISpecificationEvaluator<ApplicationUser> specificationEvaluator)
+            ,ISpecificationEvaluator specificationEvaluator)
             :base(context,specificationEvaluator)
         {
 

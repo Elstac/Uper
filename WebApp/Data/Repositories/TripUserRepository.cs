@@ -19,7 +19,7 @@ namespace WebApp.Data.Repositories
     public class TripUserRepository : BaseRepository<TripUser, (int,string)>, ITripUserRepository
     {
         public TripUserRepository(ApplicationContext context
-            ,ISpecificationEvaluator<TripUser> specificationEvaluator)
+            ,ISpecificationEvaluator specificationEvaluator)
             : base(context,specificationEvaluator)
         {
 

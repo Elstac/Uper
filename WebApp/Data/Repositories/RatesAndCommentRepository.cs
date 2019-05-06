@@ -13,7 +13,7 @@ namespace WebApp.Data.Repositories
     {
         public RatesAndCommentRepository(
             ApplicationContext context
-            ,ISpecificationEvaluator<RatesAndComment> specificationEvaluator) 
+            ,ISpecificationEvaluator specificationEvaluator) 
             : base(context,specificationEvaluator)
         {
 

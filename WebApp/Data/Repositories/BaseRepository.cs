@@ -12,11 +12,11 @@ namespace WebApp.Data.Repositories
     public abstract class BaseRepository<EntityType,IdType> : IRepository<EntityType,IdType> where EntityType : class
     {
         protected ApplicationContext context;
-        private ISpecificationEvaluator<EntityType> specificationEvaluator;
+        private ISpecificationEvaluator specificationEvaluator;
         
         public BaseRepository(
             ApplicationContext context,
-            ISpecificationEvaluator<EntityType> specificationEvaluator)
+            ISpecificationEvaluator specificationEvaluator)
         {
             this.context = context;
             this.specificationEvaluator = specificationEvaluator;
