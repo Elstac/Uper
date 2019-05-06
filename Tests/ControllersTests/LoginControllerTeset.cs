@@ -69,6 +69,36 @@ namespace Tests.ControllersTests
             Assert.Equal("email", createdUser.Email);
         }
 
+        [Fact]
+        public async void RedirectToReturnUrlAfterSuccesfulSignin()
+        {
+            var accountMock = new Mock<IAccountManager>();
+            var factoryMock = new Mock<IAccountEmailConfirmatorFactory>();
+            var urlMock = new Mock<IUrlHelper>();
+
+            var controller = new LoginController(accountMock.Object, factoryMock.Object);
+            controller.Url = urlMock.Object;
+
+            var @out = await controller.SignInAsync("username", "password", "ret") as RedirectResult;
+
+            Assert.Equal("ret", @out.Url);
+        }
+
+        [Theory]
+        [InlineData(null)]
+        public async void RedirectToHomeRouteAfterSuccesfulSigninWithIncorrectReturnUrl(string returnUrl)
+        {
+            var accountMock = new Mock<IAccountManager>();
+            var factoryMock = new Mock<IAccountEmailConfirmatorFactory>();
+            var urlMock = new Mock<IUrlHelper>();
+
+            var controller = new LoginController(accountMock.Object, factoryMock.Object);
+            controller.Url = urlMock.Object;
+
+            var @out = await controller.SignInAsync("username", "password", returnUrl) as RedirectToRouteResult;
+
+            Assert.Equal("Home", @out.RouteName);
+        }
         //[Fact]
         //public async void CreateActionLinkToPasswordResetControllerAfterCreatingAccount()
         //{
@@ -90,7 +120,7 @@ namespace Tests.ControllersTests
         //        It.IsAny<string>()))
         //        .Returns("actionlink")
         //        .Verifiable();
-            
+
         //    var controller = new LoginController(accountMock.Object, factoryMock.Object);
         //    controller.ControllerContext.HttpContext = httpContext.Object;
         //    controller.Url = urlMock.Object;
