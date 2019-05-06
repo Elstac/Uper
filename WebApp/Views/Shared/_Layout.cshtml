@@ -22,6 +22,7 @@
         UPER
     </header>
     <nav>
+        @{ var returnUrl = "https://"+Context.Request.Host + Context.Request.Path;}
         @Html.ActionLink("Home", "index", "Home")@{} <font color="pink"> | </font>
         @Html.ActionLink("Travel List","Index","TravelList")@{} <font color="pink"> | </font>
         @Html.ActionLink("My Profile", "MyProfile", "Profiles")@{} <font color="pink"> | </font>
@@ -32,7 +33,16 @@
         }
         else
         {
-            <span style="float:right;color:pink">@Html.ActionLink("Log in", "SignIn", "Login") | No account? @Html.ActionLink("Register", "Register", "Login")</span>
+            <span style="float:right;color:pink">@Html.ActionLink(
+                                                "Log in",
+                                                "SignIn",
+                                                "Login",
+                                                routeValues:new { returnUrl }) | No account? @Html.ActionLink(
+                                                                                                            "Register",
+                                                                                                            "Register",
+                                                                                                            "Login",
+                                                                                                            routeValues: new {returnUrl })
+        </span>
         }
 
     </nav>  
