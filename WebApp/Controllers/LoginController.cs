@@ -43,7 +43,7 @@ namespace WebApp.Controllers
             accountManager.SignOutAsync();
 
             if (string.IsNullOrEmpty(returnUrl) || !Url.IsLocalUrl(returnUrl))
-                return RedirectToAction("index", "home");
+                return RedirectToRoute("Home");
 
             return Redirect(returnUrl);
         }
@@ -62,7 +62,7 @@ namespace WebApp.Controllers
             }
 
             if(string.IsNullOrEmpty(returnUrl))
-                return RedirectToAction("index","home");
+                return RedirectToRoute("Home");
 
             return Redirect(returnUrl);
         }
