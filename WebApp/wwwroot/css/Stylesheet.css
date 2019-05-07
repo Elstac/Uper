@@ -22,3 +22,20 @@ footer{
     background-color:lightpink;
     padding: 5px;
 }
+
+div.account-cnf-rem {
+    margin: 4px;
+    background-color: pink;
+    border-style: solid;
+    border-color: darkred;
+}
+
+div.account-cnf-rem > p {
+    margin: auto;
+    padding-left: 5px;
+    color: mediumorchid;
+}
+
+div.account-cnf-rem >p> a {
+    color: crimson;
+}
