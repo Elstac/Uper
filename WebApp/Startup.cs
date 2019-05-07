@@ -237,7 +237,7 @@ namespace WebApp
 
                 routes.MapRoute(
                     name: "Home",
-                    template: "Home/Index/{id}/{type}",
+                    template: "Home/Index",
                     defaults: new { controller = "Home", action = "Index" });
 
                 routes.MapRoute(

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -34,15 +35,10 @@ namespace WebApp.Controllers
 
         public IActionResult SignOut(string returnUrl)
         {
-            if (!accountManager.IsSignedIn(User))
-            {
-                Content("Co ty w ogole robisz wylogowujac sie nie bedac zalogowany lepiej przemysl swoje akcje");
-            }
-
             accountManager.SignOutAsync();
 
-            if (string.IsNullOrEmpty(returnUrl) || !Url.IsLocalUrl(returnUrl))
-                return RedirectToAction("index", "home");
+            if (string.IsNullOrEmpty(returnUrl))
+                return RedirectToRoute("Home");
 
             return Redirect(returnUrl);
         }
@@ -60,8 +56,8 @@ namespace WebApp.Controllers
                 return Content(e.Message, "text/html");
             }
 
-            if(string.IsNullOrEmpty(returnUrl)||!Url.IsLocalUrl(returnUrl))
-                return RedirectToAction("index","home");
+            if(string.IsNullOrEmpty(returnUrl))
+                return RedirectToRoute("Home");
 
             return Redirect(returnUrl);
         }
@@ -83,10 +79,10 @@ namespace WebApp.Controllers
                 return Content(e.Message, "text/html");
             }
 
-            var url =Url.Action("ConfirmAccount","Login",new { },Request.Scheme);
+            var url = Url.Action("ConfirmAccount", "Login", new { }, Request.Scheme);
 
             await accountConfirmatorFactory.CreateCofirmationSender()
-                .SendConfirmationEmailAsync(user.Id, url,user.UserName);
+                .SendConfirmationEmailAsync(user.Id, url, user.UserName);
 
             return Content("Account created succesfully check email","text/html");
         }

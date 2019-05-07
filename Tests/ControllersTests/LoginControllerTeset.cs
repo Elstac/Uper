@@ -1,16 +1,10 @@
-﻿using Moq;
+﻿using Microsoft.AspNetCore.Mvc;
+using Moq;
 using WebApp.Controllers;
 using WebApp.Data;
-using WebApp.Data.Repositories;
-using WebApp.Data.Specifications;
-using WebApp.Models.EmailConfirmation;
-using Microsoft.AspNetCore.Mvc;
-using Xunit;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Http;
 using WebApp.Models;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
+using WebApp.Models.EmailConfirmation;
+using Xunit;
 
 namespace Tests.ControllersTests
 {
@@ -69,65 +63,62 @@ namespace Tests.ControllersTests
             Assert.Equal("email", createdUser.Email);
         }
 
-        //[Fact]
-        //public async void CreateActionLinkToPasswordResetControllerAfterCreatingAccount()
-        //{
-        //    var accountMock = new Mock<IAccountManager>();
+        [Fact]
+        public async void RedirectToReturnUrlAfterSuccesfulSignin()
+        {
+            var accountMock = new Mock<IAccountManager>();
+            var factoryMock = new Mock<IAccountEmailConfirmatorFactory>();
+            var urlMock = new Mock<IUrlHelper>();
 
-        //    var senderMock = new Mock<IEmailConfirmationSender>();
-        //    var factoryMock = new Mock<IAccountEmailConfirmatorFactory>();
-        //    factoryMock.Setup(fm => fm.CreateCofirmationSender())
-        //        .Returns(senderMock.Object);
+            var controller = new LoginController(accountMock.Object, factoryMock.Object);
 
-        //    var requestMock = new Mock<HttpRequest>();
-        //    var httpContext = new Mock<HttpContext>();
-        //    httpContext.Setup(hm => hm.Request).Returns(requestMock.Object);
-        //    var urlMock = new Mock<IUrlHelper>();
-        //    urlMock.Setup(um => um.Action(
-        //        "ConfirmAccount",
-        //        "Login",
-        //        It.IsAny<object>(),
-        //        It.IsAny<string>()))
-        //        .Returns("actionlink")
-        //        .Verifiable();
-            
-        //    var controller = new LoginController(accountMock.Object, factoryMock.Object);
-        //    controller.ControllerContext.HttpContext = httpContext.Object;
-        //    controller.Url = urlMock.Object;
+            var @out = await controller.SignInAsync("username", "password", "ret") as RedirectResult;
 
-        //    await controller.RegisterAsync("username", "password", "email");
+            Assert.Equal("ret", @out.Url);
+        }
 
-        //    urlMock.Verify();
-        //}
+        [Theory]
+        [InlineData(null)]
+        public async void RedirectToHomeRouteAfterSuccesfulSigninWithIncorrectReturnUrl(string returnUrl)
+        {
+            var accountMock = new Mock<IAccountManager>();
+            var factoryMock = new Mock<IAccountEmailConfirmatorFactory>();
+            var urlMock = new Mock<IUrlHelper>();
 
-        //[Fact]
-        //public async void SendEmailAfterSuccededRegirestration()
-        //{
-        //    var accountMock = new Mock<IAccountManager>();
+            var controller = new LoginController(accountMock.Object, factoryMock.Object);
 
-        //    var senderMock = new Mock<IEmailConfirmationSender>();
-        //    var factoryMock = new Mock<IAccountEmailConfirmatorFactory>();
-        //    factoryMock.Setup(fm => fm.CreateCofirmationSender())
-        //        .Returns(senderMock.Object);
+            var @out = await controller.SignInAsync("username", "password", returnUrl) as RedirectToRouteResult;
 
-        //    var requestMock = new Mock<HttpRequest>();
-        //    var httpContext = new Mock<HttpContext>();
-        //    httpContext.Setup(hm => hm.Request).Returns(requestMock.Object);
-        //    var urlMock = new Mock<IUrlHelper>();
-        //    urlMock.Setup(um => um.Action(
-        //        It.IsAny<string>(),
-        //        It.IsAny<string>(),
-        //        It.IsAny<object>(),
-        //        It.IsAny<string>()))
-        //        .Returns("actionlink");
+            Assert.Equal("Home", @out.RouteName);
+        }
 
-        //    var controller = new LoginController(accountMock.Object, factoryMock.Object);
-        //    controller.ControllerContext.HttpContext = httpContext.Object;
-        //    controller.Url = urlMock.Object;
+        [Fact]
+        public void RedirectToReturnUrlAfterSuccesfulSignout()
+        {
+            var accountMock = new Mock<IAccountManager>();
+            var factoryMock = new Mock<IAccountEmailConfirmatorFactory>();
+            var urlMock = new Mock<IUrlHelper>();
 
-        //    await controller.RegisterAsync("username", "password", "email");
+            var controller = new LoginController(accountMock.Object, factoryMock.Object);
 
-        //    senderMock.Verify(sm => sm.SendConfirmationEmailAsync(It.IsAny<string>(),"actionlink"), Times.Once);
-        //}
+            var @out = controller.SignOut("ret") as RedirectResult;
+
+            Assert.Equal("ret", @out.Url);
+        }
+
+        [Theory]
+        [InlineData(null)]
+        public void RedirectToHomeRouteAfterSuccesfulSignOutWithIncorrectReturnUrl(string returnUrl)
+        {
+            var accountMock = new Mock<IAccountManager>();
+            var factoryMock = new Mock<IAccountEmailConfirmatorFactory>();
+            var urlMock = new Mock<IUrlHelper>();
+
+            var controller = new LoginController(accountMock.Object, factoryMock.Object);
+
+            var @out = controller.SignOut(returnUrl) as RedirectToRouteResult;
+
+            Assert.Equal("Home", @out.RouteName);
+        }
     }
 }
