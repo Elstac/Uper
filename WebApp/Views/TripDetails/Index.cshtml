@@ -158,20 +158,31 @@
             <div class="requestsList">
                 <h2>Join requests</h2>
                 <table>
-                    <thead>
-                        <tr>
-                            <th>Username</th>
-                        </tr>
-                    </thead>
-                    @foreach (var username in Model.RequestsUsernames)
+                    @if (Model.RequestsUsernames != null && Model.RequestsUsernames.Count != 0)
+                    {
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                            </tr>
+                        </thead>
+                        @foreach (var username in Model.RequestsUsernames)
+                        {
+                            <tr>
+                                <td><p>@username</p></td>
+                                <form asp-action="ConfirmRequest" asp-controller="TripDetails" method="post" asp-route-tripId="@Model.TripId" asp-route-username="@username" asp-antiforgery="true">
+
+                                    <td><input type="submit" value="Confirm" /></td>
+
+                                </form>
+                            </tr>
+                        }
+                    }
+                    else
                     {
                         <tr>
-                            <td><p>@username</p></td>
-                            <form asp-action="ConfirmRequest" asp-controller="TripDetails" method="post" asp-route-tripId="@Model.TripId" asp-route-username="@username" asp-antiforgery="true">
-
-                                <td><input type="submit" value="Confirm" /></td>
-
-                            </form>
+                            <td rowspan="2">
+                                <p>No join requests</p>
+                            </td>
                         </tr>
                     }
                 </table>
