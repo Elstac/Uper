@@ -26,19 +26,16 @@ namespace WebApp.Models
         private SignInManager<ApplicationUser> signInManager;
         private IIdentityResultErrorHtmlCreator errorCreator;
         private IEmailAddressValidator validator;
-        private IPasswordValidator<ApplicationUser> passwordValidator;
 
         public AccountManager(UserManager<ApplicationUser> userManager,
                               SignInManager<ApplicationUser> signInManager,
                               IIdentityResultErrorHtmlCreator errorCreator,
-                              IEmailAddressValidator validator,
-                              IPasswordValidator<ApplicationUser> passwordValidator)
+                              IEmailAddressValidator validator)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.errorCreator = errorCreator;
             this.validator = validator;
-            this.passwordValidator = passwordValidator;
         }
 
         public async Task CreateAccountAsync(ApplicationUser user,string password)
@@ -99,8 +96,7 @@ namespace WebApp.Models
 
         public IdentityResult ValidatePassword(ApplicationUser user, string password)
         {
-            var result = passwordValidator.ValidateAsync(userManager,user,password);
-
+            var result = userManager.PasswordValidators[1].ValidateAsync(userManager, user, password);
             return result.Result;
         }
     }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApp.Data;
 using WebApp.Data.Repositories;
 using WebApp.Models;
 using WebApp.Data.Specifications;
@@ -43,9 +44,56 @@ namespace WebApp.Controllers
             return View(vm);        
         }
 
-        public IActionResult UnloggedException()
+        [Authorize]
+        [HttpGet]
+        public IActionResult ProfileEdit()
         {
-            return View();
+            return View(new ProfileEditViewModel(""));
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult ProfileEdit(string Name,string Surname,string Description,string OldPassword,string NewPassword,string AnsString)
+        {
+            if (AnsString == "Cancel")
+                return View(new ProfileEditViewModel("Cancel"));
+
+            if (OldPassword == null && NewPassword != null || OldPassword != null && NewPassword == null)
+                return View(new ProfileEditViewModel("EmptyPassword"));
+
+            var user = repository.GetById(accountManager.GetUserId(User));
+            
+            if (OldPassword != null && NewPassword != null)
+                if (!accountManager.CheckPassword(user, OldPassword))
+                    return View(new ProfileEditViewModel("WrongPassword"));
+
+            if (OldPassword == NewPassword && OldPassword != null && NewPassword != null)
+                return View(new ProfileEditViewModel("SamePassword"));
+        
+            if (AnsString == "Confirm")
+            {
+                if (OldPassword != null && NewPassword != null)
+                {
+                    if (accountManager.CheckPassword(user, OldPassword))
+                    {
+                        var ValidationResult = accountManager.ValidatePassword(user, NewPassword);
+                        if (ValidationResult.Succeeded)
+                            accountManager.ChangePassword(user, OldPassword, NewPassword);
+                        else return View(new ProfileEditViewModel("ValidationError", ValidationResult.Errors));                        
+                    }                     
+                        
+                }
+
+                if (Name != null)
+                    user.Name = Name;
+                if (Surname != null)
+                    user.Surname = Surname;
+                if (Description != null)
+                    user.Description = Description;
+                repository.Update(user);
+                return View(new ProfileEditViewModel("Confirm"));
+            }
+            return View(new ProfileEditViewModel(""));
         }
 
         [Authorize]

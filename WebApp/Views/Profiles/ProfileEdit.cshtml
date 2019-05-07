@@ -1,0 +1,95 @@
+﻿@model WebApp.ViewModels.ProfileEditViewModel
+@{
+    ViewData["Title"] = "Profile Edit";
+}
+
+@{
+
+    if (Model.Ans == "Cancel")
+    {
+        <h3>
+            Changes aborted
+        </h3>
+        <input type="button"
+               value="Go to your profile"
+               onclick="location.href= '@Url.Action("MyProfile")'" />
+    }
+    else
+    {
+        if (Model.Ans == "Confirm")
+        {
+        <h3>
+            Changes successfully implemented
+        </h3>
+        <input type = "button"
+        value = "Go to your profile"
+        onclick = "location.href= '@Url.Action("MyProfile")'" />
+        }
+        <form asp-controller="Profiles" asp-action="ProfileEdit" class="change">
+
+            <h3>Edit Your Profile</h3>
+
+            <p>First Name:</p>
+            <p><input type="text" name="Name" /></p>
+
+            <p>Surname:</p>
+            <p><input type="text" name="Surname" /></p>
+
+            <p>Description:</p>
+            <p><textarea name="Description" rows="6" cols="80"></textarea></p>
+
+            <h3>Change your Password</h3>
+
+            <p>Old Password:</p>
+            <p><input type="text" name="OldPassword" /></p>
+
+            @{
+                if (Model.Ans == "WrongPassword")
+                {
+                    <p>
+                        Wrong password
+                    </p>
+                }
+            }
+
+            <p>New Password:</p>
+            <p><input type="text" name="NewPassword" /></p>
+
+            @{
+                if (Model.Ans == "SamePassword")
+                {
+                    <p>
+                        New password can't be an old password
+                    </p>
+                }
+            }
+
+            @{
+                if (Model.Ans == "EmptyPassword")
+                {
+                    <p>
+                        Both old password and new password are required
+                    </p>
+                }
+            }
+
+            @{
+                if (Model.Ans == "ValidationError")
+                {
+                    foreach (var error in Model.PasswordErrors)
+                    {
+                        <p>
+                            @error.Description
+                        </p>
+
+                    }
+                }
+            }
+            <br />
+            <input type="submit" name="AnsString" value="Confirm" />
+            <input type="submit" name="AnsString" value="Cancel" />
+        </form>
+    }
+}
+
+

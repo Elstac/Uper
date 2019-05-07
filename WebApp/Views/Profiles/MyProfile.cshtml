@@ -27,6 +27,9 @@
     <p>Rating: @Model.Rating</p>
     <p>Votes: @Model.NumOfVotes</p>
     <p>@Model.Description</p>
+        <input type="button"
+               value="Edit"
+               onclick="location.href= '@Url.Action("ProfileEdit")'" />
 </body>
 
 <div>
