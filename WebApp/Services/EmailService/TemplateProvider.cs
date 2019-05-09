@@ -32,7 +32,7 @@ namespace WebApp.Services
         }
     }
 
-    class TemplateList
+    public class TemplateList
     {
         public List<MessageTemplate> templates { get; set; }
     }
