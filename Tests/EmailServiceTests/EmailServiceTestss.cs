@@ -5,7 +5,7 @@ using MimeKit;
 
 namespace Tests
 {
-    public class EmailServiceTests
+    public class EmailServiceTestss
     {
         private EmailService emailService;
         private Mock<ISmtpClientProvider> smtpMock;
@@ -16,7 +16,7 @@ namespace Tests
 
         private MimeMessage message;
 
-        public EmailServiceTests()
+        public EmailServiceTestss()
         {
             message = new MimeMessage();
 
