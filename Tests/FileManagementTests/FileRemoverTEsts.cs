@@ -6,7 +6,7 @@ namespace Tests.FileManagementTests
     public class FileRemoverTests: System.IDisposable
     {
         private FileRemover imageRemover;
-        private string testPath = "test/";
+        private string testPath = "FileRemoverTests/";
 
         public FileRemoverTests()
         {

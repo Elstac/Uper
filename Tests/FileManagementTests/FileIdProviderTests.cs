@@ -8,16 +8,16 @@ namespace Tests.FileManagementTests
     public class FileIdProviderTests:IDisposable
     {
         private FileIdProvider idProvider;
-        private string path = "test/";
+        private string path = "FileIdProviderTests/";
 
         public FileIdProviderTests()
         {
-            Directory.CreateDirectory("test/");
+            Directory.CreateDirectory(path);
         }
 
         public void Dispose()
         {
-            Directory.Delete("test/",true);
+            Directory.Delete(path, true);
         }
 
         [Fact]

@@ -8,7 +8,7 @@ namespace Tests.FileManagementTests
     public class TextFileReaderTests:IDisposable
     {
         private TextFileReader textFileReader;
-        private string dirPath = "wwwroot/";
+        private string dirPath = "TextFileReaderTests/";
         private string filePath= "test.txt";
 
         public TextFileReaderTests()
@@ -33,7 +33,7 @@ namespace Tests.FileManagementTests
         [Fact]
         public void ReturnFileContentAsString()
         {
-            var @out = textFileReader.ReadFileContent(filePath);
+            var @out = textFileReader.ReadFileContent(dirPath+filePath);
 
             Assert.Equal("Content content", @out);
         }

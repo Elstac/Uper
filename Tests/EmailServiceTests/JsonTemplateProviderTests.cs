@@ -11,10 +11,13 @@ namespace Tests.EmailServiceTests
     {
         private JsonTemplateProvider jsonTemplateProvider;
         private string configFile = "conf.json";
+        private string testDir = "test/";
 
         public JsonTemplateProviderTests()
         {
-            using (var sw = new StreamWriter(configFile))
+            Directory.CreateDirectory(testDir);
+
+            using (var sw = new StreamWriter(testDir + configFile))
             {
                 new JsonSerializer().Serialize(sw, new TemplateList
                 {
@@ -37,13 +40,13 @@ namespace Tests.EmailServiceTests
 
         public void Dispose()
         {
-            File.Delete(configFile);
+            Directory.Delete(testDir, true);
         }
 
         [Fact]
         public void GetTemplateFromJsonFileWithGivenName()
         {
-            jsonTemplateProvider = new JsonTemplateProvider(configFile);
+            jsonTemplateProvider = new JsonTemplateProvider(testDir + configFile);
 
             var @out = jsonTemplateProvider.GetTemplate("name1");
 
@@ -53,12 +56,10 @@ namespace Tests.EmailServiceTests
         [Fact]
         public void ThrowsIfConfigFileIsEmpty()
         {
-            File.Create("test.json").Close();
-            jsonTemplateProvider = new JsonTemplateProvider("test.json");
+            File.Create(testDir+"test.json").Close();
+            jsonTemplateProvider = new JsonTemplateProvider(testDir + "test.json");
 
             Assert.Throws<InvalidOperationException>(() => jsonTemplateProvider.GetTemplate(configFile));
-
-            File.Delete("test.json");
         }
     }
 }

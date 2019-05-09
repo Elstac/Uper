@@ -67,7 +67,7 @@ namespace WebApp.Controllers
 
             ViewData["type"] = viewerType;
             if (vm.MapPath != null)
-                ViewData["mapData"] = fileReader.ReadFileContent(vm.MapPath);
+                ViewData["mapData"] = fileReader.ReadFileContent("wwwroot"+vm.MapPath);
 
 
 

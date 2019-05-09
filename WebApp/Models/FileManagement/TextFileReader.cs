@@ -15,7 +15,7 @@ namespace WebApp.Models.FileManagement
         public string ReadFileContent(string path)
         {
             string ret = "";
-            using (var sr = new StreamReader("wwwroot/"+path))
+            using (var sr = new StreamReader(path))
             {
                 ret = sr.ReadToEnd();
             }
