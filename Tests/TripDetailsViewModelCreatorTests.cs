@@ -27,20 +27,21 @@ namespace Tests
                         {
                             UserName = "Piecia"
                         },
-                        Accepted =true
+                        Accepted = true
                     },
                     new TripUser
                     {
                         User = new ApplicationUser
                         {
-                            UserName ="PieciaNotAccepted"
+                            UserName = "PieciaNotAccepted"
                         },
                         Accepted = false
                     }
                 },
                 Description = "des",
                 DestinationAddress = new Address { City = "city", Street = "street" },
-                StartingAddress = new Address { City = "city", Street = "street" }
+                StartingAddress = new Address { City = "city", Street = "street" },
+                MapId = "1"
             };
         }
 
@@ -75,6 +76,16 @@ namespace Tests
             {
                 Assert.Equal(userName, vm.PassangersUsernames[i++]);
             }
+        }
+
+        [Fact]
+        public void ReturnViewModelWithMapWhenUsedMapDecorator()
+        {
+            detailsCreator = new MapDecorator(new TripDetailsCreator());
+
+            var vm = detailsCreator.CreateViewModel(testModel);
+
+            Assert.Equal("/images/maps/1.json",vm.MapPath);
         }
     }
 }
