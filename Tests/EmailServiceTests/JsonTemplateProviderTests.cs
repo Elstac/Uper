@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using WebApp.Services;
@@ -6,7 +7,7 @@ using Xunit;
 
 namespace Tests.EmailServiceTests
 {
-    public class JsonTemplateProviderTests
+    public class JsonTemplateProviderTests:IDisposable
     {
         private JsonTemplateProvider jsonTemplateProvider;
         private string configFile = "conf.json";
@@ -32,6 +33,11 @@ namespace Tests.EmailServiceTests
                     }
                 });
             }
+        }
+
+        public void Dispose()
+        {
+            File.Delete(configFile);
         }
 
         [Fact]
