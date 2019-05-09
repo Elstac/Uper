@@ -3,7 +3,7 @@ using Moq;
 using Xunit;
 using MimeKit;
 
-namespace Tests
+namespace Tests.EmailServiceTests
 {
     public class EmailServiceTestss
     {
