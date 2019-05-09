@@ -4,7 +4,7 @@ using System.Text;
 using WebApp.Models.FileManagement;
 using Xunit;
 
-namespace Tests.ImageSavingTests
+namespace Tests.FileManagementTests
 {
     public class ImageWriterTests
     {

@@ -3,7 +3,7 @@ using Moq;
 using System.IO;
 using WebApp.Models.FileManagement;
 
-namespace Tests.ImageSavingTests
+namespace Tests.FileManagementTests
 {
     public class FileSaverTests
     {

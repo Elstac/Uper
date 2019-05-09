@@ -3,7 +3,7 @@ using System.IO;
 using WebApp.Models.FileManagement;
 using Xunit;
 
-namespace Tests.ImageSavingTests
+namespace Tests.FileManagementTests
 {
     public class FileIdProviderTests:IDisposable
     {
