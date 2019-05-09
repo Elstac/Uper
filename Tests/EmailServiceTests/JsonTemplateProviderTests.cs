@@ -49,5 +49,15 @@ namespace Tests.EmailServiceTests
 
             Assert.Equal("temp1", @out);
         }
+
+        [Fact]
+        public void ThrowsIfConfigFileIsEmpty()
+        {
+            File.Create("test.json").Close();
+
+            Assert.Throws<InvalidOperationException>(() => jsonTemplateProvider.GetTemplate(configFile));
+
+            File.Delete("test.json");
+        }
     }
 }
