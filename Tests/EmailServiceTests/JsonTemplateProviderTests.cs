@@ -54,6 +54,7 @@ namespace Tests.EmailServiceTests
         public void ThrowsIfConfigFileIsEmpty()
         {
             File.Create("test.json").Close();
+            jsonTemplateProvider = new JsonTemplateProvider("test.json");
 
             Assert.Throws<InvalidOperationException>(() => jsonTemplateProvider.GetTemplate(configFile));
 

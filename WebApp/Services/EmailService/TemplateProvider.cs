@@ -1,5 +1,6 @@
 ﻿
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -21,7 +22,14 @@ namespace WebApp.Services
 
         public string GetTemplate(string messageType)
         {
-            var list = (TemplateList)new JsonSerializer().Deserialize(new StreamReader(configFile),typeof(TemplateList));
+            TemplateList list;
+            using (var sr = new StreamReader(configFile))
+            {
+                list = (TemplateList)new JsonSerializer().Deserialize(sr, typeof(TemplateList));
+            }
+
+            if (list == null)
+                throw new InvalidOperationException($"{configFile} does not contain any valid message template");
 
             var val = list.templates.Find((tmp) =>
             {
