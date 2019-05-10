@@ -1,7 +1,7 @@
 ﻿using Moq;
 using WebApp.Models.FileManagement;
 using Xunit;
-namespace Tests.ImageSavingTests
+namespace Tests.FileManagementTests
 {
     public class JsonFileManagerTests
     {

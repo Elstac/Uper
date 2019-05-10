@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using WebApp.Data;
-using WebApp.Data.Repositories;
+﻿using WebApp.Data;
 using WebApp.ViewModels;
 
 namespace WebApp.Models
@@ -12,15 +10,9 @@ namespace WebApp.Models
 
     public class ApplicationUserViewModelGenerator : IApplicationUserViewModelGenerator
     {
-        private IAccountManager accountManager;
-        private IApplicationUserRepository userRepository;
-        private UserManager<ApplicationUser> userManager;
 
-        public ApplicationUserViewModelGenerator(IApplicationUserRepository userRepository,IAccountManager accountManager, UserManager<ApplicationUser> userManager)
+        public ApplicationUserViewModelGenerator()
         {
-            this.userRepository = userRepository;
-            this.accountManager = accountManager;
-            this.userManager = userManager;
         }
 
         public ApplicationUserViewModel ConvertAppUserToViewModel(ApplicationUser AppUser)

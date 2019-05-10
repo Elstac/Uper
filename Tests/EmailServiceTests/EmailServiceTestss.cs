@@ -3,9 +3,9 @@ using Moq;
 using Xunit;
 using MimeKit;
 
-namespace Tests
+namespace Tests.EmailServiceTests
 {
-    public class EmailServiceTests
+    public class EmailServiceTestss
     {
         private EmailService emailService;
         private Mock<ISmtpClientProvider> smtpMock;
@@ -16,7 +16,7 @@ namespace Tests
 
         private MimeMessage message;
 
-        public EmailServiceTests()
+        public EmailServiceTestss()
         {
             message = new MimeMessage();
 
