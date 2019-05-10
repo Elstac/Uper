@@ -6,16 +6,18 @@ namespace Tests
 {
     public class ResultNotificationHtmlProviderTests
     {
-        private HtmlNotificationProvider htmlNotificationProvider;
+        private HtmlNotificationProvider provider;
 
         public ResultNotificationHtmlProviderTests()
         {
-            htmlNotificationProvider = new HtmlNotificationProvider();
+            provider = new HtmlNotificationProvider();
         }
         [Fact]
         public void ReturnValidHtmlStringUsingGivenClassAndContent()
         {
+            var @out = provider.GetNotificationBody("cl-test","content");
 
+            Assert.Equal("<div class =\"notification\"><p class=\"cl-test\">content</p></div>", @out);
         }
 
     }
