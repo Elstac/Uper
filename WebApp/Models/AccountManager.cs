@@ -96,7 +96,7 @@ namespace WebApp.Models
 
         public IdentityResult ValidatePassword(ApplicationUser user, string password)
         {
-            var result = userManager.PasswordValidators[1].ValidateAsync(userManager, user, password);
+            var result = userManager.PasswordValidators[0].ValidateAsync(userManager, user, password);
             return result.Result;
         }
     }
