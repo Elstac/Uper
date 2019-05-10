@@ -28,8 +28,9 @@ namespace WebApp.Controllers
             return View();
         }
 
-        public IActionResult Register()
+        public IActionResult Register(string returnUrl)
         {
+            ViewData["returnUrl"] = returnUrl;
             return View();
         }
 
@@ -62,7 +63,7 @@ namespace WebApp.Controllers
             return Redirect(returnUrl);
         }
 
-        public async Task<IActionResult> RegisterAsync(string username, string password,string email)
+        public async Task<IActionResult> RegisterAsync(string username, string password,string email,string returnurl)
         {
             var user = new ApplicationUser
             {
