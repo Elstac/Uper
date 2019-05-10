@@ -80,6 +80,7 @@ namespace WebApp.Controllers
                 return Content(e.Message, "text/html");
             }
 
+            await accountManager.SignInAsync(username, password);
             var url = Url.Action("ConfirmAccount", "Login", new { }, Request.Scheme);
 
             await accountConfirmatorFactory.CreateCofirmationSender()
