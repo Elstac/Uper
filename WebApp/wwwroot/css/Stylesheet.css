@@ -88,3 +88,21 @@ div.account-cnf-rem > p {
 div.account-cnf-rem >p> a {
     color: crimson;
 }
+
+div.notification > p{
+    margin: 4px;
+    padding-left: 5px;
+    border-style: solid;
+}
+
+p.res-suc{
+    color:green;
+    background-color: palegreen;
+    border-color:darkgreen;
+}
+
+p.res-fail {
+    color: mediumorchid;
+    background-color: pink;
+    border-color: darkred;
+}
