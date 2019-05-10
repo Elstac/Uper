@@ -1,9 +1,10 @@
-﻿div.notification > p {
+﻿/*Base style for every notification*/
+div.notification > p {
     margin: 4px;
     padding-left: 5px;
     border-style: solid;
 }
-
+/*Specific styles for every result class that "inherits" from base style*/
 p.res-suc {
     color: green;
     background-color: palegreen;
