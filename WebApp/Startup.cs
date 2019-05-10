@@ -46,50 +46,48 @@ namespace WebApp
             });
 
             #region Database
-            //Configuration of services and test DB required for regirestration and logging in. To skip this change DbBuild value in appseetings.json file
-            if(Configuration.GetValue<bool>("DbBuild"))
+            //DB configuration
+            var buildType = Configuration.GetValue<string>("BuildType");
+            if (buildType == "sqlite")
             {
-                //DB configuration
-                if (Configuration.GetValue<bool>("Dbbase"))
+                services.AddDbContext<ApplicationContext>(op =>
                 {
-                    services.AddDbContext<ApplicationContext>(op =>
-                 {
-                     op.UseSqlite(Configuration.GetConnectionString("TestConnection"));
-                 });
-                }
-                else
-                {
-                    services.AddDbContext<ApplicationContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-                }
-                #endregion
-
-                services.AddIdentity<ApplicationUser, IdentityRole>()
-                    .AddEntityFrameworkStores<ApplicationContext>()
-                    .AddDefaultTokenProviders();
-
-
-                services.ConfigureApplicationCookie(op =>
-                {
-                    op.LoginPath = "/login/signin";
-                    op.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                    op.UseSqlite(Configuration.GetConnectionString("TestSqliteConnection"));
                 });
-
-                
-                services.Configure<IdentityOptions>(op =>
-                {
-                    //Configure password requirements
-                    op.Password.RequireDigit = false;
-                    op.Password.RequiredLength = 5;
-                    op.Password.RequireLowercase = true;
-                    op.Password.RequireUppercase = false;
-                    op.Password.RequireNonAlphanumeric = false;
-
-                    op.User.RequireUniqueEmail = true;
-                });
-
-                
             }
+            else if(buildType == "sqlserver")
+            {
+                services.AddDbContext<ApplicationContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("TestSqlServerConnection")));
+            }
+            else if(buildType == "azure")
+            {
+                services.AddDbContext<ApplicationContext>(options =>
+               options.UseSqlServer(Configuration.GetConnectionString("AzureDBConnection")));
+            }
+            #endregion
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationContext>()
+                .AddDefaultTokenProviders();
+
+            services.ConfigureApplicationCookie(op =>
+            {
+                op.LoginPath = "/login/signin";
+                op.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+            });
+
+            services.Configure<IdentityOptions>(op =>
+            {
+                //Configure password requirements
+                op.Password.RequireDigit = false;
+                op.Password.RequiredLength = 5;
+                op.Password.RequireLowercase = true;
+                op.Password.RequireUppercase = false;
+                op.Password.RequireNonAlphanumeric = false;
+
+                op.User.RequireUniqueEmail = true;
+            });
 
             services.AddAuthorization(options =>
             {
