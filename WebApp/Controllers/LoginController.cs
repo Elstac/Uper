@@ -86,6 +86,9 @@ namespace WebApp.Controllers
             await accountConfirmatorFactory.CreateCofirmationSender()
                 .SendConfirmationEmailAsync(user.Id, url, user.UserName);
 
+            if (string.IsNullOrEmpty(returnurl))
+                return RedirectToRoute("Home");
+
             return Redirect(returnurl);
         }
         [Route("[controller]/ConfirmAccount")]
