@@ -6,11 +6,11 @@ namespace Tests
 {
     public class ResultNotificationHtmlProviderTests
     {
-        private HtmlNotificationProvider provider;
+        private HtmlNotificationBodyProvider provider;
 
         public ResultNotificationHtmlProviderTests()
         {
-            provider = new HtmlNotificationProvider();
+            provider = new HtmlNotificationBodyProvider();
         }
         [Fact]
         public void ReturnValidHtmlStringUsingGivenClassAndContent()
