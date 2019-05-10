@@ -21,58 +21,63 @@
 </head>
 <body>
     <header class="header">
-        <text onclick="location.href='@Url.Action("Index","Home")'">UPER</text>
+        <text onclick="location.href='@Url.Action(" Index","Home")'">UPER</text>
     </header>
     <nav class="nav">
         @{ var returnUrl = "https://" + Context.Request.Host + Context.Request.Path;}
-        <button onclick="location.href='@Url.Action("Index","Home")'">Home</button>
-        <button onclick="location.href='@Url.Action("Index","TravelList")'">Travel List</button>
+        <button onclick="location.href='@Url.Action(" Index","Home")'">Home</button>
+        <button onclick="location.href='@Url.Action(" Index","TravelList")'">Travel List</button>
         @if (AccountManager.IsSignedIn(User))
         {
-            <left-allign>@AccountManager.GetUserName(User) | @Html.ActionLink("Log Out", "SignOut", "Login")</left-allign>
+        <left-allign>@AccountManager.GetUserName(User) | @Html.ActionLink("Log Out", "SignOut", "Login")</left-allign>
         }
         else
         {
-            <left-allign>
-                @Html.ActionLink(
-           "Log in",
-           "SignIn",
-           "Login",
-           routeValues:new { returnUrl }) | No account? @Html.ActionLink(
-                                                                "Register",
-                                                                "Register",
-                                                                "Login",
-                                                                routeValues: new {returnUrl })
-            </left-allign>
-}
+        <left-allign>
+            @Html.ActionLink(
+            "Log in",
+            "SignIn",
+            "Login",
+            routeValues:new { returnUrl }) | No account? @Html.ActionLink(
+            "Register",
+            "Register",
+            "Login",
+            routeValues: new {returnUrl })
+        </left-allign>
+        }
 
     </nav>
+    @{var result = Context.Session.GetString("result");Context.Session.Clear(); }
+    @if (!string.IsNullOrEmpty(result))
+    {
+    @Html.Raw(result)
+    }
     @{
-        if (AccountManager.IsSignedIn(User))
-        {
-            <section>
-                <div class="sidebar">
-                    <sidebar>
-                        <button onclick="location.href='@Url.Action("MyProfile","Profiles")'">My Profile</button>
-                        <button onclick="location.href='@Url.Action("Index","TripCreator")'">+ Create Trip</button>
-                        <button onclick="location.href='@Url.Action("MyTravelOffers","Profiles")'">My Travel Offers</button>
-                    </sidebar>
-                </div>
-                <bodyRender>
-                    @RenderBody()
-                </bodyRender>
-                <footer style="margin-left:200px">
-                    Copyrighted by spółka z.o.o
-                </footer>
-            </section>
-        }
-        else
-        {
+    if (AccountManager.IsSignedIn(User))
+    {
+    <section>
+        <div class="sidebar">
+            <sidebar>
+                <button onclick="location.href='@Url.Action(" MyProfile","Profiles")'">My Profile</button>
+                <button onclick="location.href='@Url.Action(" Index","TripCreator")'">+ Create Trip</button>
+                <button onclick="location.href='@Url.Action(" MyTravelOffers","Profiles")'">My Travel Offers</button>
+            </sidebar>
+        </div>
+        <bodyRender>
             @RenderBody()
-            <footer>
-                Copyrighted by spółka z.o.o
-            </footer>
-        }
+        </bodyRender>
+        <footer style="margin-left:200px">
+            Copyrighted by spółka z.o.o
+        </footer>
+    </section>
+    }
+    else
+    {
+    @RenderBody()
+    <footer>
+        Copyrighted by spółka z.o.o
+    </footer>
+    }
     }
 
 
