@@ -13,10 +13,29 @@ namespace Tests
         public HtmlNotificationProviderTests()
         {
             bodyMock = new Mock<IHtmlNotificationBodyProvider>();
+            bodyMock.Setup(bm => bm.GetNotificationBody(It.IsAny<string>(), It.IsAny<string>())).Returns("body");
 
             provider = new HtmlNotificationProvider(bodyMock.Object);
         }
 
         [Fact]
+        public void GetBodyFromProvider()
+        {
+            var sessMock = new Mock<ISession>();
+
+            provider.SetNotification(sessMock.Object, "pClass", "content");
+
+            bodyMock.Verify(bm => bm.GetNotificationBody("pClass", "content"));
+        }
+
+        [Fact]
+        public void SaveHtmlBodyToSessionWithResultKey()
+        {
+            var sessMock = new Mock<ISession>();
+
+            provider.SetNotification(sessMock.Object, "pClass", "content");
+
+            sessMock.Verify(sm => sm.SetString("result","body"));
+        }
     }
 }
