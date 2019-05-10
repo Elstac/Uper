@@ -1,5 +1,5 @@
 ﻿
-<form asp-controller="Login" asp-action="RegisterAsync" class="login-input">
+<form asp-controller="Login" asp-action="RegisterAsync" asp-route-returnurl="@ViewData["returnUrl"]" class="login-input">
     <h1>Register</h1>
     <p>Username:</p>
     <input type="text" name="Username" />

@@ -28,8 +28,9 @@ namespace WebApp.Controllers
             return View();
         }
 
-        public IActionResult Register()
+        public IActionResult Register(string returnUrl)
         {
+            ViewData["returnUrl"] = returnUrl;
             return View();
         }
 
@@ -62,7 +63,7 @@ namespace WebApp.Controllers
             return Redirect(returnUrl);
         }
 
-        public async Task<IActionResult> RegisterAsync(string username, string password,string email)
+        public async Task<IActionResult> RegisterAsync(string username, string password,string email,string returnurl)
         {
             var user = new ApplicationUser
             {
@@ -79,12 +80,16 @@ namespace WebApp.Controllers
                 return Content(e.Message, "text/html");
             }
 
+            await accountManager.SignInAsync(username, password);
             var url = Url.Action("ConfirmAccount", "Login", new { }, Request.Scheme);
 
             await accountConfirmatorFactory.CreateCofirmationSender()
                 .SendConfirmationEmailAsync(user.Id, url, user.UserName);
 
-            return Content("Account created succesfully check email","text/html");
+            if (string.IsNullOrEmpty(returnurl))
+                return RedirectToRoute("Home");
+
+            return Redirect(returnurl);
         }
         [Route("[controller]/ConfirmAccount")]
         public async Task<IActionResult> ConfirmAccountAsync([FromQuery] string id, [FromQuery] string token)

@@ -29,7 +29,7 @@
         @Html.ActionLink("Create Trip", "Index", "TripCreator", 0)@{}
         @if (AccountManager.IsSignedIn(User))
         {
-            <span style="float:right;color:pink">@AccountManager.GetUserName(User) | @Html.ActionLink("Log Out", "SignOut", "Login")</span>
+            <span style="float:right;color:pink">@AccountManager.GetUserName(User) | @Html.ActionLink("Log Out", "SignOut", "Login",routeValues: new {returnUrl})</span>
         }
         else
         {
