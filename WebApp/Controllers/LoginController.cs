@@ -85,7 +85,7 @@ namespace WebApp.Controllers
             await accountConfirmatorFactory.CreateCofirmationSender()
                 .SendConfirmationEmailAsync(user.Id, url, user.UserName);
 
-            return Content("Account created succesfully check email","text/html");
+            return Redirect(returnurl);
         }
         [Route("[controller]/ConfirmAccount")]
         public async Task<IActionResult> ConfirmAccountAsync([FromQuery] string id, [FromQuery] string token)
