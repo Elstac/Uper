@@ -28,7 +28,7 @@ namespace WebApp.Models
             var ret = new ApplicationUserViewModel
             {
                 UserName = AppUser.UserName,
-                Name = AppUser.UserName,
+                Name = AppUser.Name,
                 Surname = AppUser.Surname,
                 Email = AppUser.Email,
                 PhoneNumber = AppUser.PhoneNumber,

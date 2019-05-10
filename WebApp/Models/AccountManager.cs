@@ -15,7 +15,9 @@ namespace WebApp.Models
         Task SignOutAsync();
         string GetUserId(ClaimsPrincipal principal);
         string GetUserName(ClaimsPrincipal principal);
-
+        bool CheckPassword(ApplicationUser user, string currentPassword);
+        void ChangePassword(ApplicationUser user, string oldPassword, string newPassword);
+        IdentityResult ValidatePassword(ApplicationUser user, string password);
     }
 
     public class AccountManager : IAccountManager
@@ -78,6 +80,24 @@ namespace WebApp.Models
         public string GetUserId(ClaimsPrincipal principal)
         {
             return userManager.GetUserId(principal);
+        }
+
+        public void ChangePassword(ApplicationUser user,string oldPassword,string newPassword)
+        {
+            userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+        }
+
+        public bool CheckPassword(ApplicationUser user,string currentPassword)
+        {
+            var result = userManager.CheckPasswordAsync(user, currentPassword);
+
+            return result.Result;
+        }
+
+        public IdentityResult ValidatePassword(ApplicationUser user, string password)
+        {
+            var result = userManager.PasswordValidators[0].ValidateAsync(userManager, user, password);
+            return result.Result;
         }
     }
 }
