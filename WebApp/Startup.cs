@@ -22,6 +22,7 @@ using WebApp.Models.FileManagement;
 using WebApp.Data.Specifications.Infrastructure;
 using WebApp.AuthenticationPolicies;
 using Microsoft.AspNetCore.Authorization;
+using WebApp.Models.HtmlNotifications;
 using Microsoft.AspNetCore.SignalR;
 
 namespace WebApp
@@ -97,6 +98,8 @@ namespace WebApp
             });
 
             #region SetupDI
+            services.AddTransient<IHtmlNotificationProvider, HtmlNotificationProvider>();
+            services.AddTransient<IHtmlNotificationBodyProvider, HtmlNotificationBodyProvider>();
             services.AddScoped<IAuthorizationHandler, ConfirmedEmailHandler>();
             services.AddTransient<ITripDetailsViewModelProvider, TripDetailsViewModelProvider>();
             services.AddTransient<IRatesAndCommentRepository, RatesAndCommentRepository>();
