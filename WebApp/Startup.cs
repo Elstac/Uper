@@ -205,7 +205,13 @@ namespace WebApp
             #endregion
             #endregion
 
-
+            services.AddDistributedMemoryCache();
+            services.AddSession(op =>
+            {
+                op.IdleTimeout = TimeSpan.FromMinutes(1);
+                op.Cookie.HttpOnly = true;
+                op.Cookie.IsEssential = true;
+            });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
@@ -232,6 +238,7 @@ namespace WebApp
             app.UseTrpeMapper();
 
             app.UseHttpsRedirection();
+            app.UseSession();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseSignalR(routes =>
