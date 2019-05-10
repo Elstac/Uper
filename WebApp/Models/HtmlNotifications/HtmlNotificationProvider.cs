@@ -1,13 +1,21 @@
-﻿namespace WebApp.Models.HtmlNotifications
+﻿using Microsoft.AspNetCore.Http;
+
+namespace WebApp.Models.HtmlNotifications
 {
     public interface IHtmlNotificationProvider
     {
-        string GetNotificationBody(string pClass, string content);
+        void SetNotification(HttpContext context,string pClass,string content);
     }
-
     public class HtmlNotificationProvider : IHtmlNotificationProvider
     {
-        public string GetNotificationBody(string pClass, string content)
+        private IHtmlNotificationBodyProvider bodyProvider;
+
+        public HtmlNotificationProvider(IHtmlNotificationBodyProvider bodyProvider)
+        {
+            this.bodyProvider = bodyProvider;
+        }
+
+        public void SetNotification(HttpContext context, string pClass, string content)
         {
             throw new System.NotImplementedException();
         }
