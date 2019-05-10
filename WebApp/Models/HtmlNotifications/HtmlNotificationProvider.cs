@@ -4,7 +4,7 @@ namespace WebApp.Models.HtmlNotifications
 {
     public interface IHtmlNotificationProvider
     {
-        void SetNotification(HttpContext context,string pClass,string content);
+        void SetNotification(ISession session, string pClass,string content);
     }
     public class HtmlNotificationProvider : IHtmlNotificationProvider
     {
@@ -15,9 +15,9 @@ namespace WebApp.Models.HtmlNotifications
             this.bodyProvider = bodyProvider;
         }
 
-        public void SetNotification(HttpContext context, string pClass, string content)
+        public void SetNotification(ISession session, string pClass, string content)
         {
-            throw new System.NotImplementedException();
+            session.SetString("result",bodyProvider.GetNotificationBody(pClass,content));
         }
     }
 }
