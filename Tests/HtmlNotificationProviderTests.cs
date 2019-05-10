@@ -27,15 +27,5 @@ namespace Tests
 
             bodyMock.Verify(bm => bm.GetNotificationBody("pClass", "content"));
         }
-
-        [Fact]
-        public void SaveHtmlBodyToSessionWithResultKey()
-        {
-            var sessMock = new Mock<ISession>();
-
-            provider.SetNotification(sessMock.Object, "pClass", "content");
-
-            sessMock.Verify(sm => sm.SetString("result","body"));
-        }
     }
 }
