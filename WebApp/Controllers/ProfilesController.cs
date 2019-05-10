@@ -121,13 +121,6 @@ namespace WebApp.Controllers
         {
             var tripUsers = tripUserRepository.GetList(new TripUserByUserId(accountManager.GetUserId(HttpContext.User)));
             List<TripDetails> joinedTravelOffers = tripDetailsRepository.GetList(new TripDetailsByListOfTripUserAndDateEndHigherThanDateNow(tripUsers.ToList())).ToList();
-            /*new List<TripDetails>();
-            TripDetails td;
-            foreach(var tu in tripUser)
-            {
-                td = tripDetailsRepository.GetById(tu.TripId);
-                if (td.DateEnd.CompareTo(DateTime.Now) > 0) joinedTravelOffers.Add(td);
-            }*/
             return View("UserTravelOffersList", joinedTravelOffers.OrderByDescending(trip => trip.DateEnd));
         }
 
@@ -136,13 +129,6 @@ namespace WebApp.Controllers
         {
             var tripUsers = tripUserRepository.GetList(new TripUserByUserId(accountManager.GetUserId(HttpContext.User)));
             List<TripDetails> joinedTravelOffers = tripDetailsRepository.GetList(new TripDetailsByListOfTripUserAndDateEndLowerThanDateNow(tripUsers.ToList())).ToList();
-            /*= new List<TripDetails>();
-        TripDetails td;
-        foreach (var tu in tripUser)
-        {
-            td = tripDetailsRepository.GetById(tu.TripId);
-            if (td.DateEnd.CompareTo(DateTime.Now) <= 0) joinedTravelOffers.Add(td);
-        }*/
             return View("UserTravelOffersList", joinedTravelOffers.OrderByDescending(trip => trip.DateEnd));
         }
 

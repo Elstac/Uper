@@ -11,6 +11,7 @@ namespace WebApp.Data
         public DbSet<TripDetails> TripDetails { get; set; }
         public DbSet<TripUser> TripUser { get; set; }
         public DbSet<RatesAndComment> RatesAndComment { get; set; }
+        public DbSet<ChatEntry> ChatEntry { get; set; }
         public ApplicationContext(DbContextOptions<ApplicationContext> options):base(options)
         {
             
@@ -28,6 +29,7 @@ namespace WebApp.Data
 
             modelBuilder.Entity<ApplicationUser>();
             modelBuilder.Entity<RatesAndComment>();
+            modelBuilder.Entity<ChatEntry>();
 
         }
 
