@@ -1,11 +1,11 @@
 ﻿namespace WebApp.Models.HtmlNotifications
 {
-    public interface IHtmlNotificationBodyProvider
+    public interface INotificationBodyProvider
     {
         string GetNotificationBody(string pClass, string content);
     }
 
-    public class HtmlNotificationBodyProvider : IHtmlNotificationBodyProvider
+    public class HtmlNotificationBodyProvider : INotificationBodyProvider
     {
         public string GetNotificationBody(string pClass, string content)
         {

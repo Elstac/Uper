@@ -14,12 +14,12 @@ namespace WebApp.Controllers
     {
         private IAccountManager accountManager;
         private IAccountEmailConfirmatorFactory accountConfirmatorFactory;
-        private IHtmlNotificationProvider htmlNotification;
+        private INotificationProvider htmlNotification;
 
         public LoginController(
             IAccountManager accountManager,
             IAccountEmailConfirmatorFactory accountConfirmatorFactory,
-            IHtmlNotificationProvider htmlNotification)
+            INotificationProvider htmlNotification)
         {
             this.accountManager = accountManager;
             this.accountConfirmatorFactory = accountConfirmatorFactory;

@@ -8,11 +8,11 @@ namespace Tests
     public class HtmlNotificationProviderTests
     {
         private HtmlNotificationProvider provider;
-        private Mock<IHtmlNotificationBodyProvider> bodyMock;
+        private Mock<INotificationBodyProvider> bodyMock;
 
         public HtmlNotificationProviderTests()
         {
-            bodyMock = new Mock<IHtmlNotificationBodyProvider>();
+            bodyMock = new Mock<INotificationBodyProvider>();
             bodyMock.Setup(bm => bm.GetNotificationBody(It.IsAny<string>(), It.IsAny<string>())).Returns("body");
 
             provider = new HtmlNotificationProvider(bodyMock.Object);

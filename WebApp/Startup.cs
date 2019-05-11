@@ -98,8 +98,8 @@ namespace WebApp
             });
 
             #region SetupDI
-            services.AddTransient<IHtmlNotificationProvider, HtmlNotificationProvider>();
-            services.AddTransient<IHtmlNotificationBodyProvider, HtmlNotificationBodyProvider>();
+            services.AddTransient<INotificationProvider, HtmlNotificationProvider>();
+            services.AddTransient<INotificationBodyProvider, HtmlNotificationBodyProvider>();
             services.AddScoped<IAuthorizationHandler, ConfirmedEmailHandler>();
             services.AddTransient<ITripDetailsViewModelProvider, TripDetailsViewModelProvider>();
             services.AddTransient<IRatesAndCommentRepository, RatesAndCommentRepository>();

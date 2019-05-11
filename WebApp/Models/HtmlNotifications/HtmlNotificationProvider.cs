@@ -2,15 +2,15 @@
 
 namespace WebApp.Models.HtmlNotifications
 {
-    public interface IHtmlNotificationProvider
+    public interface INotificationProvider
     {
         void SetNotification(ISession session, string pClass,string content);
     }
-    public class HtmlNotificationProvider : IHtmlNotificationProvider
+    public class HtmlNotificationProvider : INotificationProvider
     {
-        private IHtmlNotificationBodyProvider bodyProvider;
+        private INotificationBodyProvider bodyProvider;
 
-        public HtmlNotificationProvider(IHtmlNotificationBodyProvider bodyProvider)
+        public HtmlNotificationProvider(INotificationBodyProvider bodyProvider)
         {
             this.bodyProvider = bodyProvider;
         }
