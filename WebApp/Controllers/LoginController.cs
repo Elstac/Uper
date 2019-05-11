@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 using WebApp.Data;
 using WebApp.Models;
@@ -90,8 +91,16 @@ namespace WebApp.Controllers
             await accountManager.SignInAsync(username, password);
             var url = Url.Action("ConfirmAccount", "Login", new { }, Request.Scheme);
 
-            await accountConfirmatorFactory.CreateCofirmationSender()
-                .SendConfirmationEmailAsync(user.Id, url, user.UserName);
+            try
+            {
+                await accountConfirmatorFactory.CreateCofirmationSender()
+                    .SendConfirmationEmailAsync(user.Id, url, user.UserName);
+            }
+            catch(Exception e)
+            {
+                htmlNotification.SetNotification(HttpContext.Session, "res-fail", $"Confirmation email sending error: {e.Message}");
+                return RedirectToRoute("Home");
+            }
 
             htmlNotification.SetNotification(HttpContext.Session, "res-suc", "Regirestration success");
 
