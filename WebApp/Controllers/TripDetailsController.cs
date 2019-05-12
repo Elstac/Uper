@@ -65,6 +65,17 @@ namespace WebApp.Controllers
             else if(vm.DateEnd.CompareTo(DateTime.Now) > 0 && vm.Date.CompareTo(DateTime.Now) <= 0)ViewBag.IsActive = "ongoing";
             else ViewBag.IsActive ="true";
 
+            if (vm.PassangersUsernames != null)
+            {
+                if (vm.PassangersUsernames.Contains(user.UserName))
+                {
+                    ViewBag.PassangerAccepted = true;
+                }
+                else ViewBag.PassangerAccepted = false;
+            }
+            else ViewBag.PassangerAccepted = false;
+
+
             ViewData["type"] = viewerType;
             if (vm.MapPath != null)
                 ViewData["mapData"] = fileReader.ReadFileContent("wwwroot"+vm.MapPath);

@@ -1,0 +1,48 @@
+﻿
+@model IEnumerable<WebApp.Data.Entities.ChatEntry>
+
+<div class="container">
+    <div class="row">&nbsp;</div>
+    <div class="row">
+        <div class="col-6">&nbsp;</div>
+        <div class="col-6">
+            <form class="form-inline">
+                <div class="input-prepend input-append">
+                    <textarea name="group-message" id="group-message-text" placeholder="Type a message" rows="4" cols="120"></textarea>
+                    <input type="hidden" name="group-name" id="group-name" value="@ViewBag.TripId" />
+                    <input type="hidden" name="user-name" id="user-name" value="@ViewBag.UserName" />
+                    <input type="button" id="groupmsg" class="btn" value="Send" />
+                    <input type="hidden" name="join-group" id="join-group" value="Join Group" />
+                    <input type="hidden" id="leave-group" value="Leave Group" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <hr />
+        </div>
+    </div>
+    <div style="height:600px;width:1200px;overflow-y:scroll">
+        <div class="row">
+            <div class="col-6">&nbsp;</div>
+            <div class="col-6">
+                @foreach (var item in Model)
+                {
+                    <ul> @Html.DisplayFor(modelItem => item.UserName): @Html.DisplayFor(modelItem => item.Message)</ul>
+
+                }
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">&nbsp;</div>
+            <div class="col-6">
+
+                <ul id="messagesList"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/lib/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/chat.js"></script>

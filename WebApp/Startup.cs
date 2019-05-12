@@ -22,6 +22,7 @@ using WebApp.Models.FileManagement;
 using WebApp.Data.Specifications.Infrastructure;
 using WebApp.AuthenticationPolicies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
 
 namespace WebApp
 {
@@ -117,6 +118,7 @@ namespace WebApp
             services.AddTransient<IFileRemover, FileRemover>();
             services.AddTransient<IFileManager, JsonFileManager>();
             services.AddTransient<IFileReader<string>, TextFileReader>();
+            services.AddTransient<IChatEntryRepository, ChatEntryRepository>();
             services.AddTransient<ISpecificationEvaluator, SpecificationEvaluator>();
             services.AddTransient<IIncludeManager, IncludeManager>();
 
@@ -126,7 +128,7 @@ namespace WebApp
                 .AddChain(new TripDetailsIncluder())
                 .AddChain(new UserIncluder())
                 .AddChain(new TripUserCollectionIncluder());
-            });
+            }); 
 
             #region EmailConfirmation
             services.AddTransient<AccountConfirmationProvider>();
@@ -202,6 +204,8 @@ namespace WebApp
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddSignalR();
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -226,7 +230,10 @@ namespace WebApp
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ChatHub>("/chatHub");
+            });
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

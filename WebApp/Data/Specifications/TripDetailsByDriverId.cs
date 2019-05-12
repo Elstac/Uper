@@ -3,7 +3,7 @@
     public class TripDetailsByDriverId : BaseSpecification<TripDetails>
     {
         public TripDetailsByDriverId(string driverId) : base(
-            td => td.DriverId == driverId)
+            td => td.DriverId.Equals(driverId))
         {
         }
     }

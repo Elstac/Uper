@@ -32,6 +32,20 @@
                                                },
                                                htmlAttributes: new { })
 </div>
+@if (ViewBag.IsActive.Equals("true") && (ViewBag.PassangerAccepted == true || type == ViewerType.Driver))
+{ 
+    <div>
+        @Html.ActionLink(
+                                                   linkText: "Chat",
+                                                   actionName: "Index",
+                                                   controllerName: "Chat",
+                                                   routeValues: new
+                                                       {
+                                                       tripId = Model.TripId
+                                                   },
+                                                   htmlAttributes: new { })
+    </div>
+    }
 <div>
     <hr />
     <dl class="dl-horizontal">
