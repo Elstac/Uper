@@ -3,24 +3,73 @@
     padding-top: 0px;
     padding-bottom: 0px;
 }
-header {
-    background-color: orchid;
+.header {
+    background-color: #FF00B6;
     font-size: 40px;
     padding: 20px;
 }
-nav {
-    background-color:fuchsia;
-    padding: 7px;
+.header text{
+    cursor: pointer;
 }
-sidebar{
-    background-color:blueviolet;
+.nav {
+    font-size: x-large;
+    background-color: #FC55D8;
+    padding: 5px;
+}
+.nav left-allign{
+    float: right;
+    color: black;
+}
+.nav button{
+    display: block;
+    background-color: inherit;
+    outline:none;
+    border:none;
+    width:150px;
+    padding:5px;
+    float:left;
+}
+.nav button:hover{
+    background-color: #FC9CE7;
+}
+.nav button:active{
+    background-color:#FCC9F1;
+}
+.sidebar{
+    width: 200px;
+    margin: 0px;
+    position: fixed;
+    float: left;
+    clear:none;
+    background-color:#911B8D;
+    height:100%;
+    font-size:large;
+    padding:4px;
+}
+.sidebar button{
+    display: block;
+    background-color: inherit;
+    outline:none;
+    border:none;
+    width:100%;
+    padding:10px;
+}
+.sidebar button:hover{
+    background-color: #A52CA1;
+}
+.sidebar button:active{
+    background-color:#B23CAE;
 }
 bodyRender {
+    margin-left:210px;
+    float:left;
+    clear: none;
     background-color:transparent;
 }
 footer{
     background-color:lightpink;
     padding: 5px;
+    clear: both;
 }
 
 div.account-cnf-rem {

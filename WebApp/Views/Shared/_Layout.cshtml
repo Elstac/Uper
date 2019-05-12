@@ -18,46 +18,61 @@
     @inject IAccountManager AccountManager
 </head>
 <body>
-    <header>
-        UPER
+    <header class="header">
+        <text onclick="location.href='@Url.Action("Index","Home")'">UPER</text>
     </header>
-    <nav>
-        @{ var returnUrl = "https://"+Context.Request.Host + Context.Request.Path;}
-        @Html.ActionLink("Home", "index", "Home")@{} <font color="pink"> | </font>
-        @Html.ActionLink("Travel List","Index","TravelList")@{} <font color="pink"> | </font>
-        @Html.ActionLink("My Profile", "MyProfile", "Profiles")@{} <font color="pink"> | </font>
-        @Html.ActionLink("Create Trip", "Index", "TripCreator", 0)@{}
+    <nav class="nav">
+        @{ var returnUrl = "https://" + Context.Request.Host + Context.Request.Path;}
+        <button onclick="location.href='@Url.Action("Index","Home")'">Home</button>
+        <button onclick="location.href='@Url.Action("Index","TravelList")'">Travel List</button>
         @if (AccountManager.IsSignedIn(User))
         {
-            <span style="float:right;color:pink">@AccountManager.GetUserName(User) | @Html.ActionLink("Log Out", "SignOut", "Login",routeValues: new {returnUrl})</span>
+            <left-allign>@AccountManager.GetUserName(User) | @Html.ActionLink("Log Out", "SignOut", "Login")</left-allign>
         }
         else
         {
-            <span style="float:right;color:pink">@Html.ActionLink(
-                                                "Log in",
-                                                "SignIn",
-                                                "Login",
-                                                routeValues:new { returnUrl }) | No account? @Html.ActionLink(
-                                                                                                            "Register",
-                                                                                                            "Register",
-                                                                                                            "Login",
-                                                                                                            routeValues: new {returnUrl })
-        </span>
+            <left-allign>
+                @Html.ActionLink(
+           "Log in",
+           "SignIn",
+           "Login",
+           routeValues:new { returnUrl }) | No account? @Html.ActionLink(
+                                                                "Register",
+                                                                "Register",
+                                                                "Login",
+                                                                routeValues: new {returnUrl })
+            </left-allign>
+}
+
+    </nav>
+    @{
+        if (AccountManager.IsSignedIn(User))
+        {
+            <section>
+                <div class="sidebar">
+                    <sidebar>
+                        <button onclick="location.href='@Url.Action("MyProfile","Profiles")'">My Profile</button>
+                        <button onclick="location.href='@Url.Action("Index","TripCreator")'">+ Create Trip</button>
+                        <button onclick="location.href='@Url.Action("MyTravelOffers","Profiles")'">My Travel Offers</button>
+                    </sidebar>
+                </div>
+                <bodyRender>
+                    @RenderBody()
+                </bodyRender>
+                <footer style="margin-left:200px">
+                    Copyrighted by spółka z.o.o
+                </footer>
+            </section>
         }
-
-    </nav>  
-
-    <section>
-        <sidebar>
-
-        </sidebar>
-        <bodyRender>
+        else
+        {
             @RenderBody()
-        </bodyRender>
-    </section>
-    
-    <footer>
-        Copyrighted by spółka z.o.o
-    </footer>
+            <footer>
+                Copyrighted by spółka z.o.o
+            </footer>
+        }
+    }
+
+
 </body>
 </html>
