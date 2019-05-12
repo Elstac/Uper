@@ -14,7 +14,7 @@ namespace WebApp.Models.FileManagement
         /// <param name="fileExtention">Extention of created file</param>
         /// <param name="directory">Path of directory where file will be saved</param>
         /// <returns></returns>
-        string SaveImage(string fileData, string fileExtention, string directory);
+        string SaveFile(string fileData, string fileExtention, string directory);
     }
     public class FileSaver : IFileSaver
     {
@@ -27,7 +27,7 @@ namespace WebApp.Models.FileManagement
             this.fileWriter = fileWriter;
         }
 
-        public string SaveImage(string fileData, string fileExtention, string directory)
+        public string SaveFile(string fileData, string fileExtention, string directory)
         {
             var id = idProvider.GetId(directory, fileExtention);
 
