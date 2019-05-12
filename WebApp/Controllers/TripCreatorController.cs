@@ -9,6 +9,7 @@ using WebApp.Data;
 using WebApp.Data.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.Models.FileManagement;
+using WebApp.Models.Factories;
 
 namespace WebApp.Controllers
 {
@@ -21,11 +22,11 @@ namespace WebApp.Controllers
         public TripCreatorController(
             IAccountManager _accountManager, 
             ITripDetailsRepository _tripDetailsRepository,
-            IFileManager _imageManager)
+            IFileManagerFactory _fileManagerFactory)
         {
             accountManager = _accountManager;
             tripDetailsRepository = _tripDetailsRepository;
-            fileManager = _imageManager;
+            fileManager = _fileManagerFactory.GetManager(FileType.Json);
         }
         /// <summary>
         /// Default HTTPGet 
@@ -125,6 +126,5 @@ namespace WebApp.Controllers
         {
             return View("Index");
         }
-
     }
 }

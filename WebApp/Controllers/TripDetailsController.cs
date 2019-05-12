@@ -9,6 +9,7 @@ using WebApp.Data.Specifications;
 using System.Collections.Generic;
 using WebApp.Models.FileManagement;
 using System;
+using WebApp.Models.Factories;
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebApp.Controllers
@@ -32,7 +33,7 @@ namespace WebApp.Controllers
             IViewerTypeMapper viewerTypeMapper, 
             IApplicationUserRepository applicationUserRepository,
             IFileReader<string> fileReader,
-            IFileManager fileManager)
+            IFileManagerFactory fileManagerFactory)
         {
             this.generator = generator;
             this.accountManager = accountManager;
@@ -41,7 +42,7 @@ namespace WebApp.Controllers
             this.viewerTypeMapper = viewerTypeMapper;
             this.applicationUserRepository = applicationUserRepository;
             this.fileReader = fileReader;
-            this.fileManager = fileManager;
+            fileManager = fileManagerFactory.GetManager(FileType.Json);
         }
 
         /// <summary>
