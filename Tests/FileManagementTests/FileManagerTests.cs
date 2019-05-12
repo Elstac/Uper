@@ -19,7 +19,7 @@ namespace Tests.FileManagementTests
 
             imageManager.SaveFile("data", "test/");
 
-            saverMock.Verify(sm => sm.SaveImage("data", ".json", "test/"));
+            saverMock.Verify(sm => sm.SaveFile("data", ".json", "test/"));
         }
 
         [Fact]
@@ -39,7 +39,7 @@ namespace Tests.FileManagementTests
         public void ReturnRecivedIdFromSaver()
         {
             saverMock = new Mock<IFileSaver>();
-            saverMock.Setup(sm => sm.SaveImage(
+            saverMock.Setup(sm => sm.SaveFile(
                 It.IsAny<string>(),
                 It.IsAny<string>(),
                 It.IsAny<string>()))

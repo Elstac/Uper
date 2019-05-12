@@ -6,26 +6,19 @@
         string SaveFile(string fileData, string directory);
     }
 
-    public class JsonFileManager:IFileManager
+    public abstract class FileManager : IFileManager
     {
-        private IFileSaver fileSaver;
-        private IFileRemover imageRemover;
+        protected IFileSaver fileSaver;
+        protected IFileRemover fileRemover;
 
-        public JsonFileManager(IFileSaver fileSaver, IFileRemover imageRemover)
+        public FileManager(IFileSaver fileSaver, IFileRemover fileRemover)
         {
             this.fileSaver = fileSaver;
-            this.imageRemover = imageRemover;
+            this.fileRemover = fileRemover;
         }
 
+        public abstract void RemoveFile(string id, string directory);
 
-        public void RemoveFile(string id, string directory)
-        {
-            imageRemover.RemoveImage(id, directory, ".json");
-        }
-
-        public string SaveFile(string fileData, string directory)
-        {
-            return fileSaver.SaveImage(fileData, ".json", directory);
-        }
+        public abstract string SaveFile(string fileData, string directory);
     }
 }

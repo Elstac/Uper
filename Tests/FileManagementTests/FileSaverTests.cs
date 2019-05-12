@@ -24,7 +24,7 @@ namespace Tests.FileManagementTests
 
             imageSaver = new FileSaver(idMock.Object, writerMock.Object);
 
-            imageSaver.SaveImage("aaa", ".png","test/");
+            imageSaver.SaveFile("aaa", ".png","test/");
 
             idMock.Verify(im => im.GetId("test/", ".png"));
         }
@@ -42,7 +42,7 @@ namespace Tests.FileManagementTests
 
             imageSaver = new FileSaver(idMock.Object, writerMock.Object);
 
-            imageSaver.SaveImage("aaa", extention, "test/");
+            imageSaver.SaveFile("aaa", extention, "test/");
 
             writerMock.Verify(wm => wm.SaveFile("test/id"+extention, "aaa"));
         }
@@ -56,7 +56,7 @@ namespace Tests.FileManagementTests
 
             imageSaver = new FileSaver(idMock.Object, writerMock.Object);
 
-            var @out = imageSaver.SaveImage("aaa", ".png", "test/");
+            var @out = imageSaver.SaveFile("aaa", ".png", "test/");
 
             Assert.Equal("id", @out);
         }
