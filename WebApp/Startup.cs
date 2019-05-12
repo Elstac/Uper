@@ -112,12 +112,6 @@ namespace WebApp
             services.AddScoped<ITripDetailsViewModelCreatorFactory, TripDetailViewModelCreatorFactory>();
             services.AddTransient<IAccountEmailConfirmatorFactory, AccountEmailConfirmatorFactory>();
             services.AddTransient<IPasswordResetFactory, PasswordResetFactory>();
-            services.AddTransient<IFileSaver, FileSaver>();
-            services.AddTransient<IFileWriter, TextFileWriter>();
-            services.AddTransient<IFileIdProvider, FileIdProvider>();
-            services.AddTransient<IFileRemover, FileRemover>();
-            services.AddTransient<IFileManager, JsonFileManager>();
-            services.AddTransient<IFileReader<string>, TextFileReader>();
             services.AddTransient<IChatEntryRepository, ChatEntryRepository>();
             services.AddTransient<ISpecificationEvaluator, SpecificationEvaluator>();
             services.AddTransient<IIncludeManager, IncludeManager>();
@@ -198,6 +192,16 @@ namespace WebApp
             {
                 return new JsonTemplateProvider(Configuration.GetValue<string>("TemplateFile"));
             });
+            #endregion
+
+            #region FileManagement
+            services.AddTransient<IFileIdProvider, FileIdProvider>();
+            services.AddTransient<IFileRemover, FileRemover>();
+            services.AddTransient<IFileReader<string>, TextFileReader>();
+            services.AddTransient<IFileSaverFactory, FileSaverFactory>();
+            services.AddTransient<IFileManagerFactory, FileManagerFactory>();
+            services.AddTransient<JsonFileManager, JsonFileManager>();
+            services.AddTransient<PngFileManager, PngFileManager>();
             #endregion
             #endregion
 
