@@ -10,6 +10,10 @@ using System.Collections.Generic;
 using WebApp.Models.FileManagement;
 using System;
 using WebApp.Models.Factories;
+using Syncfusion.Pdf;
+using Syncfusion.Pdf.Graphics;
+using System.IO;
+using Syncfusion.Drawing;
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebApp.Controllers
@@ -149,6 +153,52 @@ namespace WebApp.Controllers
             tripUserRepository.Update(tu[0]);
 
             return RedirectToAction("index", "TripDetails", new { id = tripId });
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult GeneratePdf(int tripId)
+        {
+            var vm = generator.GetViewModel(tripId, (ViewerType)0);
+
+            //Create a new PDF document.
+            PdfDocument doc = new PdfDocument();
+            //Add a page to the document.
+            PdfPage page = doc.Pages.Add();
+            //Create PDF graphics for the page
+            PdfGraphics graphics = page.Graphics;
+            //Set the standard font
+            PdfFont font = new PdfStandardFont(PdfFontFamily.Helvetica, 20);
+            //Draw the text
+            graphics.DrawString(vm.DestinationAddress.City, font, PdfBrushes.Black, new PointF(0, 0));
+            graphics.DrawString(vm.DestinationAddress.Street, font, PdfBrushes.Black, new PointF(0, 0));
+            graphics.DrawString(vm.StartingAddress.City, font, PdfBrushes.Black, new PointF(0, 0));
+            graphics.DrawString(vm.StartingAddress.Street, font, PdfBrushes.Black, new PointF(0, 0));
+            graphics.DrawString(vm.Date.ToString(), font, PdfBrushes.Black, new PointF(0, 0));
+            graphics.DrawString(vm.DateEnd.ToString(), font, PdfBrushes.Black, new PointF(0, 0));
+            graphics.DrawString(vm.Cost.ToString(), font, PdfBrushes.Black, new PointF(0, 0));
+            graphics.DrawString(vm.VechicleModel, font, PdfBrushes.Black, new PointF(0, 0));
+            graphics.DrawString(vm.Size.ToString(), font, PdfBrushes.Black, new PointF(0, 0));
+            graphics.DrawString(vm.IsSmokingAllowed.ToString(), font, PdfBrushes.Black, new PointF(0, 0));
+            graphics.DrawString(vm.Description, font, PdfBrushes.Black, new PointF(0, 0));
+            //Load the image as stream.
+            FileStream imageStream = new FileStream(fileReader.ReadFileContent("wwwroot" + vm.MapPath), FileMode.Open, FileAccess.Read);
+            PdfBitmap image = new PdfBitmap(imageStream);
+            //Draw the image
+            graphics.DrawImage(image, 0, 0);
+            //Save the PDF document to stream
+            MemoryStream stream = new MemoryStream();
+            doc.Save(stream);
+            //If the position is not set to '0' then the PDF will be empty.
+            stream.Position = 0;
+            //Close the document.
+            doc.Close(true);
+            //Defining the ContentType for pdf file.
+            string contentType = "application/pdf";
+            //Define the file name.
+            //string fileName = "Output.pdf";
+            //Creates a FileContentResult object by using the file contents, content type, and file name.
+            return File(stream, contentType);//, fileName);
         }
     }
 }
