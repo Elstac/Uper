@@ -1,4 +1,5 @@
 ﻿using Moq;
+using WebApp.Models.Factories;
 using WebApp.Models.FileManagement;
 using Xunit;
 namespace Tests.FileManagementTests
@@ -9,14 +10,20 @@ namespace Tests.FileManagementTests
         private Mock<IFileSaver> saverMock;
         private Mock<IFileRemover> removerMock;
 
-        [Fact]
-        public void CallSaverForSavingFile()
+        public JsonFileManagerTests()
         {
             saverMock = new Mock<IFileSaver>();
             removerMock = new Mock<IFileRemover>();
 
-            imageManager = new JsonFileManager(saverMock.Object, removerMock.Object);
+            var facMock = new Mock<IFileSaverFactory>();
+            facMock.Setup(fm => fm.GetSaver(It.IsAny<SaverType>())).Returns(saverMock.Object);
 
+            imageManager = new JsonFileManager(facMock.Object, removerMock.Object);
+        }
+
+        [Fact]
+        public void CallSaverForSavingFile()
+        {
             imageManager.SaveFile("data", "test/");
 
             saverMock.Verify(sm => sm.SaveFile("data", ".json", "test/"));
@@ -25,14 +32,9 @@ namespace Tests.FileManagementTests
         [Fact]
         public void CallRemoverForRemovingFile()
         {
-            saverMock = new Mock<IFileSaver>();
-            removerMock = new Mock<IFileRemover>();
-
-            imageManager = new JsonFileManager(saverMock.Object, removerMock.Object);
-
             imageManager.RemoveFile("id", "test/");
 
-            removerMock.Verify(sm => sm.RemoveImage("id","test/",".json"));
+            removerMock.Verify(sm => sm.RemoveImage("id", "test/", ".json"));
         }
 
         [Fact]
@@ -45,9 +47,10 @@ namespace Tests.FileManagementTests
                 It.IsAny<string>()))
                 .Returns("id");
 
-            removerMock = new Mock<IFileRemover>();
+            var facMock = new Mock<IFileSaverFactory>();
+            facMock.Setup(fm => fm.GetSaver(It.IsAny<SaverType>())).Returns(saverMock.Object);
 
-            imageManager = new JsonFileManager(saverMock.Object, removerMock.Object);
+            imageManager = new JsonFileManager(facMock.Object, removerMock.Object);
 
             var id = imageManager.SaveFile("data", "test/");
 
