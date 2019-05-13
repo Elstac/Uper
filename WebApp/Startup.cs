@@ -108,7 +108,7 @@ namespace WebApp
             services.AddTransient<IApplicationUserViewModelGenerator, ApplicationUserViewModelGenerator>();
             services.AddTransient<IApplicationUserRepository, ApplicationUserRepository>();
             services.AddTransient<ITripDetailsCreator,TripDetailsCreator>();
-            services.AddTransient<IIdentityResultErrorHtmlCreator,IdentityResultErrorHtmlCreator>();
+            services.AddTransient<IIdentityResultErrorCreator,IdentityResultErrorTextCreator>();
             services.AddTransient<IEmailAddressValidator,EmailAddressValidator>();
             services.AddTransient<IAccountManager, AccountManager>();
             services.AddTransient<IViewerTypeMapper, ViewerTypeMapper>();
