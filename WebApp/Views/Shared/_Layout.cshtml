@@ -56,6 +56,7 @@
             </sidebar>
         </div>
         <bodyRender>
+
             @{var result = Context.Session.GetString("result"); Context.Session.Clear(); }
             @if (!string.IsNullOrEmpty(result))
             {
@@ -63,7 +64,7 @@
             }   
             @RenderBody()
         </bodyRender>
-        <footer style="margin-left:200px">
+        <footer style="margin-left:160px">
             Copyrighted by spółka z.o.o
         </footer>
     </section>
@@ -76,7 +77,5 @@
     </footer>
     }
     }
-
-
 </body>
 </html>

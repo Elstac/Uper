@@ -12,9 +12,13 @@
     cursor: pointer;
 }
 .nav {
-    font-size: x-large;
+    height:45px;
+    position:fixed;
+    clear:both;
+    font-size: large;
     background-color: #FC55D8;
     padding: 5px;
+    width:100%;
 }
 .nav left-allign{
     float: right;
@@ -36,7 +40,8 @@
     background-color:#FCC9F1;
 }
 .sidebar{
-    width: 200px;
+    top:45px;
+    width: 160px;
     margin: 0px;
     position: fixed;
     float: left;
@@ -61,10 +66,11 @@
     background-color:#B23CAE;
 }
 bodyRender {
-    margin-left:210px;
+    margin-left:170px;
     float:left;
     clear: none;
     background-color:transparent;
+    margin-top:45px;
 }
 footer{
     background-color:lightpink;
