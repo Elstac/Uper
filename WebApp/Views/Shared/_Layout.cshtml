@@ -44,11 +44,6 @@
         }
 
     </nav>
-    @{var result = Context.Session.GetString("result");Context.Session.Clear(); }
-    @if (!string.IsNullOrEmpty(result))
-    {
-    @Html.Raw(result)
-    }
     @{
     if (AccountManager.IsSignedIn(User))
     {
@@ -61,6 +56,11 @@
             </sidebar>
         </div>
         <bodyRender>
+            @{var result = Context.Session.GetString("result"); Context.Session.Clear(); }
+            @if (!string.IsNullOrEmpty(result))
+            {
+                @Html.Raw(result)
+            }   
             @RenderBody()
         </bodyRender>
         <footer style="margin-left:200px">
