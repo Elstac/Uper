@@ -21,12 +21,12 @@
 </head>
 <body>
     <header class="header">
-        <text onclick="location.href='@Url.Action(" Index","Home")'">UPER</text>
+        <text onclick="location.href='@Url.Action("Index","Home")'">UPER</text>
     </header>
     <nav class="nav">
         @{ var returnUrl = "https://" + Context.Request.Host + Context.Request.Path;}
-        <button onclick="location.href='@Url.Action(" Index","Home")'">Home</button>
-        <button onclick="location.href='@Url.Action(" Index","TravelList")'">Travel List</button>
+        <button onclick="location.href='@Url.Action("Index","Home")'">Home</button>
+        <button onclick="location.href='@Url.Action("Index","TravelList")'">Travel List</button>
         @if (AccountManager.IsSignedIn(User))
         {
         <left-allign>@AccountManager.GetUserName(User) | @Html.ActionLink("Log Out", "SignOut", "Login")</left-allign>
@@ -58,9 +58,9 @@
     <section>
         <div class="sidebar">
             <sidebar>
-                <button onclick="location.href='@Url.Action(" MyProfile","Profiles")'">My Profile</button>
-                <button onclick="location.href='@Url.Action(" Index","TripCreator")'">+ Create Trip</button>
-                <button onclick="location.href='@Url.Action(" MyTravelOffers","Profiles")'">My Travel Offers</button>
+                <button onclick="location.href='@Url.Action("MyProfile","Profiles")'">My Profile</button>
+                <button onclick="location.href='@Url.Action("Index","TripCreator")'">+ Create Trip</button>
+                <button onclick="location.href='@Url.Action("MyTravelOffers","Profiles")'">My Travel Offers</button>
             </sidebar>
         </div>
         <bodyRender>
