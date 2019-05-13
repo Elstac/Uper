@@ -13,3 +13,12 @@ function hideMap() {
     document.getElementById('mapDiv').style.display = "none";
     document.getElementById('removeBtn').style.display = "none";
 }
+
+function saveCnvToPng(formId) {
+    var c = document.getElementById('defaultCanvas0');
+    var dataURL = c.toDataURL('image/png');
+    dataURL = dataURL.replace('data:image/png;base64,', '');
+
+    var form = document.getElementById(formId);
+    form.value = dataURL;
+}
