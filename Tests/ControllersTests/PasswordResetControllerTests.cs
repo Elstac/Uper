@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Xunit;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
+using WebApp.Models.HtmlNotifications;
 
 namespace Tests.ControllersTests
 {
@@ -41,7 +42,9 @@ namespace Tests.ControllersTests
             var httpContext = new Mock<HttpContext>();
             httpContext.Setup(hm => hm.Request).Returns(requestMock.Object);
 
-            controller = new PasswordResetController(factoryMock.Object, repoMock.Object);
+            var notificationMock = new Mock<INotificationProvider>();
+
+            controller = new PasswordResetController(factoryMock.Object, repoMock.Object,notificationMock.Object);
             controller.Url = urlMock.Object;
             controller.ControllerContext.HttpContext = httpContext.Object;
         }
@@ -83,12 +86,13 @@ namespace Tests.ControllersTests
             confirmatorMock = new Mock<IEmailConfirmator>();
             factoryMock = new Mock<IPasswordResetFactory>();
             factoryMock.Setup(fm => fm.CreateConfirmator()).Returns(confirmatorMock.Object);
+            var notificationMock = new Mock<INotificationProvider>();
 
-            controller = new PasswordResetController(factoryMock.Object, repoMock.Object);
+            controller = new PasswordResetController(factoryMock.Object, repoMock.Object,notificationMock.Object);
 
-            await controller.ChangePasswordAsync("id","token","password");
+            await controller.ChangePasswordAsync("id", "token", "password");
 
-            factoryMock.Verify(fm => fm.CreateConfirmator(),Times.Once());
+            factoryMock.Verify(fm => fm.CreateConfirmator(), Times.Once());
         }
 
         [Fact]
@@ -98,12 +102,13 @@ namespace Tests.ControllersTests
             confirmatorMock = new Mock<IEmailConfirmator>();
             factoryMock = new Mock<IPasswordResetFactory>();
             factoryMock.Setup(fm => fm.CreateConfirmator()).Returns(confirmatorMock.Object);
+            var notificationMock = new Mock<INotificationProvider>();
 
-            controller = new PasswordResetController(factoryMock.Object, repoMock.Object);
+            controller = new PasswordResetController(factoryMock.Object, repoMock.Object,notificationMock.Object);
 
             await controller.ChangePasswordAsync("id", "token", "password");
 
-            confirmatorMock.Verify(cm => cm.ConfirmEmailAsync("id","token","password"), Times.Once());
+            confirmatorMock.Verify(cm => cm.ConfirmEmailAsync("id", "token", "password"), Times.Once());
         }
 
         [Fact]
@@ -111,9 +116,10 @@ namespace Tests.ControllersTests
         {
             repoMock = new Mock<IApplicationUserRepository>();
             factoryMock = new Mock<IPasswordResetFactory>();
-            controller = new PasswordResetController(factoryMock.Object, repoMock.Object);
+            var notificationMock = new Mock<INotificationProvider>();
+            controller = new PasswordResetController(factoryMock.Object, repoMock.Object,notificationMock.Object);
 
-            var view = controller.ChangePassword("xd","discard");
+            var view = controller.ChangePassword("xd", "discard");
 
             var viewResult = Assert.IsType<ViewResult>(view);
             Assert.Equal("xd", viewResult.ViewData["id"]);
