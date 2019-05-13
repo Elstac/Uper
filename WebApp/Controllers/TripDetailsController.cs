@@ -10,6 +10,10 @@ using System.Collections.Generic;
 using WebApp.Models.FileManagement;
 using System;
 using WebApp.Models.Factories;
+using Syncfusion.Pdf;
+using Syncfusion.Pdf.Graphics;
+using System.IO;
+using Syncfusion.Drawing;
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebApp.Controllers
@@ -24,6 +28,8 @@ namespace WebApp.Controllers
         private IApplicationUserRepository applicationUserRepository;
         private IFileReader<string> fileReader;
         private IFileManager fileManager;
+        private IFileManager pngFileManager;
+        private IPdfCreator pdfCreator;
 
         public TripDetailsController(
             ITripDetailsViewModelProvider generator,
@@ -33,7 +39,8 @@ namespace WebApp.Controllers
             IViewerTypeMapper viewerTypeMapper, 
             IApplicationUserRepository applicationUserRepository,
             IFileReader<string> fileReader,
-            IFileManagerFactory fileManagerFactory)
+            IFileManagerFactory fileManagerFactory,
+            IPdfCreator pdfCreator)
         {
             this.generator = generator;
             this.accountManager = accountManager;
@@ -43,6 +50,8 @@ namespace WebApp.Controllers
             this.applicationUserRepository = applicationUserRepository;
             this.fileReader = fileReader;
             fileManager = fileManagerFactory.GetManager(FileType.Json);
+            pngFileManager = fileManagerFactory.GetManager(FileType.Png);
+            this.pdfCreator = pdfCreator;
         }
 
         /// <summary>
@@ -149,6 +158,23 @@ namespace WebApp.Controllers
             tripUserRepository.Update(tu[0]);
 
             return RedirectToAction("index", "TripDetails", new { id = tripId });
+        }
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult GeneratePdf(int tripId,string generatepdf)
+        {
+            var vm = tripDetailsRepository.GetById(tripId);
+            //Save image
+            var id = pngFileManager.SaveFile(generatepdf, "wwwroot/images/maps/");
+
+            MemoryStream stream = pdfCreator.CreatePdf(vm, id);
+
+            pngFileManager.RemoveFile(id, "wwwroot/images/maps/");
+            //Defining the ContentType for pdf file.
+            string contentType = "application/pdf";
+            //Creates a FileContentResult object by using the file contents, content type, and file name.
+            return File(stream, contentType);
         }
     }
 }

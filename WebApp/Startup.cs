@@ -118,6 +118,7 @@ namespace WebApp
             services.AddTransient<IChatEntryRepository, ChatEntryRepository>();
             services.AddTransient<ISpecificationEvaluator, SpecificationEvaluator>();
             services.AddTransient<IIncludeManager, IncludeManager>();
+            services.AddTransient<IPdfCreator, PdfCreator>();
 
             services.AddSingleton<IIncludeChainProvider>(sp =>
             {

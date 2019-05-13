@@ -3,6 +3,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/p5.js"></script>
 <script src="~/js/Map.js"></script>
+<script src="~/js/MapManagement.js"></script>
 
 @if (ViewBag.IsActive.Equals("false"))
 {
@@ -33,7 +34,7 @@
                                                htmlAttributes: new { })
 </div>
 @if (ViewBag.IsActive.Equals("true") && (ViewBag.PassangerAccepted == true || type == ViewerType.Driver))
-{ 
+{
     <div>
         @Html.ActionLink(
                                                    linkText: "Chat",
@@ -45,7 +46,14 @@
                                                    },
                                                    htmlAttributes: new { })
     </div>
-    }
+
+    <form asp-action="GeneratePdf" asp-controller="TripDetails" method="post" asp-route-tripId="@Model.TripId" asp-antiforgery="true">
+        <div>
+            <input type="hidden" id="generatepdf"  name="generatepdf" />
+            <input type="submit" onclick=saveCnvToPng("generatepdf") value="Generate Pdf" class="btn btn-success" />
+        </div>
+    </form>
+}
 <div>
     <hr />
     <dl class="dl-horizontal">
