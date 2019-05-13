@@ -22,6 +22,7 @@ using WebApp.Models.FileManagement;
 using WebApp.Data.Specifications.Infrastructure;
 using WebApp.AuthenticationPolicies;
 using Microsoft.AspNetCore.Authorization;
+using WebApp.Models.HtmlNotifications;
 using Microsoft.AspNetCore.SignalR;
 
 namespace WebApp
@@ -97,6 +98,8 @@ namespace WebApp
             });
 
             #region SetupDI
+            services.AddTransient<INotificationProvider, HtmlNotificationProvider>();
+            services.AddTransient<INotificationBodyProvider, HtmlNotificationBodyProvider>();
             services.AddScoped<IAuthorizationHandler, ConfirmedEmailHandler>();
             services.AddTransient<ITripDetailsViewModelProvider, TripDetailsViewModelProvider>();
             services.AddTransient<IRatesAndCommentRepository, RatesAndCommentRepository>();
@@ -105,7 +108,7 @@ namespace WebApp
             services.AddTransient<IApplicationUserViewModelGenerator, ApplicationUserViewModelGenerator>();
             services.AddTransient<IApplicationUserRepository, ApplicationUserRepository>();
             services.AddTransient<ITripDetailsCreator,TripDetailsCreator>();
-            services.AddTransient<IIdentityResultErrorHtmlCreator,IdentityResultErrorHtmlCreator>();
+            services.AddTransient<IIdentityResultErrorCreator,IdentityResultErrorTextCreator>();
             services.AddTransient<IEmailAddressValidator,EmailAddressValidator>();
             services.AddTransient<IAccountManager, AccountManager>();
             services.AddTransient<IViewerTypeMapper, ViewerTypeMapper>();
@@ -205,7 +208,13 @@ namespace WebApp
             #endregion
             #endregion
 
-
+            services.AddDistributedMemoryCache();
+            services.AddSession(op =>
+            {
+                op.IdleTimeout = TimeSpan.FromMinutes(1);
+                op.Cookie.HttpOnly = true;
+                op.Cookie.IsEssential = true;
+            });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
@@ -232,6 +241,7 @@ namespace WebApp
             app.UseTrpeMapper();
 
             app.UseHttpsRedirection();
+            app.UseSession();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseSignalR(routes =>

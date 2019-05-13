@@ -4,20 +4,35 @@ using System.Text;
 
 namespace WebApp.Models
 {
-    public interface IIdentityResultErrorHtmlCreator
+    public interface IIdentityResultErrorCreator
     {
-        string CreateErrorHtml(IdentityResult result);
+        string CreateError(IdentityResult result);
     }
 
-    public class IdentityResultErrorHtmlCreator : IIdentityResultErrorHtmlCreator
+    public class IdentityResultErrorHtmlCreator : IIdentityResultErrorCreator
     {
-        public string CreateErrorHtml(IdentityResult result)
+        public string CreateError(IdentityResult result)
         {
             var sb = new StringBuilder();
 
             foreach (var error in result.Errors)
             {
                 sb.Append($"<p>{error.Description}</p>");
+            }
+
+            return sb.ToString();
+        }
+    }
+
+    public class IdentityResultErrorTextCreator : IIdentityResultErrorCreator
+    {
+        public string CreateError(IdentityResult result)
+        {
+            var sb = new StringBuilder();
+
+            foreach (var error in result.Errors)
+            {
+                sb.Append($"{error.Description}");
             }
 
             return sb.ToString();

@@ -24,12 +24,12 @@ namespace WebApp.Models
     {
         private UserManager<ApplicationUser> userManager;
         private SignInManager<ApplicationUser> signInManager;
-        private IIdentityResultErrorHtmlCreator errorCreator;
+        private IIdentityResultErrorCreator errorCreator;
         private IEmailAddressValidator validator;
 
         public AccountManager(UserManager<ApplicationUser> userManager,
                               SignInManager<ApplicationUser> signInManager,
-                              IIdentityResultErrorHtmlCreator errorCreator,
+                              IIdentityResultErrorCreator errorCreator,
                               IEmailAddressValidator validator)
         {
             this.userManager = userManager;
@@ -46,7 +46,7 @@ namespace WebApp.Models
             var result = await userManager.CreateAsync(user, password);
 
             if (!result.Succeeded)
-                throw new InvalidOperationException(errorCreator.CreateErrorHtml(result));
+                throw new InvalidOperationException(errorCreator.CreateError(result));
         }
 
         public async Task<ApplicationUser> GetUserAsync(ClaimsPrincipal principal)

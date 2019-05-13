@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 using WebApp.Data;
 using WebApp.Models;
 using WebApp.Models.EmailConfirmation;
+using WebApp.Models.HtmlNotifications;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,11 +15,16 @@ namespace WebApp.Controllers
     {
         private IAccountManager accountManager;
         private IAccountEmailConfirmatorFactory accountConfirmatorFactory;
+        private INotificationProvider htmlNotification;
 
-        public LoginController(IAccountManager accountManager,IAccountEmailConfirmatorFactory accountConfirmatorFactory)
+        public LoginController(
+            IAccountManager accountManager,
+            IAccountEmailConfirmatorFactory accountConfirmatorFactory,
+            INotificationProvider htmlNotification)
         {
             this.accountManager = accountManager;
             this.accountConfirmatorFactory = accountConfirmatorFactory;
+            this.htmlNotification = htmlNotification;
         }
                 
         public IActionResult SignIn(string returnUrl)
@@ -54,16 +59,18 @@ namespace WebApp.Controllers
             }
             catch (System.Exception e)
             {
-                return Content(e.Message, "text/html");
+                htmlNotification.SetNotification(HttpContext.Session, "res-fail", e.Message);
+                return RedirectToAction("SignIn",new { returnUrl});
             }
 
-            if(string.IsNullOrEmpty(returnUrl))
+            htmlNotification.SetNotification(HttpContext.Session, "res-suc", "SignIn success");
+            if (string.IsNullOrEmpty(returnUrl))
                 return RedirectToRoute("Home");
 
             return Redirect(returnUrl);
         }
 
-        public async Task<IActionResult> RegisterAsync(string username, string password,string email,string returnurl)
+        public async Task<IActionResult> RegisterAsync(string username, string password,string email,string returnUrl)
         {
             var user = new ApplicationUser
             {
@@ -77,20 +84,32 @@ namespace WebApp.Controllers
             }
             catch(System.Exception e)
             {
-                return Content(e.Message, "text/html");
+                htmlNotification.SetNotification(HttpContext.Session, "res-fail", e.Message);
+                return RedirectToAction("Register", new { returnUrl });
             }
 
             await accountManager.SignInAsync(username, password);
             var url = Url.Action("ConfirmAccount", "Login", new { }, Request.Scheme);
 
-            await accountConfirmatorFactory.CreateCofirmationSender()
-                .SendConfirmationEmailAsync(user.Id, url, user.UserName);
+            try
+            {
+                await accountConfirmatorFactory.CreateCofirmationSender()
+                    .SendConfirmationEmailAsync(user.Id, url, user.UserName);
+            }
+            catch(Exception e)
+            {
+                htmlNotification.SetNotification(HttpContext.Session, "res-fail", $"Confirmation email sending error: {e.Message}");
+                return RedirectToRoute("Home");
+            }
 
-            if (string.IsNullOrEmpty(returnurl))
+            htmlNotification.SetNotification(HttpContext.Session, "res-suc", "Regirestration success");
+
+            if (string.IsNullOrEmpty(returnUrl))
                 return RedirectToRoute("Home");
 
-            return Redirect(returnurl);
+            return Redirect(returnUrl);
         }
+
         [Route("[controller]/ConfirmAccount")]
         public async Task<IActionResult> ConfirmAccountAsync([FromQuery] string id, [FromQuery] string token)
         {
