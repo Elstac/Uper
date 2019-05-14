@@ -165,12 +165,9 @@ namespace WebApp.Controllers
         public IActionResult GeneratePdf(int tripId,string generatepdf)
         {
             var vm = tripDetailsRepository.GetById(tripId);
-            //Save image
-            var id = pngFileManager.SaveFile(generatepdf, "wwwroot/images/maps/");
+            
+            MemoryStream stream = pdfCreator.CreatePdf(vm, generatepdf);
 
-            MemoryStream stream = pdfCreator.CreatePdf(vm, id);
-
-            pngFileManager.RemoveFile(id, "wwwroot/images/maps/");
             //Defining the ContentType for pdf file.
             string contentType = "application/pdf";
             //Creates a FileContentResult object by using the file contents, content type, and file name.
