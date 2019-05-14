@@ -71,7 +71,14 @@
     }
     else
     {
-    @RenderBody()
+        <bodyRender style="margin-left:10px">
+            @{var result = Context.Session.GetString("result"); Context.Session.Clear(); }
+            @if (!string.IsNullOrEmpty(result))
+            {
+                @Html.Raw(result)
+            }   
+            @RenderBody()
+        </bodyRender>
     <footer>
         Copyrighted by spółka z.o.o
     </footer>
