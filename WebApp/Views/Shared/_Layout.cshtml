@@ -20,9 +20,6 @@
     @inject IAccountManager AccountManager
 </head>
 <body>
-    <header class="header">
-        <text onclick="location.href='@Url.Action("Index","Home")'">UPER</text>
-    </header>
     <nav class="nav">
         @{ var returnUrl = "https://" + Context.Request.Host + Context.Request.Path;}
         <button onclick="location.href='@Url.Action("Index","Home")'">Home</button>
@@ -47,11 +44,6 @@
         }
 
     </nav>
-    @{var result = Context.Session.GetString("result");Context.Session.Clear(); }
-    @if (!string.IsNullOrEmpty(result))
-    {
-    @Html.Raw(result)
-    }
     @{
     if (AccountManager.IsSignedIn(User))
     {
@@ -64,9 +56,15 @@
             </sidebar>
         </div>
         <bodyRender>
+
+            @{var result = Context.Session.GetString("result"); Context.Session.Clear(); }
+            @if (!string.IsNullOrEmpty(result))
+            {
+                @Html.Raw(result)
+            }   
             @RenderBody()
         </bodyRender>
-        <footer style="margin-left:200px">
+        <footer style="margin-left:160px">
             Copyrighted by spółka z.o.o
         </footer>
     </section>
@@ -79,7 +77,5 @@
     </footer>
     }
     }
-
-
 </body>
 </html>

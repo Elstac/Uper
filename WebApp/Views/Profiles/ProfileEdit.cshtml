@@ -41,7 +41,7 @@
             <h3>Change your Password</h3>
 
             <p>Old Password:</p>
-            <p><input type="text" name="OldPassword" /></p>
+            <p><input type="password" name="OldPassword" /></p>
 
             @{
                 if (Model.Ans == "WrongPassword")
@@ -53,7 +53,7 @@
             }
 
             <p>New Password:</p>
-            <p><input type="text" name="NewPassword" /></p>
+            <p><input type="password" name="NewPassword" /></p>
 
             @{
                 if (Model.Ans == "SamePassword")
