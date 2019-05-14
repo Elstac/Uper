@@ -3,18 +3,25 @@ using Syncfusion.Pdf;
 using Syncfusion.Pdf.Graphics;
 using System.IO;
 using WebApp.Data;
+using WebApp.Models.Factories;
+using WebApp.Models.FileManagement;
 
 namespace WebApp.Models
 {
    public interface IPdfCreator
         {
-          MemoryStream CreatePdf(TripDetails vm, string id);
+        MemoryStream CreatePdf(TripDetails vm, string id);
         }
 
 
     public class PdfCreator : IPdfCreator
     {
-        public MemoryStream CreatePdf(TripDetails vm, string id)
+        private IFileManager pngFileManager;
+        public PdfCreator(IFileManagerFactory fileManagerFactory)
+        {
+            pngFileManager = fileManagerFactory.GetManager(FileType.Png);
+        }
+        public MemoryStream CreatePdf(TripDetails vm,string generatepdf)
         {
             //Create a new PDF document.
             PdfDocument doc = new PdfDocument();
@@ -58,14 +65,19 @@ namespace WebApp.Models
             graphics.DrawString("Description:", font, PdfBrushes.Black, new PointF(0, 400));
             graphics.DrawString(vm.Description, font, PdfBrushes.Black, new PointF(0, 420));
 
-            //Load the image as stream.
-            FileStream imageStream = new FileStream($"wwwroot/images/maps/{id}.png", FileMode.Open, FileAccess.Read);
-            PdfBitmap image = new PdfBitmap(imageStream);
-            //Draw the image
-            RectangleF bounds = new RectangleF(0, 20, 500, 500);
-            page = doc.Pages.Add();
-            page.Graphics.DrawString("Map:", font, PdfBrushes.Black, new PointF(50, 0));
-            page.Graphics.DrawImage(image, bounds);
+            if (vm.MapId != null)
+            {
+                var id = pngFileManager.SaveFile(generatepdf, "wwwroot/images/maps/");
+                //Load the image as stream.
+                FileStream imageStream = new FileStream($"wwwroot/images/maps/{id}.png", FileMode.Open, FileAccess.Read);
+                PdfBitmap image = new PdfBitmap(imageStream);
+                //Draw the image
+                RectangleF bounds = new RectangleF(0, 20, 500, 500);
+                page = doc.Pages.Add();
+                page.Graphics.DrawString("Map:", font, PdfBrushes.Black, new PointF(50, 0));
+                page.Graphics.DrawImage(image, bounds);
+                pngFileManager.RemoveFile(id, "wwwroot/images/maps/");
+            }
             //Save the PDF document to stream
             MemoryStream stream = new MemoryStream();
             doc.Save(stream);
