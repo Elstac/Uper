@@ -14,6 +14,7 @@ using Syncfusion.Pdf;
 using Syncfusion.Pdf.Graphics;
 using System.IO;
 using Syncfusion.Drawing;
+using WebApp.Models.HtmlNotifications;
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebApp.Controllers
@@ -30,6 +31,7 @@ namespace WebApp.Controllers
         private IFileManager fileManager;
         private IFileManager pngFileManager;
         private IPdfCreator pdfCreator;
+        private INotificationProvider notificationProvider;
 
         public TripDetailsController(
             ITripDetailsViewModelProvider generator,
@@ -40,7 +42,8 @@ namespace WebApp.Controllers
             IApplicationUserRepository applicationUserRepository,
             IFileReader<string> fileReader,
             IFileManagerFactory fileManagerFactory,
-            IPdfCreator pdfCreator)
+            IPdfCreator pdfCreator,
+            INotificationProvider notificationProvider)
         {
             this.generator = generator;
             this.accountManager = accountManager;
@@ -49,6 +52,8 @@ namespace WebApp.Controllers
             this.viewerTypeMapper = viewerTypeMapper;
             this.applicationUserRepository = applicationUserRepository;
             this.fileReader = fileReader;
+            this.notificationProvider = notificationProvider;
+
             fileManager = fileManagerFactory.GetManager(FileType.Json);
             pngFileManager = fileManagerFactory.GetManager(FileType.Png);
             this.pdfCreator = pdfCreator;
@@ -121,7 +126,9 @@ namespace WebApp.Controllers
             }
             tripUserRepository.RemoveTripUsers(id);
             tripDetailsRepository.Remove(td);
-            return RedirectToAction("index", "TripDetails", new { id });
+
+            notificationProvider.SetNotification(HttpContext.Session, "res-suc", "Trip deleted successfully");
+            return RedirectToRoute("Home");
         }
 
         [Authorize]
