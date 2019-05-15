@@ -128,7 +128,7 @@ namespace WebApp.Controllers
             tripDetailsRepository.Remove(td);
 
             notificationProvider.SetNotification(HttpContext.Session, "res-suc", "Trip deleted successfully");
-            return RedirectToAction("index", "TripDetails", new { id });
+            return RedirectToRoute("Home");
         }
 
         [Authorize]
