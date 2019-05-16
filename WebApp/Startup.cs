@@ -104,7 +104,9 @@ namespace WebApp
             #region SetupDI
             services.AddTransient<INotificationProvider, HtmlNotificationProvider>();
             services.AddTransient<INotificationBodyProvider, HtmlNotificationBodyProvider>();
-            services.AddScoped<IAuthorizationHandler, ConfirmedEmailHandler>();
+            services.AddTransient<IAuthorizationHandler, ConfirmedEmailHandler>();
+            services.AddTransient<IViewerTypeProvider, ViewerTypeProvider>();
+            services.AddTransient<IAuthorizationHandler, ViewerTypeHandler>();
             services.AddTransient<ITripDetailsViewModelProvider, TripDetailsViewModelProvider>();
             services.AddTransient<IRatesAndCommentRepository, RatesAndCommentRepository>();
             services.AddTransient<ITripUserRepository, TripUserRepository>();
@@ -123,6 +125,7 @@ namespace WebApp
             services.AddTransient<ISpecificationEvaluator, SpecificationEvaluator>();
             services.AddTransient<IIncludeManager, IncludeManager>();
             services.AddTransient<IPdfCreator, PdfCreator>();
+            
 
             services.AddSingleton<IIncludeChainProvider>(sp =>
             {
