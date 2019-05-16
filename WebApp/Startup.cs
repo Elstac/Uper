@@ -95,6 +95,10 @@ namespace WebApp
             {
                 options.AddPolicy("test",
                     policy => policy.Requirements.Add(new ConfirmedEmailRequirement()));
+
+                options.AddPolicy("DriverOnly",
+                    policy => policy.Requirements.Add(new ViewerTypeRequirement(
+                        new ViewerType[] { ViewerType.Driver })));
             });
 
             #region SetupDI

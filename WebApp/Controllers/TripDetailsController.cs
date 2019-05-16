@@ -114,7 +114,7 @@ namespace WebApp.Controllers
             return RedirectToAction("index", "TripDetails", new { id });
         }
 
-        [Authorize]
+        [Authorize(Policy = "DriverOnly")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Remove(int id)
@@ -140,7 +140,7 @@ namespace WebApp.Controllers
             return RedirectToAction("index", "TripDetails", new { id });
         }
 
-        [Authorize]
+        [Authorize(Policy = "DriverOnly")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult RemoveUserFromTrip(int id,string username)
@@ -151,7 +151,7 @@ namespace WebApp.Controllers
 
         }
 
-        [Authorize]
+        [Authorize(Policy = "DriverOnly")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult ConfirmRequest(int tripId, string username)
