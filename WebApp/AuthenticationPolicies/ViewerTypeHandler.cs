@@ -18,13 +18,21 @@ namespace WebApp.AuthenticationPolicies
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, ViewerTypeRequirement requirement)
         {
             var authContext = context.Resource as AuthorizationFilterContext;
-            int id;
+            string tmp;
             
-            if(!int.TryParse(authContext.RouteData.Values["id"].ToString(),out id))
+            if(string.IsNullOrEmpty(authContext.HttpContext.Request.Query["id"].ToString()))
             {
-                if (!int.TryParse(authContext.RouteData.Values["tripId"].ToString(), out id))
+                if (string.IsNullOrEmpty(authContext.HttpContext.Request.Query["tripId"].ToString()))
                     throw new InvalidOperationException("Invalid tripId route value name");
+                else
+                    tmp = "tripId";
             }
+            else
+            {
+                tmp = "id";
+            }
+
+            var id = int.Parse(authContext.HttpContext.Request.Query[tmp].ToString());
 
             var viewerType = await viewerTypeProvider.GetViewerTypeAsync(context.User, id);
 
