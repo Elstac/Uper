@@ -131,7 +131,7 @@ namespace WebApp.Controllers
             return RedirectToRoute("Home");
         }
 
-        [Authorize]
+        [Authorize(Policy ="PassangerOnly")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Leave(int tripId)
