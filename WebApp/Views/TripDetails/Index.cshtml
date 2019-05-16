@@ -164,7 +164,7 @@
                         <td><p>@username</p></td>
                         @if (type == ViewerType.Driver)
                         {
-                            <form asp-action="RemoveUserFromTrip" asp-controller="TripDetails" method="post" asp-route-id="@Model.TripId" asp-route-username="@username" asp-antiforgery="true">
+                            <form asp-action="RemoveUserFromTrip" asp-controller="TripDetails" method="post" asp-route-tripId="@Model.TripId" asp-route-username="@username" asp-antiforgery="true">
                                 <td><input type="submit" value="Remove" class="btn btn-danger" /></td>
                             </form>
                         }
@@ -214,7 +214,7 @@
 
         @if (type == ViewerType.Driver)
         {
-            <form asp-action="Remove" asp-controller="TripDetails" method="post" asp-route-id="@Model.TripId" asp-antiforgery="true">
+            <form asp-action="Remove" asp-controller="TripDetails" method="post" asp-route-tripId="@Model.TripId" asp-antiforgery="true">
                 <div>
                     <input type="submit" value="Delete Trip" class="btn btn-success" />
                 </div>
@@ -222,7 +222,7 @@
         }
         @if (type == ViewerType.Passanger)
         {
-            <form asp-action="Leave" asp-controller="TripDetails" method="post" asp-route-id="@Model.TripId" asp-antiforgery="true">
+            <form asp-action="Leave" asp-controller="TripDetails" method="post" asp-route-tripId="@Model.TripId" asp-antiforgery="true">
                 <div>
                     <input type="submit" value="Leave" class="btn btn-success" />
                 </div>
@@ -231,7 +231,7 @@
     }
     else
     {
-        <form asp-action="Join" asp-controller="TripDetails" method="post" asp-route-id="@Model.TripId" asp-antiforgery="true">
+        <form asp-action="Join" asp-controller="TripDetails" method="post" asp-route-tripId="@Model.TripId" asp-antiforgery="true">
             <div>
                 <input type="submit" value="Join" class="btn btn-success" />
             </div>
