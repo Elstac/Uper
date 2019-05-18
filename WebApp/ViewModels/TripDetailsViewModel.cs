@@ -21,5 +21,11 @@ namespace WebApp.ViewModels
         public List<string> PassangersUsernames { get; set; }
         public List<string> RequestsUsernames { get; set; }
         
+        public string IsActive { get
+            {
+                if (DateEnd < DateTime.Now) return "false";
+                else if (Date > DateTime.Now) return "true";
+                else return "ongoing";
+            } }
     }
 }
