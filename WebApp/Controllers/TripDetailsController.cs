@@ -103,55 +103,55 @@ namespace WebApp.Controllers
         [Authorize(Policy = "test")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Join(int id)
+        public IActionResult Join(int tripId)
         {
             TripUser tripUser = new TripUser {
-                TripId = id,
+                TripId = tripId,
                 UserId = accountManager.GetUserId(HttpContext.User)
             };
 
             tripUserRepository.Add(tripUser);
-            return RedirectToAction("index", "TripDetails", new { id });
+            return RedirectToAction("index", "TripDetails", new { id = tripId });
         }
 
-        [Authorize]
+        [Authorize(Policy = "DriverOnly")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Remove(int id)
+        public IActionResult Remove(int tripId)
         {
-            var td = tripDetailsRepository.GetById(id);
+            var td = tripDetailsRepository.GetById(tripId);
             if (td.MapId != null)
             {
                 fileManager.RemoveFile(td.MapId, "wwwroot/images/maps/");
             }
-            tripUserRepository.RemoveTripUsers(id);
+            tripUserRepository.RemoveTripUsers(tripId);
             tripDetailsRepository.Remove(td);
 
             notificationProvider.SetNotification(HttpContext.Session, "res-suc", "Trip deleted successfully");
             return RedirectToRoute("Home");
         }
 
-        [Authorize]
+        [Authorize(Policy ="PassangerOnly")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Leave(int id)
+        public IActionResult Leave(int tripId)
         {
-            tripUserRepository.RemoveUserFromTrip(id,accountManager.GetUserId(HttpContext.User));
-            return RedirectToAction("index", "TripDetails", new { id });
+            tripUserRepository.RemoveUserFromTrip(tripId,accountManager.GetUserId(HttpContext.User));
+            return RedirectToAction("index", "TripDetails", new { id = tripId });
         }
 
-        [Authorize]
+        [Authorize(Policy = "DriverOnly")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult RemoveUserFromTrip(int id,string username)
+        public IActionResult RemoveUserFromTrip(int tripId,string username)
         {
-            List<TripUser> toRm = tripUserRepository.GetList(new TripUserByUsernameAndTripId(id,username)) as List<TripUser>;
+            List<TripUser> toRm = tripUserRepository.GetList(new TripUserByUsernameAndTripId(tripId,username)) as List<TripUser>;
             tripUserRepository.Remove(toRm[0]);
-            return RedirectToAction("index", "TripDetails", new { id });
+            return RedirectToAction("index", "TripDetails", new { id = tripId });
 
         }
 
-        [Authorize]
+        [Authorize(Policy = "DriverOnly")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult ConfirmRequest(int tripId, string username)
