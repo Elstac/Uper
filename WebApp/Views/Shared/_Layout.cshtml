@@ -55,33 +55,37 @@
                 <button onclick="location.href='@Url.Action("MyTravelOffers","Profiles")'">My Travel Offers</button>
             </sidebar>
         </div>
-        <bodyRender>
+        <div>
+            <bodyRender>
 
-            @{var result = Context.Session.GetString("result"); Context.Session.Clear(); }
-            @if (!string.IsNullOrEmpty(result))
-            {
-                @Html.Raw(result)
-            }   
-            @RenderBody()
-        </bodyRender>
-        <footer style="margin-left:160px">
-            Copyrighted by spółka z.o.o
-        </footer>
+                @{var result = Context.Session.GetString("result"); Context.Session.Clear(); }
+                @if (!string.IsNullOrEmpty(result))
+                {
+                    @Html.Raw(result)
+                }
+                @RenderBody()
+            </bodyRender>
+            <footer style="margin-left: 160px">
+                Copyrighted by spółka z.o.o
+            </footer>
+        </div>
     </section>
     }
     else
     {
-        <bodyRender style="margin-left:10px">
-            @{var result = Context.Session.GetString("result"); Context.Session.Clear(); }
-            @if (!string.IsNullOrEmpty(result))
-            {
-                @Html.Raw(result)
-            }   
-            @RenderBody()
-        </bodyRender>
-    <footer>
-        Copyrighted by spółka z.o.o
-    </footer>
+        <div>
+            <bodyRender style="margin-left:10px">
+                @{var result = Context.Session.GetString("result"); Context.Session.Clear(); }
+                @if (!string.IsNullOrEmpty(result))
+                {
+                    @Html.Raw(result)
+                }
+                @RenderBody()
+            </bodyRender>
+            <footer>
+                Copyrighted by spółka z.o.o
+            </footer>
+        </div>
     }
     }
 </body>

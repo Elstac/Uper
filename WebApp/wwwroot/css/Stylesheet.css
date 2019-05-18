@@ -39,17 +39,18 @@
 .nav button:active{
     background-color:#FCC9F1;
 }
-.sidebar{
-    top:45px;
+.sidebar {
+    position: absolute;
+    top: 45px;
     width: 160px;
     margin: 0px;
     position: fixed;
     float: left;
-    clear:none;
-    background-color:#911B8D;
-    height:100%;
-    font-size:large;
-    padding:4px;
+    clear: none;
+    background-color: #911B8D;
+    height: 100%;
+    font-size: large;
+    padding: 4px;
 }
 .sidebar button{
     display: block;
@@ -72,12 +73,61 @@ bodyRender {
     background-color:transparent;
     margin-top:45px;
 }
-footer{
-    background-color:lightpink;
+footer {
+    background-color: lightpink;
     padding: 5px;
     clear: both;
 }
-
+.homeFirstField {
+    margin-top:5px;
+    padding:50px;
+    padding-top: 100px;
+    padding-bottom: 100px;
+    padding-right:800px;
+    background-image: url('../images/homebackgroundimage1.png');
+    background-color: lightgray;
+}
+.transbox {
+    width: 300px;
+    padding: 20px;
+    background-color: rgba(233,233,233,0.6);
+}
+.transbox p{
+    font-weight:bold;
+    font-size:x-large;
+}
+.homeSecondField {
+    margin-top: 5px;
+    padding: 50px;
+    padding-top: 100px;
+    padding-bottom: 100px;
+    padding-right: 400px;
+    background-color: lightgray;
+}
+.transbox p2 {
+    width:250px;
+    padding:2px;
+}
+homeThirdField {
+    background-color:#ccc;
+}
+.homeThirdField Button {
+    margin-top:20px;
+    margin-bottom:20px;
+    display: block;
+    background-color: lightgray;
+    outline: none;
+    border: none;
+    width: auto;
+    padding: 10px;
+    width:400px;
+    height:75px;
+    font-size:larger;
+    font-weight:bold;
+}
+.homeThirdField Button:hover{
+    background-color: #c4c4c4
+}
 div.account-cnf-rem {
     margin: 4px;
     background-color: pink;

@@ -1,10 +1,24 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
-
 <link rel="stylesheet" href="~/css/Stylesheet.css" type="text/css">
-<h1>Welcome to Uper</h1>
-<p width=60%>
-    A place where you and other people in the world can share a car with each other on a trip.
-    bla bla bla bla bla bla bla Try Registering and check our offers
-</p>
+
+
+<div>
+    <div class="homeFirstField">
+        <div class="transbox">
+            <p>Our goal is to make world smaller</p>
+        </div>
+    </div>
+
+    <div class="homeSecondField">
+        <div class="transbox">
+            <p style="padding-bottom:2px;">Save money</p>
+            <p2>by joining on a trip and travelling with other people</p2>
+        </div>
+    </div>
+
+    <div class="homeThirdField">
+        <button onclick="location.href='@Url.Action("Register","Login")'">Register here and organize or join trips</button>
+    </div>
+</div>
