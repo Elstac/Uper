@@ -4,12 +4,16 @@ using WebApp.Data;
 using WebApp.Data.Entities;
 using WebApp.Models;
 using Xunit;
+using Moq;
+using WebApp.Data.Repositories;
 
 namespace Tests
 {
     public class TripDetailsViewModelCreatorTests
     {
         private ITripDetailsCreator detailsCreator;
+        private Mock<IApplicationUserRepository> repoMock;
+
         private TripDetails testModel;
 
         public TripDetailsViewModelCreatorTests()
@@ -43,12 +47,19 @@ namespace Tests
                 StartingAddress = new Address { City = "city", Street = "street" },
                 MapId = "1"
             };
+            repoMock = new Mock<IApplicationUserRepository>();
+            repoMock.Setup(rm => rm.GetById(It.IsAny<string>()))
+                .Returns(new ApplicationUser
+                {
+                    UserName = "Jan"
+                });
+
+            detailsCreator = new TripDetailsCreator(repoMock.Object);
         }
 
         [Fact]
         public void ReturnMinimalViewModelForBaseCreator()
         {
-            detailsCreator = new TripDetailsCreator();
             var vm = detailsCreator.CreateViewModel(testModel);
 
             Assert.Equal(testModel.Description, vm.Description);
@@ -56,13 +67,14 @@ namespace Tests
             Assert.Equal(testModel.DestinationAddress, vm.DestinationAddress);
             Assert.Equal(testModel.StartingAddress, vm.StartingAddress);
             Assert.Equal(testModel.Cost, vm.Cost);
+            Assert.Equal("Jan",vm.DriverUsername);
             Assert.Null(vm.PassangersUsernames);
         }
 
         [Fact]
         public void ReturnViewModelWithConfirmedPassangersListWhenUsedPassengerListDecorator()
         {
-            detailsCreator = new PassengerListDecorator(new TripDetailsCreator());
+            detailsCreator = new PassengerListDecorator(detailsCreator);
             var vm = detailsCreator.CreateViewModel(testModel);
 
             Assert.Equal(testModel.Description, vm.Description);
@@ -81,7 +93,7 @@ namespace Tests
         [Fact]
         public void ReturnViewModelWithMapWhenUsedMapDecorator()
         {
-            detailsCreator = new MapDecorator(new TripDetailsCreator());
+            detailsCreator = new MapDecorator(detailsCreator);
 
             var vm = detailsCreator.CreateViewModel(testModel);
 
