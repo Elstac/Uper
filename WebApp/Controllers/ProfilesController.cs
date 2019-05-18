@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using WebApp.Data.Entities;
 using WebApp.ViewModels;
+using WebApp.Models.TripDetailViewModelProvider;
 
 namespace WebApp.Controllers
 {
@@ -20,13 +21,15 @@ namespace WebApp.Controllers
         private ITripDetailsRepository tripDetailsRepository;
         private ITripUserRepository tripUserRepository;
         private IRatesAndCommentRepository ratesAndCommentRepository;
+        private ITripDetailsViewModelConverter tripDetailsConverter;
 
         public ProfilesController(
             IApplicationUserViewModelGenerator generator,
             IAccountManager accountManager,IApplicationUserRepository repository,
             ITripDetailsRepository tripDetailsRepository, 
             ITripUserRepository tripUserRepository, 
-            IRatesAndCommentRepository ratesAndCommentRepository)
+            IRatesAndCommentRepository ratesAndCommentRepository,
+            ITripDetailsViewModelConverter tripDetailsConverter)
         {
             this.generator = generator;
             this.accountManager = accountManager;
@@ -34,7 +37,9 @@ namespace WebApp.Controllers
             this.tripDetailsRepository = tripDetailsRepository;
             this.tripUserRepository = tripUserRepository;
             this.ratesAndCommentRepository = ratesAndCommentRepository;
+            this.tripDetailsConverter = tripDetailsConverter;
         }
+
         [Authorize]
         public IActionResult MyProfile()
         {
@@ -106,7 +111,10 @@ namespace WebApp.Controllers
         {
             return View(
                 "UserTravelOffersList",
-                 tripDetailsRepository.GetList(new NotFinishedDriversTrips(accountManager.GetUserId(HttpContext.User))).ToList()
+                 tripDetailsConverter.Convert(
+                     tripDetailsRepository.GetList(new NotFinishedDriversTrips(accountManager.GetUserId(HttpContext.User))).ToList(),
+                     ViewerType.Driver
+                     )
                  );
         }
 
@@ -114,8 +122,11 @@ namespace WebApp.Controllers
         public IActionResult MyFinishedTravelOffers()
         {
             return View(
-                "UserTravelOffersList",
-                tripDetailsRepository.GetList(new FinishedDriversTrips(accountManager.GetUserId(HttpContext.User))).ToList()
+                    "UserTravelOffersList",
+                    tripDetailsConverter.Convert(
+                        tripDetailsRepository.GetList(new FinishedDriversTrips(accountManager.GetUserId(HttpContext.User))).ToList()
+                        , ViewerType.Driver
+                        )
                 );
         }
 
@@ -123,8 +134,11 @@ namespace WebApp.Controllers
         public IActionResult JoinedTravelOffers()
         {
             return View(
-                "UserTravelOffersList", 
-                tripDetailsRepository.GetList(new NotFinishedJoinedUsersTrips(accountManager.GetUserId(HttpContext.User))).ToList()
+                "UserTravelOffersList",
+                tripDetailsConverter.Convert(
+                    tripDetailsRepository.GetList(new NotFinishedJoinedUsersTrips(accountManager.GetUserId(HttpContext.User))).ToList()
+                    , ViewerType.Passanger
+                    )
                 );
         }
 
@@ -133,7 +147,10 @@ namespace WebApp.Controllers
         {
             return View(
                 "UserTravelOffersList",
-                tripDetailsRepository.GetList(new FinishedJoinedUsersTrips(accountManager.GetUserId(HttpContext.User))).ToList()
+                tripDetailsConverter.Convert(
+                    tripDetailsRepository.GetList(new FinishedJoinedUsersTrips(accountManager.GetUserId(HttpContext.User))).ToList()
+                    , ViewerType.Passanger
+                    )
                 );
         }
 
