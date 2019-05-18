@@ -104,31 +104,37 @@ namespace WebApp.Controllers
         [Authorize]
         public IActionResult MyTravelOffers()
         {
-            List<TripDetails> myTravelOffers = tripDetailsRepository.GetList(new TripDetailsByDriverIdAndDateEndHigherThanDateNow(accountManager.GetUserId(HttpContext.User))).ToList(); ;
-            return View("UserTravelOffersList", myTravelOffers.OrderByDescending(trip => trip.DateEnd));
+            return View(
+                "UserTravelOffersList",
+                 tripDetailsRepository.GetList(new NotFinishedDriversTrips(accountManager.GetUserId(HttpContext.User))).ToList()
+                 );
         }
 
         [Authorize]
         public IActionResult MyFinishedTravelOffers()
         {
-            List<TripDetails> myTravelOffers = tripDetailsRepository.GetList(new TripDetailsByDriverIdAndDateEndLowerThanDateNow(accountManager.GetUserId(HttpContext.User))).ToList(); ;
-            return View("UserTravelOffersList", myTravelOffers.OrderByDescending(trip => trip.DateEnd));
+            return View(
+                "UserTravelOffersList",
+                tripDetailsRepository.GetList(new FinishedDriversTrips(accountManager.GetUserId(HttpContext.User))).ToList()
+                );
         }
 
         [Authorize]
         public IActionResult JoinedTravelOffers()
         {
-            var tripUsers = tripUserRepository.GetList(new TripUserByUserId(accountManager.GetUserId(HttpContext.User)));
-            List<TripDetails> joinedTravelOffers = tripDetailsRepository.GetList(new TripDetailsByListOfTripUserAndDateEndHigherThanDateNow(tripUsers.ToList())).ToList();
-            return View("UserTravelOffersList", joinedTravelOffers.OrderByDescending(trip => trip.DateEnd));
+            return View(
+                "UserTravelOffersList", 
+                tripDetailsRepository.GetList(new NotFinishedJoinedUsersTrips(accountManager.GetUserId(HttpContext.User))).ToList()
+                );
         }
 
         [Authorize]
         public IActionResult JoinedFinishedTravelOffers()
         {
-            var tripUsers = tripUserRepository.GetList(new TripUserByUserId(accountManager.GetUserId(HttpContext.User)));
-            List<TripDetails> joinedTravelOffers = tripDetailsRepository.GetList(new TripDetailsByListOfTripUserAndDateEndLowerThanDateNow(tripUsers.ToList())).ToList();
-            return View("UserTravelOffersList", joinedTravelOffers.OrderByDescending(trip => trip.DateEnd));
+            return View(
+                "UserTravelOffersList",
+                tripDetailsRepository.GetList(new FinishedJoinedUsersTrips(accountManager.GetUserId(HttpContext.User))).ToList()
+                );
         }
 
         [ValidateAntiForgeryToken]
