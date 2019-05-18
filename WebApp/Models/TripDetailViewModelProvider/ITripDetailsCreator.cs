@@ -1,4 +1,5 @@
 ﻿using WebApp.Data;
+using WebApp.Data.Repositories;
 using WebApp.ViewModels;
 
 namespace WebApp.Models
@@ -10,6 +11,13 @@ namespace WebApp.Models
 
     public class TripDetailsCreator : ITripDetailsCreator
     {
+        private IApplicationUserRepository repository;
+
+        public TripDetailsCreator(IApplicationUserRepository repository)
+        {
+            this.repository = repository;
+        }
+
         public TripDetailsViewModel CreateViewModel(TripDetails tripDetails)
         {
             var ret = new TripDetailsViewModel
@@ -24,7 +32,8 @@ namespace WebApp.Models
                 IsSmokingAllowed = tripDetails.IsSmokingAllowed,
                 DestinationAddress = tripDetails.DestinationAddress,
                 StartingAddress = tripDetails.StartingAddress,
-                DriverId = tripDetails.DriverId
+                DriverId = tripDetails.DriverId,
+                DriverUsername = repository.GetById(tripDetails.DriverId).UserName
             };
 
             return ret;
