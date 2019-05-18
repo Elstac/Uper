@@ -27,7 +27,7 @@ namespace WebApp.Data.Specifications.Infrastructure
             }
             else
             {
-                var convInclude = includeExpression as Expression<Func<T, IEnumerable<TripUser>>>;
+                var convInclude = includeExpression as Expression<Func<T, ICollection<TripUser>>>;
                 return query.Include(convInclude);
             }
         }
