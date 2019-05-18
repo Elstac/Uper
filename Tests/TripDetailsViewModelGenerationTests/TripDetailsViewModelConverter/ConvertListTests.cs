@@ -6,6 +6,7 @@ using WebApp.Data;
 using WebApp.Models;
 using System;
 using WebApp.Models.Factories;
+using WebApp.ViewModels;
 
 namespace Tests.TripDetailsViewModelGenerationTests.TripDetailsViewModelConverterTests
 {
@@ -19,10 +20,24 @@ namespace Tests.TripDetailsViewModelGenerationTests.TripDetailsViewModelConverte
         {
             creatorMock = new Mock<ITripDetailsCreator>();
 
-            facMock = new Mock<ITripDetailsViewModelCreatorFactory>();
-            facMock.Setup(fm => fm.CreateCreator(It.IsAny<ViewerType>())).Returns(creatorMock.Object);
+            InitializeFacMock();
 
             converter = new TripDetailsViewModelConverter(facMock.Object);
+        }
+
+
+        private void InitializeFacMock()
+        {
+            facMock = new Mock<ITripDetailsViewModelCreatorFactory>();
+            facMock.Setup(fm => fm.CreateCreator(It.IsAny<ViewerType>())).Returns(creatorMock.Object);
+        }
+
+        [Fact]
+        public void GetCreatorFromFactoryUsingGivenViewerType()
+        {
+            converter.Convert(new List<TripDetails>(), ViewerType.Driver);
+
+            facMock.Verify(fm => fm.CreateCreator(ViewerType.Driver));
         }
 
         [Fact]
@@ -36,7 +51,7 @@ namespace Tests.TripDetailsViewModelGenerationTests.TripDetailsViewModelConverte
                     new TripDetails()
                 };
 
-            var @out = converter.Convert(
+            converter.Convert(
                 inputList,
                 ViewerType.Driver
             );
@@ -46,5 +61,37 @@ namespace Tests.TripDetailsViewModelGenerationTests.TripDetailsViewModelConverte
                 creatorMock.Verify(cm => cm.CreateViewModel(item));
             }
         }
+
+        [Fact]
+        public void AddCreatedViewModelsToListAdneReturnIt()
+        {
+            var vm = new TripDetailsViewModel();
+            creatorMock = new Mock<ITripDetailsCreator>();
+            creatorMock.Setup(cm => cm.CreateViewModel(It.IsAny<TripDetails>()))
+                .Returns(vm);
+
+            InitializeFacMock();
+
+            converter = new TripDetailsViewModelConverter(facMock.Object);
+
+            var inputList = new List<TripDetails>
+                {
+                    new TripDetails(),
+                    new TripDetails(),
+                    new TripDetails(),
+                    new TripDetails()
+                };
+
+            var @out = converter.Convert(
+                inputList,
+                ViewerType.Driver
+            );
+
+            foreach (var item in @out)
+            {
+                Assert.Equal(vm,item);
+            }
+        }
+
     }
 }

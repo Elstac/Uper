@@ -23,13 +23,14 @@ namespace WebApp.Models.TripDetailViewModelProvider
         public List<TripDetailsViewModel> Convert(IEnumerable<TripDetails> dataModels, ViewerType type)
         {
             var creator = factory.CreateCreator(type);
+            var ret = new List<TripDetailsViewModel>();
 
             foreach (var dataModel in dataModels)
             {
-                creator.CreateViewModel(dataModel);
+                ret.Add(creator.CreateViewModel(dataModel));
             }
 
-            return null;
+            return ret;
         }
     }
 }
