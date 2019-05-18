@@ -30,6 +30,12 @@
         The trip is currently ongoing. It will end on @Model.DateEnd.Day @Model.DateEnd.ToString("MMMM", CultureInfo.InvariantCulture) @Model.DateEnd.Year @Model.DateEnd.ToString("HH:mm") .
     </div>
 }
+@if (ViewBag.IsFull)
+{
+    <div>
+        <h1>Trip is full.</h1>
+    </div>
+}
 
 <div class="tripHeader">
     <div class="gen">

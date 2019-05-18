@@ -88,8 +88,15 @@ namespace WebApp.Controllers
                     ViewBag.PassangerAccepted = true;
                 }
                 else ViewBag.PassangerAccepted = false;
+
+                if (vm.PassangersUsernames.Count >= vm.Size) ViewBag.IsFull = true;
+                else ViewBag.IsFull = false;
             }
-            else ViewBag.PassangerAccepted = false;
+            else
+            {
+                ViewBag.PassangerAccepted = false;
+                ViewBag.IsFull = false;
+            }
 
             if(vm.DriverUsername == null)
             {
