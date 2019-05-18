@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WebApp.Data.TripDetails>
+﻿@model IEnumerable<WebApp.ViewModels.TripDetailsViewModel>
 @{
     ViewData["Title"] = "UserTravelOffersList";
 }
@@ -60,7 +60,7 @@
                     Destination City Street
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.DriverId)
+                    @Html.DisplayNameFor(model => model.DriverUsername)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Cost)
@@ -103,7 +103,7 @@
                         @Html.DisplayFor(modelItem => item.DestinationAddress.Street)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.DriverId)
+                        @Html.DisplayFor(modelItem => item.DriverUsername)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Cost)
@@ -127,7 +127,7 @@
                         @Html.DisplayFor(modelItem => item.IsSmokingAllowed)
                     </td>
                     <td>
-                        <a asp-action="Index" asp-controller="TripDetails" asp-route-id="@item.Id">Details</a>
+                        <a asp-action="Index" asp-controller="TripDetails" asp-route-id="@item.TripId">Details</a>
                     </td>
                 </tr>
             }
