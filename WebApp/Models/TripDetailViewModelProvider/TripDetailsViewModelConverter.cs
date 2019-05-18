@@ -22,7 +22,14 @@ namespace WebApp.Models.TripDetailViewModelProvider
 
         public List<TripDetailsViewModel> Convert(IEnumerable<TripDetails> dataModels, ViewerType type)
         {
-            throw new NotImplementedException();
+            var creator = factory.CreateCreator(type);
+
+            foreach (var dataModel in dataModels)
+            {
+                creator.CreateViewModel(dataModel);
+            }
+
+            return null;
         }
     }
 }
