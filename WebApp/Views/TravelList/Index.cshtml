@@ -1,43 +1,65 @@
 ﻿@model X.PagedList.IPagedList<WebApp.Data.TripDetails>
 @using X.PagedList.Mvc.Core;
+@using System.Globalization;
 @{
     ViewData["Title"] = "Travel List";
 }
+<link rel="stylesheet" href="~/css/TravelOffers.css" type="text/css">
 
 <div>
-    <h2>Search for our travel offers</h2>
+    <h2>Search for travel offers</h2>
 </div>
 <body>
     <form action="/TravelList/Index" method="post">
-        <p>
-            <label for="StartCity">Starting City</label>
-            <input type="text" name="StartCity" />
+        <div class="form">
+            <label for="StartCity">From:</label>
+            <input type="text" placeholder="Starting City" name="StartCity" />
 
-            <label for="DestCity">Destination City</label>
-            <input type="text" name="DestCity" />
+            <label for="DestCity">To:</label>
+            <input type="text" placeholder="Destination City" name="DestCity" />
 
-            <label for="MinDate">Date</label>
+            <label for="Cost">Maximum Cost:</label>
+            <input type="number" placeholder="In zloty" step="0.01" name="Cost" />
+        </div>
+
+        <div class="form">
+            <label for="MinDate">Date:</label>
             <input type="datetime-local" name="MinDate" />
 
             <label for="MinDate">-</label>
             <input type="datetime-local" name="MaxDate" />
 
-            <label for="Cost">Maximum Cost</label>
-            <input type="number" step="0.01" name="Cost" />
+            <label for="Seats">Number Of Empty Seats:</label>
+            <select name="Seats">
+                <option value=1>1</option>
+                <option value=2>2</option>
+                <option value=3>3</option>
+                <option value=4>4</option>
+                <option value=5>5</option>
+                <option value=6>6</option>
+                <option value=7>7</option>
+                <option value=8>8</option>
+                <option value=9>9</option>
+                <option value=10>10</option>
+                <option value=11>11</option>
+                <option value=12>12</option>
+                <option value=13>13</option>
+                <option value=14>14</option>
+                <option value=15>15</option>
+            </select>
 
-            <label for="Seats">Number Of Empty Seats</label>
-            <input type="number" name="Seats" />
-
-            <label for="Smoking">Smoker</label>
+            <label for="Smoking">Smoker:</label>
             <input type="checkbox" name="Smoking" value="true" />
+        </div>
 
-            <input type="submit" value="Search" />
-        </p>
+        <div class="form">
+            <button type="submit">Search</button>
+        </div>
     </form>
 
 
     @{
-        if(Model != null)
+        if (Model != null)
         {
             if (Model.Count == 0)
             {
@@ -51,27 +73,45 @@
             {
                 foreach (var trip in Model)
                 {
-                    <p>
-                        <h2>
-                            <strong>
-                                @Html.ActionLink(
-                                   linkText: $"{trip.StartingAddress.City} => {trip.DestinationAddress.City}  {@trip.Date} - {trip.DateEnd}",
-                                   actionName: "Index",
-                                   controllerName: "TripDetails",
-                                   routeValues: new
-                                   {
-                                       id = trip.Id
-                                   },
-                                   htmlAttributes: new { })
-                            </strong>
-                        </h2>
-                        <h3>
-                            Seats: @trip.Passangers.Count() / @trip.Size Cost: @trip.Cost zloty per person
-                        </h3>
-                        @trip.Description
-                    </p>
+                    <div class="Offer">
+                        <name>
+                            @Html.ActionLink(
+                               linkText: $"From:  {trip.StartingAddress.City} To:  {trip.DestinationAddress.City}",
+                               actionName: "Index",
+                               controllerName: "TripDetails",
+                               routeValues: new
+                               {
+                                   id = trip.Id
+                               },
+                               htmlAttributes: new { })
+                        </name><br />
+                        <seats>
+                            @trip.Passangers.Count() / @trip.Size ,
+                        </seats>
+                        <date>
+                            @trip.Date.Day @trip.Date.ToString("MMMM", CultureInfo.InvariantCulture) @trip.Date.Year
+                            <font style="font-size:20px">  @trip.Date.ToString("HH:mm")</font>
+                            - @trip.DateEnd.Day @trip.DateEnd.ToString("MMMM", CultureInfo.InvariantCulture) @trip.DateEnd.Year
+                            <font style="font-size:20px">  @trip.DateEnd.ToString("HH:mm")</font>
+                        </date><br />
+                        <cost>
+                            @trip.Cost zloty per person
+                        </cost><br />
+                        <description>
+                            @if (trip.Description.Length > 250)
+                            {
+                                @trip.Description.Substring(0, 250)<text>...</text>
+                            }
+                            else
+                            {
+                                @trip.Description
+                            }
+                        </description>
+                    </div>
                 }
-                <text>Page </text> @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) <text> of </text> @Model.PageCount
+                <div class="pages">
+                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                </div>
 
                 @Html.PagedListPager(Model, page => Url.Action("Index",
                     new { page,
