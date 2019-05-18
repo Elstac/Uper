@@ -5,13 +5,13 @@
 <script src="~/js/Map.js"></script>
 <script src="~/js/MapManagement.js"></script>
 
-@if (ViewBag.IsActive.Equals("false"))
+@if (Model.IsActive=="false")
 {
     <div>
         <h1>The offer is closed.</h1>
     </div>
 }
-@if (ViewBag.IsActive.Equals("ongoing"))
+@if (Model.IsActive=="ongoing")
 {
     <div>
         <h1>The trip is ongoing.</h1>
@@ -33,7 +33,7 @@
                                                },
                                                htmlAttributes: new { })
 </div>
-@if (ViewBag.IsActive.Equals("true") && (ViewBag.PassangerAccepted == true || type == ViewerType.Driver))
+@if (Model.IsActive=="true" && (ViewBag.PassangerAccepted == true || type == ViewerType.Driver))
 {
     <div>
         @Html.ActionLink(
@@ -138,7 +138,7 @@
         <button type="button" onclick="zoomOut()">ZoomOut</button>
     </div>
 }
-@if (ViewBag.IsActive.Equals("true"))
+@if (Model.IsActive == "true")
 {
     @if (type != ViewerType.Guest)
     {
