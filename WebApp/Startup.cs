@@ -24,6 +24,7 @@ using WebApp.AuthenticationPolicies;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.Models.HtmlNotifications;
 using Microsoft.AspNetCore.SignalR;
+using WebApp.Models.TripDetailViewModelProvider;
 
 namespace WebApp
 {
@@ -129,6 +130,7 @@ namespace WebApp
             services.AddTransient<ISpecificationEvaluator, SpecificationEvaluator>();
             services.AddTransient<IIncludeManager, IncludeManager>();
             services.AddTransient<IPdfCreator, PdfCreator>();
+            services.AddTransient<ITripDetailsViewModelConverter, TripDetailsViewModelConverter>();
             
 
             services.AddSingleton<IIncludeChainProvider>(sp =>

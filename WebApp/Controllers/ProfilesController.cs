@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using WebApp.Data.Entities;
 using WebApp.ViewModels;
+using WebApp.Models.TripDetailViewModelProvider;
 
 namespace WebApp.Controllers
 {
@@ -20,13 +21,15 @@ namespace WebApp.Controllers
         private ITripDetailsRepository tripDetailsRepository;
         private ITripUserRepository tripUserRepository;
         private IRatesAndCommentRepository ratesAndCommentRepository;
+        private ITripDetailsViewModelConverter tripDetailsConverter;
 
         public ProfilesController(
             IApplicationUserViewModelGenerator generator,
             IAccountManager accountManager,IApplicationUserRepository repository,
             ITripDetailsRepository tripDetailsRepository, 
             ITripUserRepository tripUserRepository, 
-            IRatesAndCommentRepository ratesAndCommentRepository)
+            IRatesAndCommentRepository ratesAndCommentRepository,
+            ITripDetailsViewModelConverter tripDetailsConverter)
         {
             this.generator = generator;
             this.accountManager = accountManager;
@@ -34,7 +37,9 @@ namespace WebApp.Controllers
             this.tripDetailsRepository = tripDetailsRepository;
             this.tripUserRepository = tripUserRepository;
             this.ratesAndCommentRepository = ratesAndCommentRepository;
+            this.tripDetailsConverter = tripDetailsConverter;
         }
+
         [Authorize]
         public IActionResult MyProfile()
         {
@@ -104,31 +109,49 @@ namespace WebApp.Controllers
         [Authorize]
         public IActionResult MyTravelOffers()
         {
-            List<TripDetails> myTravelOffers = tripDetailsRepository.GetList(new TripDetailsByDriverIdAndDateEndHigherThanDateNow(accountManager.GetUserId(HttpContext.User))).ToList(); ;
-            return View("UserTravelOffersList", myTravelOffers.OrderByDescending(trip => trip.DateEnd));
+            return View(
+                "UserTravelOffersList",
+                 tripDetailsConverter.Convert(
+                     tripDetailsRepository.GetList(new NotFinishedDriversTrips(accountManager.GetUserId(HttpContext.User))).ToList(),
+                     ViewerType.Driver
+                     )
+                 );
         }
 
         [Authorize]
         public IActionResult MyFinishedTravelOffers()
         {
-            List<TripDetails> myTravelOffers = tripDetailsRepository.GetList(new TripDetailsByDriverIdAndDateEndLowerThanDateNow(accountManager.GetUserId(HttpContext.User))).ToList(); ;
-            return View("UserTravelOffersList", myTravelOffers.OrderByDescending(trip => trip.DateEnd));
+            return View(
+                    "UserTravelOffersList",
+                    tripDetailsConverter.Convert(
+                        tripDetailsRepository.GetList(new FinishedDriversTrips(accountManager.GetUserId(HttpContext.User))).ToList()
+                        , ViewerType.Driver
+                        )
+                );
         }
 
         [Authorize]
         public IActionResult JoinedTravelOffers()
         {
-            var tripUsers = tripUserRepository.GetList(new TripUserByUserId(accountManager.GetUserId(HttpContext.User)));
-            List<TripDetails> joinedTravelOffers = tripDetailsRepository.GetList(new TripDetailsByListOfTripUserAndDateEndHigherThanDateNow(tripUsers.ToList())).ToList();
-            return View("UserTravelOffersList", joinedTravelOffers.OrderByDescending(trip => trip.DateEnd));
+            return View(
+                "UserTravelOffersList",
+                tripDetailsConverter.Convert(
+                    tripDetailsRepository.GetList(new NotFinishedJoinedUsersTrips(accountManager.GetUserId(HttpContext.User))).ToList()
+                    , ViewerType.Passanger
+                    )
+                );
         }
 
         [Authorize]
         public IActionResult JoinedFinishedTravelOffers()
         {
-            var tripUsers = tripUserRepository.GetList(new TripUserByUserId(accountManager.GetUserId(HttpContext.User)));
-            List<TripDetails> joinedTravelOffers = tripDetailsRepository.GetList(new TripDetailsByListOfTripUserAndDateEndLowerThanDateNow(tripUsers.ToList())).ToList();
-            return View("UserTravelOffersList", joinedTravelOffers.OrderByDescending(trip => trip.DateEnd));
+            return View(
+                "UserTravelOffersList",
+                tripDetailsConverter.Convert(
+                    tripDetailsRepository.GetList(new FinishedJoinedUsersTrips(accountManager.GetUserId(HttpContext.User))).ToList()
+                    , ViewerType.Passanger
+                    )
+                );
         }
 
         [ValidateAntiForgeryToken]
