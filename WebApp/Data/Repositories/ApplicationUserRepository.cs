@@ -7,6 +7,7 @@ namespace WebApp.Data.Repositories
     public interface IApplicationUserRepository :IRepository<ApplicationUser,string>
     {
         ApplicationUser GetUserWithTripListById(string id);
+        string GetUserIdByUserName(string userName);
     }
 
     public class ApplicationUserRepository : BaseRepository<ApplicationUser, string>, IApplicationUserRepository
@@ -25,6 +26,11 @@ namespace WebApp.Data.Repositories
                 .ThenInclude(td => td.Trip)
                 .Where(au => au.Id == id)
                 .FirstOrDefault();
+        }
+
+        public string GetUserIdByUserName(string userName)
+        {
+            return context.Users.Where(u => u.UserName == userName).First().Id;
         }
     }
 }
