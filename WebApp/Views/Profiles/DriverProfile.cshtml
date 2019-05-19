@@ -3,6 +3,7 @@
     ViewData["Title"] = "DriverProfile";
 
 }
+    <link rel="stylesheet" href="~/css/DriverProfile.css" type="text/css">
 
 <h2>DriverProfile</h2>
 
@@ -17,59 +18,25 @@
 <p>Punctuality Average Rates: @Model.PunctualityAverage</p>
 <p>Number of Votes: @Model.NumberOfVotes</p>
 
-<div style="height:300px;width:auto;overflow-y:scroll">
-    <table style="table-layout: fixed; width: 100%">
-        <thead>
-            <tr>
-                <th>
-                    Date
-                </th>
-                <th>
-                    Username
-                </th>
-                <th>
-                    Driving Safety Rate
-                </th>
-                <th>
-                    Personal Culture Rate
-                </th>
-                <th>
-                    Punctuality Rate
-                </th>
-                <th>
-                    Comment
-                </th>
-            </tr>
-        </thead>
+    <div style="height:450px;width:500px;overflow-y:scroll;margin-left:200px">
 
-        <tbody>
+        @foreach (var item in Model.RatesAndCommentList)
+        {
 
-            @foreach (var item in Model.RatesAndCommentList)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Date)
-                    </td>
-                    <td>
-                        @ViewBag.Username
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DrivingSafety)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PersonalCulture)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Punctuality)
-                    </td>
-                    <td style="word-wrap: break-word">
-                        @Html.DisplayFor(modelItem => item.Comment)
-                    </td>
-                </tr>
-            }
+            <div class="dialogbox">
+                <div class="body">
+                    <div class="info">
+                        <span>Username: @Html.DisplayFor(modelItem => item.Username)</span>
+                        <span>Date: @Html.DisplayFor(modelItem => item.Date)</span>
+                        <span>Driving Safety: @Html.DisplayFor(modelItem => item.DrivingSafety)</span>
+                        <span>Personal Culture: @Html.DisplayFor(modelItem => item.PersonalCulture)</span>
+                        <span>Punctuality: @Html.DisplayFor(modelItem => item.Punctuality)</span>
+                    </div>
+                    <div class="message">
+                        <span>@Html.DisplayFor(modelItem => item.Comment)</span>
+                    </div>
+                </div>
+            </div>
 
-        </tbody>
-
-    </table>
+        }
     </div>
-

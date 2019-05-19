@@ -25,7 +25,8 @@ namespace WebApp.Controllers
 
         public ProfilesController(
             IApplicationUserViewModelGenerator generator,
-            IAccountManager accountManager,IApplicationUserRepository repository,
+            IAccountManager accountManager,
+            IApplicationUserRepository repository,
             ITripDetailsRepository tripDetailsRepository, 
             ITripUserRepository tripUserRepository, 
             IRatesAndCommentRepository ratesAndCommentRepository,
@@ -222,12 +223,12 @@ namespace WebApp.Controllers
         [Authorize]
         public IActionResult DriverProfile(string driverId)
         {
-            ViewBag.Username = accountManager.GetUserName(HttpContext.User);
+            var rates = ratesAndCommentRepository.GetList(new RatesAndCommentByDriverId(driverId)).ToList();
             DriverProfileViewModel model = new DriverProfileViewModel
             {
             ApplicationUserViewModel = generator.ConvertAppUserToViewModel(repository.GetById(driverId)),
-            RatesAndCommentList = ratesAndCommentRepository.GetList(new RatesAndCommentByDriverId(driverId)).ToList()
             };
+            model.SetListOfRatesAndComments(rates,repository);
             model.SetAverages();
 
             return View("DriverProfile",model);
