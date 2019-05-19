@@ -15,6 +15,15 @@
         This offer has closed on @Model.DateEnd.Day @Model.DateEnd.ToString("MMMM", CultureInfo.InvariantCulture) @Model.DateEnd.Year @Model.DateEnd.ToString("HH:mm") . You can still view it's content.
     </div>
 }
+
+@if(ViewBag.PassangerAccepted == true && Model.IsActive != "true")
+{
+    <div>
+        <form asp-action="RateAndComment" asp-controller="Profiles" method="post" asp-route-driverId="@Model.DriverId" asp-route-tripId="@Model.TripId" asp-antiforgery="true">
+                <input type="submit" class="rate" value="+ Rate and Comment on the Driver" />
+        </form>
+    </div>
+}
 @if (Model.IsActive == "ongoing")
 {
     <div class="statusOngoing">
