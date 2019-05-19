@@ -86,6 +86,10 @@ namespace WebApp.Controllers
             }
             else ViewBag.PassangerAccepted = false;
 
+            if(vm.DriverUsername == null)
+            {
+                vm.DriverUsername = applicationUserRepository.GetById(vm.DriverId).UserName;
+            }
 
             ViewData["type"] = viewerType;
             if (vm.MapPath != null)

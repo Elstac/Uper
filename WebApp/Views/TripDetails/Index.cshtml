@@ -1,248 +1,257 @@
 ﻿@model WebApp.ViewModels.TripDetailsViewModel
+@using System.Globalization;
+@using WebApp.Data.Repositories;
+@inject IApplicationUserRepository repository;
 @{var type = (ViewerType)ViewData["type"]; }
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/p5.js"></script>
 <script src="~/js/Map.js"></script>
 <script src="~/js/MapManagement.js"></script>
+<link rel="stylesheet" href="~/css/TripDetails.css" type="text/css">
 
-@if (Model.IsActive=="false")
+@if (Model.IsActive == "false")
 {
-    <div>
-        <h1>The offer is closed.</h1>
+    <div class="statusEnd">
+        This offer has closed on @Model.DateEnd.Day @Model.DateEnd.ToString("MMMM", CultureInfo.InvariantCulture) @Model.DateEnd.Year @Model.DateEnd.ToString("HH:mm") . You can still view it's content.
     </div>
 }
-@if (Model.IsActive=="ongoing")
+@if (Model.IsActive == "ongoing")
 {
-    <div>
-        <h1>The trip is ongoing.</h1>
+    <div class="statusOngoing">
+        The trip is currently ongoing. It will end on @Model.DateEnd.Day @Model.DateEnd.ToString("MMMM", CultureInfo.InvariantCulture) @Model.DateEnd.Year @Model.DateEnd.ToString("HH:mm") .
     </div>
 }
 
-<div>
-    <h1>Trip from @Model.StartingAddress.City to @Model.DestinationAddress.City </h1>
+<div class="tripHeader">
+    <div class="gen">
+        <font style="font-size:35px">From:</font> @Model.StartingAddress.City <font style="font-size:30px">To:</font> @Model.DestinationAddress.City
+    </div>
+    <div class="date">
+        @Model.Date.ToString("dd MMMM yyyy", CultureInfo.InvariantCulture) , @Model.Date.ToString("ddd", CultureInfo.InvariantCulture) @Model.Date.ToString("HH:mm") -
+        @{
+            if (Model.Date.Day != Model.DateEnd.Day && Model.Date.Month != Model.DateEnd.Month && Model.Date.Year != Model.Date.Year)
+            {
+                @Model.DateEnd.ToString("dd MMMM yyyy", CultureInfo.InvariantCulture) <text>,</text> @Model.DateEnd.ToString("ddd", CultureInfo.InvariantCulture) @Model.Date.ToString("HH:mm")
+            }
+            else
+            {
+                @Model.DateEnd.ToString("HH:mm")
+            }
+        }        
+    </div>
 </div>
 
-<div>
-    @Html.ActionLink(
-                                               linkText: "View Driver Profile",
-                                               actionName: "DriverProfile",
-                                               controllerName: "Profiles",
-                                               routeValues: new
-                                                   {
-                                                   driverId = Model.DriverId
-                                               },
-                                               htmlAttributes: new { })
-</div>
-@if (Model.IsActive=="true" && (ViewBag.PassangerAccepted == true || type == ViewerType.Driver))
-{
-    <div>
-        @Html.ActionLink(
-                                                   linkText: "Chat",
-                                                   actionName: "Index",
-                                                   controllerName: "Chat",
-                                                   routeValues: new
-                                                       {
-                                                       tripId = Model.TripId
-                                                   },
-                                                   htmlAttributes: new { })
+<div class="left-align">
+    <div class="cost">
+        @Model.Cost <font style="font-size:20px">PLN</font>
     </div>
 
-    <form asp-action="GeneratePdf" asp-controller="TripDetails" method="post" asp-route-tripId="@Model.TripId" asp-antiforgery="true">
-        <div>
-            <input type="hidden" id="generatepdf"  name="generatepdf" />
-            <input type="submit" onclick=saveCnvToPng("generatepdf") value="Generate Pdf" class="btn btn-success" />
-        </div>
-    </form>
-}
-<div>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            Destination City
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DestinationAddress.City)
-        </dd>
-        <dt>
-            Destination City Street
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DestinationAddress.Street)
-        </dd>
-        <dt>
-            Starting City
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.StartingAddress.City)
-        </dd>
-        <dt>
-            Starting City Street
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.StartingAddress.Street)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Cost)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Cost)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.VechicleModel)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.VechicleModel)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Size)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Size)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Date)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Date)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.DateEnd)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DateEnd)
-        </dd>
-        <dt>
-            Is smoking allowed?
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.IsSmokingAllowed)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-    </dl>
-</div>
-
-@if (Model.MapPath != null)
-{
-    <script type="text/javascript">
-        loadCnv('@ViewData["mapData"]');
-    </script>
-    <div>
-        <p><b>Trip map:</b></p>
-        <div id="mapHolder"></div>
-        <button type="button" onclick="zoomIn()">ZoomIn</button>
-        <button type="button" onclick="zoomOut()">ZoomOut</button>
-    </div>
-}
-@if (Model.IsActive == "true")
-{
-    @if (type != ViewerType.Guest)
+    <div class="passengersSize">
+        @if (Model.PassangersUsernames != null)
+        {<text>@Model.PassangersUsernames.Count()  / @Model.Size</text> }
+    else
     {
-        <div class="passangersList">
-            <h2>Passangers</h2>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>
-                            Passanger Username
-                        </th>
-                        @if (type == ViewerType.Driver)
-                        {
-                            <th>
-                                Options
-                            </th>
-                        }
-                    </tr>
-                </thead>
-                @foreach (var username in Model.PassangersUsernames)
-                {
-                    <tr>
-                        <td><p>@username</p></td>
-                        @if (type == ViewerType.Driver)
-                        {
-                            <form asp-action="RemoveUserFromTrip" asp-controller="TripDetails" method="post" asp-route-tripId="@Model.TripId" asp-route-username="@username" asp-antiforgery="true">
-                                <td><input type="submit" value="Remove" class="btn btn-danger" /></td>
-                            </form>
-                        }
-                    </tr>
-                }
-            </table>
-        </div>
-        @if (type == ViewerType.Driver)
-        {
-            <script type="text/javascript">
-                document.getElementById('requestForm').submit();
-            </script>
-            <div class="requestsList">
-                <h2>Join requests</h2>
-                <table>
-                    @if (Model.RequestsUsernames != null && Model.RequestsUsernames.Count != 0)
-                    {
-                        <thead>
-                            <tr>
-                                <th>Username</th>
-                            </tr>
-                        </thead>
-                        @foreach (var username in Model.RequestsUsernames)
-                        {
-                            <tr>
-                                <td><p>@username</p></td>
-                                <form asp-action="ConfirmRequest" asp-controller="TripDetails" method="post" asp-route-tripId="@Model.TripId" asp-route-username="@username" asp-antiforgery="true">
-
-                                    <td><input type="submit" value="Confirm" /></td>
-
-                                </form>
-                            </tr>
-                        }
-                    }
-                    else
-                    {
-                        <tr>
-                            <td rowspan="2">
-                                <p>No join requests</p>
-                            </td>
-                        </tr>
-                    }
-                </table>
+        <text>0 / @Model.Size</text>
+    }
+    </div>
+    @{int i = 1; }
+    @if (type == ViewerType.Driver || ViewBag.PassangerAccepted == true)
+    {
+        <div class="passengerList">
+            <div style="padding:4px;">
+                passengers list:
             </div>
-        }
-
-
-        @if (type == ViewerType.Driver)
-        {
-            <form asp-action="Remove" asp-controller="TripDetails" method="post" asp-route-tripId="@Model.TripId" asp-antiforgery="true">
-                <div>
-                    <input type="submit" value="Delete Trip" class="btn btn-success" />
+            @foreach (var pas in Model.PassangersUsernames)
+            {
+                <div class="passenger" onclick="location.href='@Url.Action(
+                                                              action:"DriverProfile",
+                                                              controller:"Profiles",
+                                                              values: new
+                                                              {
+                                                                  driverId = repository.GetUserIdByUserName(pas)
+                                                              })'">
+                    @i. @pas
                 </div>
-            </form>
-        }
-        @if (type == ViewerType.Passanger)
-        {
-            <form asp-action="Leave" asp-controller="TripDetails" method="post" asp-route-tripId="@Model.TripId" asp-antiforgery="true">
-                <div>
-                    <input type="submit" value="Leave" class="btn btn-success" />
-                </div>
-            </form>
-        }
+                i++;
+            }
+        </div>
     }
     else
     {
-        <form asp-action="Join" asp-controller="TripDetails" method="post" asp-route-tripId="@Model.TripId" asp-antiforgery="true">
-            <div>
-                <input type="submit" value="Join" class="btn btn-success" />
-            </div>
-        </form>
+        <div style="padding:4px">
+            To view passengers list you must first join a trip.
+        </div>
     }
-}
-else if (type == ViewerType.Passanger)
-{
-    <form asp-action="RateAndComment" asp-controller="Profiles" method="post" asp-route-driverId="@Model.DriverId" asp-route-tripId="@Model.TripId" asp-antiforgery="true">
+
+    @if (Model.IsActive == "true" && (ViewBag.PassangerAccepted == true || type == ViewerType.Driver))
+    {
+        <div class="chatButton" onclick="location.href = '@Url.Action(
+          action: "Index",
+          controller: "Chat",
+          values: new
+          {
+              tripId = Model.TripId
+          }))'">
+            Chat
+        </div>
+    }
+
+    <form asp-action="GeneratePdf" asp-controller="TripDetails" method="post" asp-route-tripId="@Model.TripId" asp-antiforgery="true">
         <div>
-            <input type="submit" value="Rate And Comment Driver" class="btn btn-success" />
+            <input type="hidden" id="generatepdf" name="generatepdf" />
+            <input type="submit" class="PDFbutton" onclick=saveCnvToPng("generatepdf") value="Generate Pdf" class="btn btn-success" />
         </div>
     </form>
-}
+
+    @if (Model.IsSmokingAllowed == false)
+    {
+        <div class="smoking">
+            X Smoking is not allowed on this trip. X
+        </div>
+    }
+
+    @if (Model.IsActive == "true")
+    {
+        @if (type == ViewerType.Guest)
+        {
+            <div>
+                <form asp-action="Join" asp-controller="TripDetails" method="post" asp-route-tripId="@Model.TripId" asp-antiforgery="true">
+                    <div>
+                        <input class="join" type="submit" value="+ Join" class="btn btn-success" />
+                    </div>
+                </form>
+            </div>
+        }
+        @if (type == ViewerType.Passanger)
+        {
+            if(ViewBag.PassangerAccepted!=true)
+            {
+                <div class="requestPending">
+                    You request is pending.
+                </div>
+            }
+            <form asp-action="Leave" asp-controller="TripDetails" method="post" asp-route-tripId="@Model.TripId" asp-antiforgery="true">
+                <div>
+                    <input class="leave" type="submit" value="> Leave <"/>
+                </div>
+            </form>
+        }
+    }
+
+</div>
+
+<div class="content">
+    <div class="generalInfo">
+        Created by <text class="creatorLink" onclick="location.href='@Url.Action(
+                                                                   action:"DriverProfile",
+                                                                   controller:"Profiles",
+                                                                   values: new
+                                                                   {
+                                                                       driverId = Model.DriverId
+                                                                   })'">@Model.DriverUsername</text><br/>
+        Meeting address: <strong>@Model.StartingAddress.Street</strong> , <strong>@Model.StartingAddress.City</strong>.<br/>
+        Trip ends at <strong>@Model.DestinationAddress.Street</strong> in <strong>@Model.DestinationAddress.City</strong>.<br/>
+        Driver's Vehicle: @Model.VechicleModel.
+    </div>
+
+    <div class="description">
+        @Model.Description
+    </div>
+
+    <div class="map">
+        @if (Model.MapPath != null)
+        {
+            <div style="padding:10px;">
+                <script type="text/javascript">
+                    loadCnv('@ViewData["mapData"]');
+                </script>
+                <div>
+                    <div id="mapHolder"></div>
+                    <button class="mapButton" type="button" onclick="zoomIn()">ZoomIn</button>
+                    <button class="mapButton" type="button" onclick="zoomOut()">ZoomOut</button>
+                </div>
+            </div>
+        }
+        else
+        {
+            <text>There is no map attached to this trip.</text>
+        }
+    </div>
+    
+    @if(type == ViewerType.Driver)
+    {
+        <div class="Management">
+            <div class="joinRequests">
+                <text style="font-size:20px; font-weight:bold">Join Requests:</text>
+                @if (Model.RequestsUsernames.Count != 0)
+                {
+                    i = 1;
+                    @foreach (var pas in Model.RequestsUsernames)
+                    {
+                        <form asp-action="ConfirmRequest" asp-controller="TripDetails" method="post" asp-route-tripId="@Model.TripId" asp-route-username="@pas" asp-antiforgery="true">
+                            <div class="passenger" onclick="location.href='@Url.Action(
+                                                                      action:"DriverProfile",
+                                                                      controller:"Profiles",
+                                                                      values: new
+                                                                      {
+                                                                          driverId = repository.GetUserIdByUserName(pas)
+                                                                      })'">
+                                >
+                                @i. @pas
+                            </div>
+                            @if (Model.IsActive == "true")
+                            {
+                                <input type="submit" value="Accept" class="btn btn-success accept" />
+                            }
+                        </form>
+                        i++;
+                    }
+                }
+                else
+                {
+                    <div>
+                        There are no join reqeusts pending.
+                    </div>
+                }
+            </div>
+            
+            <div class="passengersManagement">
+                <text style="font-size:20px; font-weight:bold">Manage Passengers:</text>
+                @if (Model.PassangersUsernames.Count != 0)
+                {
+                    i = 1;
+                    @foreach (var pas in Model.PassangersUsernames)
+                    {
+                        <form asp-action="RemoveUserFromTrip" asp-controller="TripDetails" method="post" asp-route-tripId="@Model.TripId" asp-route-username="@pas" asp-antiforgery="true">
+                            <div class="passenger" onclick="location.href='@Url.Action(
+                                                                  action:"DriverProfile",
+                                                                  controller:"Profiles",
+                                                                  values: new
+                                                                  {
+                                                                      driverId = repository.GetUserIdByUserName(pas)
+                                                                  })'">
+                                @i. @pas
+                            </div>
+                            @if (Model.IsActive == "true")
+                            {
+                                <input type="submit" value="Remove" class="btn btn-danger remove" />
+                            }
+                        </form>
+                        i++;
+                    }
+                }
+                else
+                {
+                    <div>
+                        There are no other passengers on this trip.
+                    </div>
+                }
+            </div>
+
+            <div class="deleteTrip">
+                > X Delete Trip X <
+            </div>
+        </div>
+
+    }
+</div>
