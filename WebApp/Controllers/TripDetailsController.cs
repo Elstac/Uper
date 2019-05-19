@@ -76,10 +76,6 @@ namespace WebApp.Controllers
 
             var vm = generator.GetViewModel(id, viewerType);
 
-            if (vm.DateEnd.CompareTo(DateTime.Now) <= 0) ViewBag.IsActive = "false";
-            else if(vm.DateEnd.CompareTo(DateTime.Now) > 0 && vm.Date.CompareTo(DateTime.Now) <= 0)ViewBag.IsActive = "ongoing";
-            else ViewBag.IsActive ="true";
-
             if (vm.PassangersUsernames != null)
             {
                 if (vm.PassangersUsernames.Contains(user.UserName))
@@ -90,6 +86,10 @@ namespace WebApp.Controllers
             }
             else ViewBag.PassangerAccepted = false;
 
+            if(vm.DriverUsername == null)
+            {
+                vm.DriverUsername = applicationUserRepository.GetById(vm.DriverId).UserName;
+            }
 
             ViewData["type"] = viewerType;
             if (vm.MapPath != null)

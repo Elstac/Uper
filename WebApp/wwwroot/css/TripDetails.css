@@ -1,0 +1,362 @@
+﻿.statusEnd{
+    padding:2px;
+    background-color:#FF3262;
+    color:white;
+    border:solid;
+    border-color:crimson;
+    margin-top:5px;
+}
+
+.statusOngoing{
+    padding:2px;
+    background-color:yellow;
+    color:black;
+    border:solid;
+    border-color:#E8AB1E;
+    margin-top:5px;
+}
+
+.tripHeader {
+    background: #FFE2F4;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 5px;
+    width: 1000px;
+    text-align:center;
+}
+
+.tripHeader .gen{
+    font-size:50px;
+    font-weight:bold;
+    color:#3D3D3D;
+    display:block;
+    word-wrap:break-word;
+    display:inline-block;
+}
+
+.tripHeader .date{
+    font-size:30px;
+    color:#3D3D3D;
+    display:block;
+}
+
+.tripHeader .address{
+    font-size:20px;
+    display:block;
+    word-wrap:break-word;
+    display:inline-block;
+    margin-bottom:0px;
+}
+
+.left-align{
+    width:250px;
+    background-color:lightgray;
+    float:left;
+    clear:none;
+}
+
+.left-align .cost{
+    text-align:center;
+    display:block;
+    font-size:30px;
+    word-wrap:break-word;
+    display:inline-block;
+    background-color: #E5E5E5;
+    width:100%;
+}
+
+.left-align .passengersSize{
+    margin-top:4px;
+    text-align:center;
+    display:block;
+    font-size:30px;
+    word-wrap:break-word;
+    display:inline-block;
+    background-color: #E5E5E5;
+    width:100%;
+}
+
+.left-align .passengerList{
+    margin-top:4px;
+    text-align:left;
+    word-wrap:break-word;
+    display:inline-block;
+    background-color: #E5E5E5;
+    width:100%;
+}
+
+.left-align .passengerList .passenger{
+    margin-top:4px;
+    text-align:left;   
+    color: #494949;
+    cursor: pointer;
+    word-wrap:break-word;
+    display:inline-block;
+    background-color: inherit;
+    width:100%;
+    font-size:18px;
+    padding:3px;
+}
+
+.left-align .passengerList .passenger:hover{
+    text-decoration:underline;
+}
+
+.left-align .chatButton {
+    margin-top: 4px;
+    text-align: center;
+    display: block;
+    font-size: 30px;
+    background-color: #A8A8A8;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+}
+.left-align .chatButton:hover{
+    background-color: #919191;
+    text-decoration:underline;
+}
+.left-align .chatButton:active{ 
+    background-color: #7F7F7F;
+    text-decoration:underline;
+}
+
+.left-align .PDFbutton{
+    margin-top:4px;
+    text-align:center;
+    display:block;
+    font-size:30px;
+    background-color: #A8A8A8;
+    width:100%;
+    border:none;
+}
+.left-align .PDFbutton:hover{
+    background-color: #919191;
+    text-decoration:underline;
+}
+.left-align .PDFbutton:active{ 
+    background-color: #7F7F7F;
+    text-decoration:underline;
+}
+
+.left-align .smoking{
+    background-color:#FF3262;
+    border:solid;
+    border-color:crimson;
+    border-width:3px;
+    color:white;
+    margin-top:4px;
+    text-align:center;
+    display:block;
+    font-size:20px;
+    width:100%;
+    border:none;
+}
+
+.left-align .join{
+    background-color:#1ACE44;
+    border:none;
+    display:block;
+    width:100%;
+    margin-top:8px;
+    padding:4px;
+    font-size:25px;
+    color:white;
+}
+
+.left-align .join:hover{
+    background-color:#18BC3E;
+}
+
+.left-align .join:active{
+    background-color:#16AA38;
+}
+
+.left-align .leave{
+    background-color:#FFFF16;
+    border:none;
+    display:block;
+    width:100%;
+    margin-top:8px;
+    padding:4px;
+    font-size:25px;
+}
+
+.left-align .leave:hover{
+    background-color:#F7F711;
+}
+
+.left-align .leave:active{
+    background-color:#EDED10;
+}
+
+.left-align .requestPending{
+    background-color:#1ACE44;
+    border:none;
+    display:block;
+    width:100%;
+    margin-top:8px;
+    padding:4px;
+    font-size:20px;
+}
+
+.rate{
+    background-color:#FFFF16;
+    border:none;
+    display:block;
+    width:100%;
+    margin-top:8px;
+    padding:4px;
+    font-size:25px;
+    text-align:center;
+    cursor:pointer;
+}
+
+.rate:hover{
+    background-color:#F7F711;
+}
+
+.rate:active{
+    background-color:#EDED10;
+}
+.content {
+    margin-left: 10px;
+    clear: none;
+    float: left;
+    width:740px;
+}
+
+.content .generalInfo{
+    font-size:17px;
+    padding:4px;
+    display:block;
+    word-wrap:break-word;
+    display:inline-block;
+    background-color: #F2F2F2;
+    width:740px;
+}
+
+.creatorLink {
+    color: #6B6B6B;
+    cursor: pointer;
+}
+
+.creatorLink:hover{
+    text-decoration:underline;
+}
+
+.content .description{
+    margin-top:5px;
+    padding:4px;
+    word-wrap:break-word;
+    display:inline-block;
+    font-size:15px;
+    background-color: #F2F2F2;
+    width:740px;
+}
+
+.content .map{
+    margin-top:5px;
+    width:740px;
+    background-color: #F2F2F2;
+}
+
+.content .map .mapButton{
+    width:248px;
+    border:none;
+    background-color:#4335BA;
+    color:white;
+    padding:8px;
+}
+
+.content .passengersManagement {
+    width: 365px;
+    float: left;
+    clear: none;
+    margin-top: 5px;
+    background-color: #F2F2F2;
+    padding: 4px;
+    margin-bottom: 20px;
+}
+
+.content .passengersManagement .passenger {
+    text-align: left;   
+    color: #494949;
+    cursor: pointer;
+    word-wrap: break-word;
+    display: inline-block;
+    background-color: inherit;
+    font-size: 20px;
+    float:left;
+    clear:none;
+    width:275px;
+}
+
+.content .passengersManagement .passenger:hover {
+    text-decoration: underline;
+}
+
+.content .Management{
+    width:100%;
+}
+
+.content .passengersManagement .remove {  
+    padding:2px;
+    float:right;
+    clear:none;
+    width:80px;
+    height:25px;
+}
+
+.content .joinRequests {
+    width: 365px;
+    margin-top: 5px;
+    margin-right: 10px;
+    float: left;
+    clear: none;
+    background-color: #F2F2F2;
+    padding:4px;
+    margin-bottom:20px;
+}
+
+.content .joinRequests .passenger{
+    text-align: left;   
+    color: #494949;
+    cursor: pointer;
+    word-wrap: break-word;
+    display: inline-block;
+    background-color: inherit;
+    font-size: 20px;
+    float:left;
+    clear:none;
+    width:275px;
+}
+
+.content .joinRequests .passenger:hover {
+    text-decoration: underline;
+}
+
+.content .joinRequests .accept{     
+    padding:2px;
+    float:right;
+    clear:none;
+    width:80px;
+    height:25px;
+}
+
+.content .deleteTrip {
+    background-color: #FF3262;
+    color:white;
+    padding:6px;
+    width: 50%;
+    font-size:20px;
+    clear:both;
+    display:block;
+    text-align:center;
+    cursor:pointer;
+    float:right;
+}
+
+.content .deleteTrip:hover{
+    background-color: crimson;
+}
