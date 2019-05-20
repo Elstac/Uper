@@ -9,9 +9,7 @@ namespace WebApp.Models.TravellChangeEmail
         {
             return new MessageBodyDictionary()
                 .AddReplacement(par[0].ToString(), "Name")
-                .AddReplacement(par[1].ToString(), "OldState")
-                .AddReplacement(par[2].ToString(), "NewState")
-                .AddReplacement(par[3].ToString(), "Link");
+                .AddReplacement(par[1].ToString(), "Link");
         }
     }
 }
