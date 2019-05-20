@@ -18,7 +18,7 @@ namespace Tests.OfferStateMessageProviderTests
         {
             var @out = messageProvider.GetBody("username","",It.IsAny<OfferStateChange>());
 
-            Assert.Equal("username", @out.GetReplacement("Name"));
+            Assert.Equal("username", @out.GetReplacement("{Name}"));
         }
 
         [Fact]
@@ -26,16 +26,16 @@ namespace Tests.OfferStateMessageProviderTests
         {
             var @out = messageProvider.GetBody("username","link", It.IsAny<OfferStateChange>());
 
-            Assert.Equal("link", @out.GetReplacement("Link"));
+            Assert.Equal("link", @out.GetReplacement("{Link}"));
         }
 
         [Fact]
         public void AddOldSateReplacementAsPendingAndNewStateAsDeletedIfOfferDeleted()
         {
-            var @out = messageProvider.GetBody("username", "link",OfferStateChange.Deleted);
+            var @out = messageProvider.GetBody("username", "link", OfferStateChange.Deleted);
 
-            Assert.Equal("Pending", @out.GetReplacement("OldState"));
-            Assert.Equal("Deleted", @out.GetReplacement("NewState"));
+            Assert.Equal("Pending", @out.GetReplacement("{OldState}"));
+            Assert.Equal("Deleted", @out.GetReplacement("{NewState}"));
         }
 
         [Fact]
@@ -43,8 +43,8 @@ namespace Tests.OfferStateMessageProviderTests
         {
             var @out = messageProvider.GetBody("username", "link", OfferStateChange.UserRemoved);
 
-            Assert.Equal("Accepted", @out.GetReplacement("OldState"));
-            Assert.Equal("Removed", @out.GetReplacement("NewState"));
+            Assert.Equal("Accepted", @out.GetReplacement("{OldState}"));
+            Assert.Equal("Removed", @out.GetReplacement("{NewState}"));
         }
 
         [Fact]
@@ -52,8 +52,8 @@ namespace Tests.OfferStateMessageProviderTests
         {
             var @out = messageProvider.GetBody("username", "link", OfferStateChange.RequestAccepted);
 
-            Assert.Equal("Pending", @out.GetReplacement("OldState"));
-            Assert.Equal("Accepted", @out.GetReplacement("NewState"));
+            Assert.Equal("Pending", @out.GetReplacement("{OldState}"));
+            Assert.Equal("Accepted", @out.GetReplacement("{NewState}"));
         }
     }
 }

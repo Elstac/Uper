@@ -21,10 +21,10 @@ namespace WebApp.Models.TravellChangeEmail
         {
             var tmp = dict[(OfferStateChange)par[2]];
             var ret = new MessageBodyDictionary()
-                .AddReplacement(par[0].ToString(), "Name")
-                .AddReplacement(par[1].ToString(), "Link")
-                .AddReplacement(tmp.Item1,"OldState")
-                .AddReplacement(tmp.Item2,"NewState");
+                .AddReplacement(par[0].ToString(), "{Name}")
+                .AddReplacement(par[1].ToString(), "{Link}")
+                .AddReplacement(tmp.Item1,"{OldState}")
+                .AddReplacement(tmp.Item2,"{NewState}");
 
             return ret;
         }

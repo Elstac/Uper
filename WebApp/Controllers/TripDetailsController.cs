@@ -16,6 +16,7 @@ using System.IO;
 using Syncfusion.Drawing;
 using WebApp.Models.HtmlNotifications;
 using WebApp.Models.TravellChangeEmail;
+using System.Linq;
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebApp.Controllers
@@ -128,6 +129,12 @@ namespace WebApp.Controllers
             {
                 fileManager.RemoveFile(td.MapId, "wwwroot/images/maps/");
             }
+
+            var passengers = from user in td.Passangers
+                             select user.User;
+
+            stateEmailSender.SendOfferStateChangedEmail(passengers, Url.Action("Index", "TripDetails", new { id = tripId }),OfferStateChange.Deleted);
+
             tripUserRepository.RemoveTripUsers(tripId);
             tripDetailsRepository.Remove(td);
 
@@ -150,9 +157,11 @@ namespace WebApp.Controllers
         public IActionResult RemoveUserFromTrip(int tripId,string username)
         {
             List<TripUser> toRm = tripUserRepository.GetList(new TripUserByUsernameAndTripId(tripId,username)) as List<TripUser>;
+
+            stateEmailSender.SendOfferStateChangedEmail(toRm[0].User.UserName, Url.Action("Index", "TripDetails", new { id = tripId }), OfferStateChange.UserRemoved);
+
             tripUserRepository.Remove(toRm[0]);
             return RedirectToAction("index", "TripDetails", new { id = tripId });
-
         }
 
         [Authorize(Policy = "DriverOnly")]
@@ -167,6 +176,8 @@ namespace WebApp.Controllers
 
             tu[0].Accepted = true;
             tripUserRepository.Update(tu[0]);
+
+            stateEmailSender.SendOfferStateChangedEmail(tu[0].User.UserName, Url.Action("Index", "TripDetails", new { id = tripId }), OfferStateChange.RequestAccepted);
 
             return RedirectToAction("index", "TripDetails", new { id = tripId });
         }
