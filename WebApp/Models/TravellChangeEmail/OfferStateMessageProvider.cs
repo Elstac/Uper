@@ -14,6 +14,8 @@ namespace WebApp.Models.TravellChangeEmail
             switch ((OfferStateChange)par[2])
             {
                 case OfferStateChange.RequestAccepted:
+                    ret = ret.AddReplacement("Pending", "OldState")
+                             .AddReplacement("Accepted", "NewState");
                     break;
                 case OfferStateChange.UserRemoved:
                     ret = ret.AddReplacement("Accepted", "OldState")

@@ -46,5 +46,14 @@ namespace Tests.OfferStateMessageProviderTests
             Assert.Equal("Accepted", @out.GetReplacement("OldState"));
             Assert.Equal("Removed", @out.GetReplacement("NewState"));
         }
+
+        [Fact]
+        public void AddOldSateAsPendingAndNewStateAsAcceptedIfRequest()
+        {
+            var @out = messageProvider.GetBody("username", "link", OfferStateChange.RequestAccepted);
+
+            Assert.Equal("Pending", @out.GetReplacement("OldState"));
+            Assert.Equal("Accepted", @out.GetReplacement("NewState"));
+        }
     }
 }
