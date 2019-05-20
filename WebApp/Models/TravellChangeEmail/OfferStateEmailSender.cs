@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using WebApp.Models.EmailConfirmation;
 using WebApp.Services;
 public enum OfferStateChange
 {
@@ -16,11 +17,15 @@ namespace WebApp.Models.TravellChangeEmail
     public class OfferStateEmailSender : IOfferStateEmailSender
     {
         private IEmailService emailService;
+        private IMessageBodyProvider bodyProvider;
+
         private Dictionary<OfferStateChange, string> stateTypeDict;
 
-        public OfferStateEmailSender(IEmailService emailService)
+        public OfferStateEmailSender(IEmailService emailService, IMessageBodyProvider bodyProvider)
         {
             this.emailService = emailService;
+            this.bodyProvider = bodyProvider;
+
 
             stateTypeDict = new Dictionary<OfferStateChange, string>();
             stateTypeDict.Add(OfferStateChange.UserRemoved, "RequestStateChanged");
@@ -32,7 +37,7 @@ namespace WebApp.Models.TravellChangeEmail
         {
             string msgType = stateTypeDict[stateChange];
 
-            emailService.SendMail("Uper", username, msgType, null);
+            emailService.SendMail("Uper", username, msgType, bodyProvider.GetBody());
         }
     }
 }
