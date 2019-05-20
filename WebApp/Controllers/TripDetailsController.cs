@@ -133,7 +133,7 @@ namespace WebApp.Controllers
             var passengers = from user in td.Passangers
                              select user.User;
 
-            stateEmailSender.SendOfferStateChangedEmail(passengers, Url.Action("Index", "TripDetails", new { id = tripId }),OfferStateChange.Deleted);
+            stateEmailSender.SendOfferStateChangedEmail(passengers, GetDetailsURL(tripId), OfferStateChange.Deleted);
 
             tripUserRepository.RemoveTripUsers(tripId);
             tripDetailsRepository.Remove(td);
@@ -158,7 +158,7 @@ namespace WebApp.Controllers
         {
             List<TripUser> toRm = tripUserRepository.GetList(new TripUserByUsernameAndTripId(tripId,username)) as List<TripUser>;
 
-            stateEmailSender.SendOfferStateChangedEmail(toRm[0].User, Url.Action("Index", "TripDetails", new { id = tripId }), OfferStateChange.UserRemoved);
+            stateEmailSender.SendOfferStateChangedEmail(toRm[0].User, GetDetailsURL(tripId), OfferStateChange.UserRemoved);
 
             tripUserRepository.Remove(toRm[0]);
             return RedirectToAction("index", "TripDetails", new { id = tripId });
@@ -169,7 +169,7 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult ConfirmRequest(int tripId, string username)
         {
-            var tu = tripUserRepository.GetList(new TripUserByUsernameAndTripId(tripId,username)) as List<TripUser>;
+            var tu = tripUserRepository.GetList(new TripUserByUsernameAndTripId(tripId, username)) as List<TripUser>;
 
             if (tu == null)
                 return BadRequest(new { error = "invalid user ot trip id" });
@@ -177,10 +177,16 @@ namespace WebApp.Controllers
             tu[0].Accepted = true;
             tripUserRepository.Update(tu[0]);
 
-            stateEmailSender.SendOfferStateChangedEmail(tu[0].User, Url.Action("Index", "TripDetails", new { id = tripId }), OfferStateChange.RequestAccepted);
+            stateEmailSender.SendOfferStateChangedEmail(tu[0].User, GetDetailsURL(tripId), OfferStateChange.RequestAccepted);
 
             return RedirectToAction("index", "TripDetails", new { id = tripId });
         }
+
+        private string GetDetailsURL(int tripId)
+        {
+            return Url.Action("Index", "TripDetails", new { id = tripId}, Request.Scheme);
+        }
+
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
