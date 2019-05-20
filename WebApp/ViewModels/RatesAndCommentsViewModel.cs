@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace WebApp.ViewModels
 {
-    public class V2RatesAndCommentsViewModel
+    public class RatesAndCommentsViewModel
     {
         public int DrivingSafety { get; set; }
         public int PersonalCulture { get; set; }

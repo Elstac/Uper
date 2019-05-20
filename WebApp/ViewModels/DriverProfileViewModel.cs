@@ -8,7 +8,7 @@ namespace WebApp.ViewModels
     public class DriverProfileViewModel
     {
         public ApplicationUserViewModel ApplicationUserViewModel {get ;set; }
-        public List<V2RatesAndCommentsViewModel> RatesAndCommentList {get; set ;}
+        public List<RatesAndCommentsViewModel> RatesAndCommentList {get; set ;}
 
         public float DrivingSafetyAverage { get; set; }
         public float PersonalCultureAverage { get; set; }
@@ -17,11 +17,11 @@ namespace WebApp.ViewModels
 
         public void SetListOfRatesAndComments(List<RatesAndComment> list, IApplicationUserRepository repository)
         {
-            RatesAndCommentList = new List<V2RatesAndCommentsViewModel>();
+            RatesAndCommentList = new List<RatesAndCommentsViewModel>();
 
             foreach(RatesAndComment rac in list)
             {
-                RatesAndCommentList.Add(new V2RatesAndCommentsViewModel {
+                RatesAndCommentList.Add(new RatesAndCommentsViewModel {
                     Comment = rac.Comment,
                     Date = rac.Date,
                     DrivingSafety = rac.DrivingSafety,

@@ -174,7 +174,7 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         [Authorize]
         [HttpPost]
-        public IActionResult RatesAndComment(RatesAndCommentViewModel ratesAndComment, string answer)
+        public IActionResult RatesAndComment(InRatesAndCommentViewModel ratesAndComment, string answer)
         {
             if (!String.IsNullOrWhiteSpace(answer))
             {
@@ -219,7 +219,7 @@ namespace WebApp.Controllers
             {
                 driverId = repository.GetUserIdByUserName(driverUserName);
             }
-            else
+            else if(driverId == null && driverUserName == null)
             {
                 driverId = accountManager.GetUserId(HttpContext.User);
             }
