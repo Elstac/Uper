@@ -175,13 +175,9 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult ConfirmRequest(int tripId, string username)
         {
-<<<<<<< HEAD
-            var tu = tripUserRepository.GetList(new TripUserByUsernameAndTripId(tripId, username)) as List<TripUser>;
-
-=======
             var tu = tripUserRepository.GetList(new TripUserByUsernameAndTripId(tripId,username)) as List<TripUser>;
             var td = tripDetailsRepository.GetById(tripId);
->>>>>>> kierowca nie moze potwierdzic pasazera do pelnego tripu
+
             if (tu == null)
                 return BadRequest(new { error = "invalid user ot trip id" });
 
@@ -191,23 +187,17 @@ namespace WebApp.Controllers
                 if (tripUser.Accepted == true) accepted++;
             }
 
-<<<<<<< HEAD
-            stateEmailSender.SendOfferStateChangedEmail(tu[0].User, GetDetailsURL(tripId), OfferStateChange.RequestAccepted);
-
-            return RedirectToAction("index", "TripDetails", new { id = tripId });
-=======
             if (accepted < td.Size)
             {
                 tu[0].Accepted = true;
                 tripUserRepository.Update(tu[0]);
-
+            stateEmailSender.SendOfferStateChangedEmail(tu[0].User, GetDetailsURL(tripId), OfferStateChange.RequestAccepted);
                 return RedirectToAction("index", "TripDetails", new { id = tripId });
             }
             else
             {
                 return BadRequest(new { error = "Trip is full. You cannot add another passanger." });
             }
->>>>>>> kierowca nie moze potwierdzic pasazera do pelnego tripu
         }
 
         private string GetDetailsURL(int tripId)
