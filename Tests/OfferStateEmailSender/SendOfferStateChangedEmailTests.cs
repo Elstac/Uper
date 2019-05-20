@@ -33,6 +33,7 @@ namespace Tests.OfferStateEmailSenderTests
 
             serviceMock.Verify(sm => sm.SendMail("Uper", It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IMessageBodyDictionary>()));
         }
+
         [Fact]
         public void RequestStateChangedAsMessageTypeIfStateChangeIsAccepted()
         {
@@ -40,6 +41,15 @@ namespace Tests.OfferStateEmailSenderTests
 
             serviceMock.Verify(sm => sm.SendMail(It.IsAny<string>(), It.IsAny<string>(), "RequestStateChanged", It.IsAny<IMessageBodyDictionary>()));
         }
+
+        [Fact]
+        public void OfferStateChangedAsMessageTypeIfStateChangeIsUserRemoved()
+        {
+            sender.SendOfferStateChangedEmail("usernameX", OfferStateChange.UserRemoved);
+
+            serviceMock.Verify(sm => sm.SendMail(It.IsAny<string>(), It.IsAny<string>(), "RequestStateChanged", It.IsAny<IMessageBodyDictionary>()));
+        }
+
         [Fact]
         public void OfferStateChangedAsMessageTypeIfStateChangeIsDeleted()
         {
