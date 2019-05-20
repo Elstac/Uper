@@ -1,21 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using WebApp.Data.Entities;
+using WebApp.Data.Repositories;
 
 namespace WebApp.ViewModels
 {
     public class DriverProfileViewModel
     {
         public ApplicationUserViewModel ApplicationUserViewModel {get ;set; }
-        public List<RatesAndComment> RatesAndCommentList {get; set ;}
+        public List<RatesAndCommentsViewModel> RatesAndCommentList {get; set ;}
 
         public float DrivingSafetyAverage { get; set; }
         public float PersonalCultureAverage { get; set; }
         public float PunctualityAverage { get; set; }
         public int NumberOfVotes { get; set; }
 
+        public void SetListOfRatesAndComments(List<RatesAndComment> list, IApplicationUserRepository repository)
+        {
+            RatesAndCommentList = new List<RatesAndCommentsViewModel>();
+
+            foreach(RatesAndComment rac in list)
+            {
+                RatesAndCommentList.Add(new RatesAndCommentsViewModel {
+                    Comment = rac.Comment,
+                    Date = rac.Date,
+                    DrivingSafety = rac.DrivingSafety,
+                    PersonalCulture = rac.PersonalCulture,
+                    Punctuality = rac.Punctuality,
+                    Username = repository.GetById(rac.UserId).UserName
+                });
+            }
+        }
         public void SetAverages()
         {
             this.NumberOfVotes = RatesAndCommentList.Count;

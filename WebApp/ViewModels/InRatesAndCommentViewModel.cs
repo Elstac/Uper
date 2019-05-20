@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebApp.ViewModels
 {
-    public class RatesAndCommentViewModel
+    public class InRatesAndCommentViewModel
     {
         [Required]
         [Range(0, 5)]

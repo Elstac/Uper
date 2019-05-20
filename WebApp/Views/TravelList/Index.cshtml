@@ -1,6 +1,7 @@
 ﻿@model X.PagedList.IPagedList<WebApp.Data.TripDetails>
 @using X.PagedList.Mvc.Core;
 @using System.Globalization;
+@using WebApp.Data.Entities;
 @{
     ViewData["Title"] = "Travel List";
 }
@@ -86,7 +87,12 @@
                                htmlAttributes: new { })
                         </name><br />
                         <seats>
-                            @trip.Passangers.Count() / @trip.Size ,
+                            @{int i = 0; }
+                            @foreach (TripUser tu in trip.Passangers)
+                            {
+                                if (tu.Accepted) { i++; }
+                            }
+                            @i / @trip.Size ,
                         </seats>
                         <date>
                             @trip.Date.Day @trip.Date.ToString("MMMM", CultureInfo.InvariantCulture) @trip.Date.Year
@@ -114,7 +120,9 @@
                 </div>
 
                 @Html.PagedListPager(Model, page => Url.Action("Index",
-                    new { page,
+                    new
+                         {
+                             page,
                         StartCity = ViewBag.StartCity,
                         MinDate = ViewBag.MinDate,
                         MaxDate = ViewBag.MaxDate,

@@ -61,7 +61,7 @@ namespace WebApp.Data.Specifications
             }
             if (Seats != null)
             {
-                pred = pred.And(c => (c.Size - c.Passangers.Count()) >= Seats);
+                pred = pred.And(c => (c.Size - c.Passangers.Where(pas => pas.Accepted == true).Count()) >= Seats);
             }
             if (Smoking)
             {

@@ -19,6 +19,7 @@ document.getElementById("groupmsg").addEventListener("click", async (event) => {
         console.error(e.toString());
     }
     event.preventDefault();
+    document.getElementById("group-message-text").value = "";
 });
 
 document.getElementById("join-group").addEventListener("click", async (event) => {

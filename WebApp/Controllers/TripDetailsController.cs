@@ -70,6 +70,7 @@ namespace WebApp.Controllers
         /// <param name="id">Trip ID</param>
         /// <param name="viewerType">Type of viewer</param>
         /// <returns>Details page</returns>
+        [Authorize]
         public IActionResult Index(int id)
         {
             #region Getting ViewerType
@@ -88,8 +89,15 @@ namespace WebApp.Controllers
                     ViewBag.PassangerAccepted = true;
                 }
                 else ViewBag.PassangerAccepted = false;
+
+                if (vm.PassangersUsernames.Count >= vm.Size) ViewBag.IsFull = true;
+                else ViewBag.IsFull = false;
             }
-            else ViewBag.PassangerAccepted = false;
+            else
+            {
+                ViewBag.PassangerAccepted = false;
+                ViewBag.IsFull = false;
+            }
 
             if(vm.DriverUsername == null)
             {
@@ -120,8 +128,6 @@ namespace WebApp.Controllers
         }
 
         [Authorize(Policy = "DriverOnly")]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult Remove(int tripId)
         {
             var td = tripDetailsRepository.GetById(tripId);
@@ -169,17 +175,29 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult ConfirmRequest(int tripId, string username)
         {
-            var tu = tripUserRepository.GetList(new TripUserByUsernameAndTripId(tripId, username)) as List<TripUser>;
+            var tu = tripUserRepository.GetList(new TripUserByUsernameAndTripId(tripId,username)) as List<TripUser>;
+            var td = tripDetailsRepository.GetById(tripId);
 
             if (tu == null)
                 return BadRequest(new { error = "invalid user ot trip id" });
 
-            tu[0].Accepted = true;
-            tripUserRepository.Update(tu[0]);
+            int accepted = 0;
+            foreach(TripUser tripUser in td.Passangers)
+            {
+                if (tripUser.Accepted == true) accepted++;
+            }
 
+            if (accepted < td.Size)
+            {
+                tu[0].Accepted = true;
+                tripUserRepository.Update(tu[0]);
             stateEmailSender.SendOfferStateChangedEmail(tu[0].User, GetDetailsURL(tripId), OfferStateChange.RequestAccepted);
-
-            return RedirectToAction("index", "TripDetails", new { id = tripId });
+                return RedirectToAction("index", "TripDetails", new { id = tripId });
+            }
+            else
+            {
+                return BadRequest(new { error = "Trip is full. You cannot add another passanger." });
+            }
         }
 
         private string GetDetailsURL(int tripId)

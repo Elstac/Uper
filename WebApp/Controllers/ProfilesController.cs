@@ -25,7 +25,8 @@ namespace WebApp.Controllers
 
         public ProfilesController(
             IApplicationUserViewModelGenerator generator,
-            IAccountManager accountManager,IApplicationUserRepository repository,
+            IAccountManager accountManager,
+            IApplicationUserRepository repository,
             ITripDetailsRepository tripDetailsRepository, 
             ITripUserRepository tripUserRepository, 
             IRatesAndCommentRepository ratesAndCommentRepository,
@@ -38,14 +39,6 @@ namespace WebApp.Controllers
             this.tripUserRepository = tripUserRepository;
             this.ratesAndCommentRepository = ratesAndCommentRepository;
             this.tripDetailsConverter = tripDetailsConverter;
-        }
-
-        [Authorize]
-        public IActionResult MyProfile()
-        {
-            var vm = generator.ConvertAppUserToViewModel(repository.GetById(accountManager.GetUserId(User)));
-
-            return View(vm);        
         }
 
         [Authorize]
@@ -181,7 +174,7 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         [Authorize]
         [HttpPost]
-        public IActionResult RatesAndComment(RatesAndCommentViewModel ratesAndComment, string answer)
+        public IActionResult RatesAndComment(InRatesAndCommentViewModel ratesAndComment, string answer)
         {
             if (!String.IsNullOrWhiteSpace(answer))
             {
@@ -220,16 +213,27 @@ namespace WebApp.Controllers
 
 
         [Authorize]
-        public IActionResult DriverProfile(string driverId)
+        public IActionResult DriverProfile(string driverId,string driverUserName)
         {
-            ViewBag.Username = accountManager.GetUserName(HttpContext.User);
+            if (driverId == null && driverUserName != null)
+            {
+                driverId = repository.GetUserIdByUserName(driverUserName);
+            }
+            else if(driverId == null && driverUserName == null)
+            {
+                driverId = accountManager.GetUserId(HttpContext.User);
+            }
+
+            var rates = ratesAndCommentRepository.GetList(new RatesAndCommentByDriverId(driverId)).ToList();
+
             DriverProfileViewModel model = new DriverProfileViewModel
             {
             ApplicationUserViewModel = generator.ConvertAppUserToViewModel(repository.GetById(driverId)),
-            RatesAndCommentList = ratesAndCommentRepository.GetList(new RatesAndCommentByDriverId(driverId)).ToList()
             };
+            model.SetListOfRatesAndComments(rates,repository);
             model.SetAverages();
 
+            ViewBag.UserName = accountManager.GetUserName(HttpContext.User);
             return View("DriverProfile",model);
         }
     }
