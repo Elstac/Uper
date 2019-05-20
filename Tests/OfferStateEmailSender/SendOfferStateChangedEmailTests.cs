@@ -67,9 +67,16 @@ namespace Tests.OfferStateEmailSenderTests
         [Fact]
         public void GetMessageBodyFromProviderAndPassItToEmailService()
         {
-            sender.SendOfferStateChangedEmail("usernameX", OfferStateChange.Deleted);
+            sender.SendOfferStateChangedEmail("usernameX", It.IsAny<OfferStateChange>());
 
             serviceMock.Verify(sm => sm.SendMail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), bodyMock.Object));
+        }
+        [Fact]
+        public void PassStateChangeToBodyProvider()
+        {
+            sender.SendOfferStateChangedEmail("usernameX", OfferStateChange.Deleted);
+
+            bodyProviderMock.Verify(mp => mp.GetBody(OfferStateChange.Deleted));
         }
     }
 }
