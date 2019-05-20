@@ -221,9 +221,20 @@ namespace WebApp.Controllers
 
 
         [Authorize]
-        public IActionResult DriverProfile(string driverId)
+        public IActionResult DriverProfile(string driverId,string driverUserName)
         {
-            var rates = ratesAndCommentRepository.GetList(new RatesAndCommentByDriverId(driverId)).ToList();
+            List<RatesAndComment> rates;
+
+            if (driverId == null && driverUserName != null)
+            {
+                driverId = repository.GetUserIdByUserName(driverUserName);
+            }
+            else
+            {
+                return Content("Error driverId and driverUserName are both null. Please contact administration.");
+            }
+            rates = ratesAndCommentRepository.GetList(new RatesAndCommentByDriverId(driverId)).ToList();
+
             DriverProfileViewModel model = new DriverProfileViewModel
             {
             ApplicationUserViewModel = generator.ConvertAppUserToViewModel(repository.GetById(driverId)),

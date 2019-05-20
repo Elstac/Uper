@@ -83,7 +83,7 @@
                                                               controller:"Profiles",
                                                               values: new
                                                               {
-                                                                  driverId = repository.GetUserIdByUserName(pas)
+                                                                  driverUserName = pas
                                                               })'">
                     @i. @pas
                 </div>
@@ -127,7 +127,7 @@
 
     @if (Model.IsActive == "true")
     {
-        @if (type == ViewerType.Guest)
+        @if (type == ViewerType.Guest && ViewBag.IsFull == false)
         {
             <div>
                 <form asp-action="Join" asp-controller="TripDetails" method="post" asp-route-tripId="@Model.TripId" asp-antiforgery="true">
@@ -209,7 +209,7 @@
                                                                       controller:"Profiles",
                                                                       values: new
                                                                       {
-                                                                          driverId = repository.GetUserIdByUserName(pas)
+                                                                          driverUserName = pas
                                                                       })'">
                                 >
                                 @i. @pas
@@ -243,7 +243,7 @@
                                                                   controller:"Profiles",
                                                                   values: new
                                                                   {
-                                                                      driverId = repository.GetUserIdByUserName(pas)
+                                                                      driverUserName = pas
                                                                   })'">
                                 @i. @pas
                             </div>
