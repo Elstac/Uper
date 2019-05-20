@@ -10,12 +10,18 @@ namespace Tests.OfferStateEmailSenderTests
     {
         private OfferStateEmailSender sender;
         private Mock<IEmailService> serviceMock;
+        private Mock<IMessageBodyProvider> bodyProviderMock;
+        private Mock<IMessageBodyDictionary> bodyMock;
 
         public SendOfferStateChangedEmailTests()
         {
+            bodyMock = new Mock<IMessageBodyDictionary>();
+            bodyProviderMock = new Mock<IMessageBodyProvider>();
+            bodyProviderMock.Setup(bp => bp.GetBody(It.IsAny<object[]>())).Returns(bodyMock.Object);
+
             serviceMock = new Mock<IEmailService>();
 
-            sender = new OfferStateEmailSender(serviceMock.Object);
+            sender = new OfferStateEmailSender(serviceMock.Object,bodyProviderMock.Object);
         }
 
         [Fact]
@@ -56,6 +62,14 @@ namespace Tests.OfferStateEmailSenderTests
             sender.SendOfferStateChangedEmail("usernameX", OfferStateChange.Deleted);
 
             serviceMock.Verify(sm => sm.SendMail(It.IsAny<string>(), It.IsAny<string>(), "OfferStateChanged", It.IsAny<IMessageBodyDictionary>()));
+        }
+
+        [Fact]
+        public void GetMessageBodyFromProviderAndPassItToEmailService()
+        {
+            sender.SendOfferStateChangedEmail("usernameX", OfferStateChange.Deleted);
+
+            serviceMock.Verify(sm => sm.SendMail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), bodyMock.Object));
         }
     }
 }
