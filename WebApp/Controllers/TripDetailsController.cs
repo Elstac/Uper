@@ -158,7 +158,7 @@ namespace WebApp.Controllers
         {
             List<TripUser> toRm = tripUserRepository.GetList(new TripUserByUsernameAndTripId(tripId,username)) as List<TripUser>;
 
-            stateEmailSender.SendOfferStateChangedEmail(toRm[0].User.UserName, Url.Action("Index", "TripDetails", new { id = tripId }), OfferStateChange.UserRemoved);
+            stateEmailSender.SendOfferStateChangedEmail(toRm[0].User, Url.Action("Index", "TripDetails", new { id = tripId }), OfferStateChange.UserRemoved);
 
             tripUserRepository.Remove(toRm[0]);
             return RedirectToAction("index", "TripDetails", new { id = tripId });
@@ -177,7 +177,7 @@ namespace WebApp.Controllers
             tu[0].Accepted = true;
             tripUserRepository.Update(tu[0]);
 
-            stateEmailSender.SendOfferStateChangedEmail(tu[0].User.UserName, Url.Action("Index", "TripDetails", new { id = tripId }), OfferStateChange.RequestAccepted);
+            stateEmailSender.SendOfferStateChangedEmail(tu[0].User, Url.Action("Index", "TripDetails", new { id = tripId }), OfferStateChange.RequestAccepted);
 
             return RedirectToAction("index", "TripDetails", new { id = tripId });
         }

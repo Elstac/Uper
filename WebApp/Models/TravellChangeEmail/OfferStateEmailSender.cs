@@ -12,7 +12,7 @@ namespace WebApp.Models.TravellChangeEmail
 {
     public interface IOfferStateEmailSender
     {
-        void SendOfferStateChangedEmail(string username, string urlToTrip, OfferStateChange stateChange);
+        void SendOfferStateChangedEmail(ApplicationUser user, string urlToTrip, OfferStateChange stateChange);
         void SendOfferStateChangedEmail(IEnumerable<ApplicationUser> users, string urlToTrip, OfferStateChange stateChange);
     }
 
@@ -35,18 +35,18 @@ namespace WebApp.Models.TravellChangeEmail
             stateTypeDict.Add(OfferStateChange.Deleted, "OfferStateChanged");
         }
 
-        public void SendOfferStateChangedEmail(string username,string urlToTrip, OfferStateChange stateChange)
+        public void SendOfferStateChangedEmail(ApplicationUser user, string urlToTrip, OfferStateChange stateChange)
         {
             string msgType = stateTypeDict[stateChange];
 
-            emailService.SendMail("Uper", username, msgType, bodyProvider.GetBody(username,urlToTrip,stateChange));
+            emailService.SendMail("Uper", user.Email, msgType, bodyProvider.GetBody(user.UserName,urlToTrip,stateChange));
         }
 
         public void SendOfferStateChangedEmail(IEnumerable<ApplicationUser> users, string urlToTrip, OfferStateChange stateChange)
         {
             foreach (var user in users)
             {
-                SendOfferStateChangedEmail(user.UserName, urlToTrip, stateChange);
+                SendOfferStateChangedEmail(user, urlToTrip, stateChange);
             }
         }
     }

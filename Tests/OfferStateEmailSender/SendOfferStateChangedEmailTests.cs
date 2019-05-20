@@ -14,6 +14,7 @@ namespace Tests.OfferStateEmailSenderTests
         private Mock<IMessageBodyProvider> bodyProviderMock;
         private Mock<IMessageBodyDictionary> bodyMock;
 
+        private ApplicationUser user;
         public SendOfferStateChangedEmailTests()
         {
             bodyMock = new Mock<IMessageBodyDictionary>();
@@ -21,6 +22,11 @@ namespace Tests.OfferStateEmailSenderTests
             bodyProviderMock.Setup(bp => bp.GetBody(It.IsAny<object[]>())).Returns(bodyMock.Object);
 
             serviceMock = new Mock<IEmailService>();
+            user = new ApplicationUser
+            {
+                UserName = "usernameX",
+                Email = "emailZ"
+            };
 
             sender = new OfferStateEmailSender(serviceMock.Object,bodyProviderMock.Object);
         }
@@ -28,15 +34,15 @@ namespace Tests.OfferStateEmailSenderTests
         [Fact]
         public void PassUserNameToEmailService()
         {
-            sender.SendOfferStateChangedEmail("usernameX", It.IsAny<string>(), It.IsAny<OfferStateChange>());
+            sender.SendOfferStateChangedEmail(user, It.IsAny<string>(), It.IsAny<OfferStateChange>());
 
-            serviceMock.Verify(sm => sm.SendMail(It.IsAny<string>(), "usernameX", It.IsAny<string>(), It.IsAny<IMessageBodyDictionary>()));
+            serviceMock.Verify(sm => sm.SendMail(It.IsAny<string>(), "emailZ", It.IsAny<string>(), It.IsAny<IMessageBodyDictionary>()));
         }
 
         [Fact]
         public void PassUperToEmailServiceAsSender()
         {
-            sender.SendOfferStateChangedEmail("usernameX", It.IsAny<string>(), It.IsAny<OfferStateChange>());
+            sender.SendOfferStateChangedEmail(user, It.IsAny<string>(), It.IsAny<OfferStateChange>());
 
             serviceMock.Verify(sm => sm.SendMail("Uper", It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IMessageBodyDictionary>()));
         }
@@ -44,7 +50,7 @@ namespace Tests.OfferStateEmailSenderTests
         [Fact]
         public void RequestStateChangedAsMessageTypeIfStateChangeIsAccepted()
         {
-            sender.SendOfferStateChangedEmail("usernameX", It.IsAny<string>(), OfferStateChange.RequestAccepted);
+            sender.SendOfferStateChangedEmail(user, It.IsAny<string>(), OfferStateChange.RequestAccepted);
 
             serviceMock.Verify(sm => sm.SendMail(It.IsAny<string>(), It.IsAny<string>(), "RequestStateChanged", It.IsAny<IMessageBodyDictionary>()));
         }
@@ -52,7 +58,7 @@ namespace Tests.OfferStateEmailSenderTests
         [Fact]
         public void OfferStateChangedAsMessageTypeIfStateChangeIsUserRemoved()
         {
-            sender.SendOfferStateChangedEmail("usernameX", It.IsAny<string>(), OfferStateChange.UserRemoved);
+            sender.SendOfferStateChangedEmail(user, It.IsAny<string>(), OfferStateChange.UserRemoved);
 
             serviceMock.Verify(sm => sm.SendMail(It.IsAny<string>(), It.IsAny<string>(), "RequestStateChanged", It.IsAny<IMessageBodyDictionary>()));
         }
@@ -60,7 +66,7 @@ namespace Tests.OfferStateEmailSenderTests
         [Fact]
         public void OfferStateChangedAsMessageTypeIfStateChangeIsDeleted()
         {
-            sender.SendOfferStateChangedEmail("usernameX", It.IsAny<string>(), OfferStateChange.Deleted);
+            sender.SendOfferStateChangedEmail(user, It.IsAny<string>(), OfferStateChange.Deleted);
 
             serviceMock.Verify(sm => sm.SendMail(It.IsAny<string>(), It.IsAny<string>(), "OfferStateChanged", It.IsAny<IMessageBodyDictionary>()));
         }
@@ -68,14 +74,14 @@ namespace Tests.OfferStateEmailSenderTests
         [Fact]
         public void GetMessageBodyFromProviderAndPassItToEmailService()
         {
-            sender.SendOfferStateChangedEmail("usernameX", It.IsAny<string>(), It.IsAny<OfferStateChange>());
+            sender.SendOfferStateChangedEmail(user, It.IsAny<string>(), It.IsAny<OfferStateChange>());
 
             serviceMock.Verify(sm => sm.SendMail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), bodyMock.Object));
         }
         [Fact]
         public void PassStateChangeLinkAndUsernameToBodyProvider()
         {
-            sender.SendOfferStateChangedEmail("usernameX", "linkY", OfferStateChange.Deleted);
+            sender.SendOfferStateChangedEmail(user, "linkY", OfferStateChange.Deleted);
 
             bodyProviderMock.Verify(mp => mp.GetBody("usernameX","linkY",OfferStateChange.Deleted));
         }
@@ -87,15 +93,15 @@ namespace Tests.OfferStateEmailSenderTests
             {
                 new ApplicationUser
                 {
-                    UserName = "A"
+                    Email = "A"
                 },
                 new ApplicationUser
                 {
-                    UserName = "B"
+                    Email = "B"
                 },
                 new ApplicationUser
                 {
-                    UserName = "C"
+                    Email = "C"
                 },
             };
 
@@ -106,7 +112,7 @@ namespace Tests.OfferStateEmailSenderTests
 
             foreach (var user in arr)
             {
-                serviceMock.Verify(sm => sm.SendMail(It.IsAny<string>(), user.UserName, It.IsAny<string>(), It.IsAny<IMessageBodyDictionary>()));
+                serviceMock.Verify(sm => sm.SendMail(It.IsAny<string>(), user.Email, It.IsAny<string>(), It.IsAny<IMessageBodyDictionary>()));
             }
         }
     }
