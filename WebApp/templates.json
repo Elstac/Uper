@@ -11,6 +11,10 @@
     {
       "Name": "RequestStateChanged",
       "Template": "<h1>Hi {Name}</h1>\n<p>Your request state have benn chaged from {OldState} to {NewState}</p>\n<p>Please check <a href={Link}>offers details</a></p>"
+    },
+    {
+      "Name": "OfferState",
+      "Template": "<h1>Hi {Name}</h1>\n<p>Offer you have joind state have benn chaged from {OldState} to {NewState}</p>\n<p>Please check <a href={Link}>offers details</a></p>"
     }
   ]
 }
