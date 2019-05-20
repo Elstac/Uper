@@ -42,14 +42,6 @@ namespace WebApp.Controllers
         }
 
         [Authorize]
-        public IActionResult MyProfile()
-        {
-             var vm = generator.ConvertAppUserToViewModel(repository.GetById(accountManager.GetUserId(User)));
-
-            return RedirectToAction("Index", "Home");
-        }
-
-        [Authorize]
         [HttpGet]
         public IActionResult ProfileEdit()
         {

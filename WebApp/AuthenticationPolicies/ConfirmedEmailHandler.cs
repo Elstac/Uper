@@ -33,7 +33,7 @@ namespace WebApp.AuthenticationPolicies
                 var authContext = context.Resource as AuthorizationFilterContext;
                 context.Succeed(requirement);
 
-                authContext.Result = new RedirectToActionResult("MyProfile", "Profiles",new { });
+                authContext.Result = new RedirectToActionResult("DriverProfile", "Profiles",new { });
             }
 
             return Task.CompletedTask;

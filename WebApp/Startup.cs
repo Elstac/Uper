@@ -298,7 +298,7 @@ namespace WebApp
                 // TODO Route to user's private profile
                 routes.MapRoute(
                     name: "UserProfile",
-                    template: "MyProfile");
+                    template: "DriverProfile");
             });
         }
     }
