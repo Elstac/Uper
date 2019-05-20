@@ -128,8 +128,6 @@ namespace WebApp.Controllers
         }
 
         [Authorize(Policy = "DriverOnly")]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult Remove(int tripId)
         {
             var td = tripDetailsRepository.GetById(tripId);
