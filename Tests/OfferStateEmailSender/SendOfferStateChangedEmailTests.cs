@@ -40,5 +40,12 @@ namespace Tests.OfferStateEmailSenderTests
 
             serviceMock.Verify(sm => sm.SendMail(It.IsAny<string>(), It.IsAny<string>(), "RequestStateChanged", It.IsAny<IMessageBodyDictionary>()));
         }
+        [Fact]
+        public void OfferStateChangedAsMessageTypeIfStateChangeIsDeleted()
+        {
+            sender.SendOfferStateChangedEmail("usernameX", OfferStateChange.Deleted);
+
+            serviceMock.Verify(sm => sm.SendMail(It.IsAny<string>(), It.IsAny<string>(), "OfferStateChanged", It.IsAny<IMessageBodyDictionary>()));
+        }
     }
 }

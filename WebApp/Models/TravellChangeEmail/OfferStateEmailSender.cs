@@ -32,6 +32,7 @@ namespace WebApp.Models.TravellChangeEmail
                 case OfferStateChange.UserRemoved:
                     break;
                 case OfferStateChange.Deleted:
+                    msgType = "OfferStateChanged";
                     break;
             }
 
