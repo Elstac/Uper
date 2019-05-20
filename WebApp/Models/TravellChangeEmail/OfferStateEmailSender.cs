@@ -11,7 +11,7 @@ namespace WebApp.Models.TravellChangeEmail
 {
     public interface IOfferStateEmailSender
     {
-        void SendOfferStateChangedEmail(string username,OfferStateChange stateChange);
+        void SendOfferStateChangedEmail(string username, string urlToTrip, OfferStateChange stateChange);
     }
 
     public class OfferStateEmailSender : IOfferStateEmailSender
@@ -33,11 +33,11 @@ namespace WebApp.Models.TravellChangeEmail
             stateTypeDict.Add(OfferStateChange.Deleted, "OfferStateChanged");
         }
 
-        public void SendOfferStateChangedEmail(string username, OfferStateChange stateChange)
+        public void SendOfferStateChangedEmail(string username,string urlToTrip, OfferStateChange stateChange)
         {
             string msgType = stateTypeDict[stateChange];
 
-            emailService.SendMail("Uper", username, msgType, bodyProvider.GetBody(stateChange));
+            emailService.SendMail("Uper", username, msgType, bodyProvider.GetBody(username,urlToTrip,stateChange));
         }
     }
 }
