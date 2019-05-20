@@ -3,7 +3,22 @@
     ViewData["Title"] = "DriverProfile";
 
 }
-    <link rel="stylesheet" href="~/css/DriverProfile.css" type="text/css">
+<link rel="stylesheet" href="~/css/DriverProfile.css" type="text/css">
+@if (!Model.ApplicationUserViewModel.Confirmed && Model.ApplicationUserViewModel.UserName.Equals(ViewBag.Username))
+{
+    <div class="account-cnf-rem">
+        <p>
+            Your email address need confirmation.
+            @Html.ActionLink(
+            linkText: "Use this link",
+            actionName: "SendConfirmationEmail",
+            controllerName: "EmailConfirm",
+            routeValues: new { returnUrl = $"{Context.Request.Host + Context.Request.Path}" })
+            to send confirmation email again.
+        </p>
+    </div>
+}
+
 
 <h2>DriverProfile</h2>
 
@@ -18,25 +33,25 @@
 <p>Punctuality Average Rates: @Model.PunctualityAverage</p>
 <p>Number of Votes: @Model.NumberOfVotes</p>
 
-    <div style="height:450px;width:500px;overflow-y:scroll;margin-left:200px">
+<div style="height:450px;width:500px;overflow-y:scroll;margin-left:200px">
 
-        @foreach (var item in Model.RatesAndCommentList)
-        {
+    @foreach (var item in Model.RatesAndCommentList)
+    {
 
-            <div class="dialogbox">
-                <div class="body">
-                    <div class="info">
-                        <span>Username: @Html.DisplayFor(modelItem => item.Username)</span>
-                        <span>Date: @Html.DisplayFor(modelItem => item.Date)</span>
-                        <span>Driving Safety: @Html.DisplayFor(modelItem => item.DrivingSafety)</span>
-                        <span>Personal Culture: @Html.DisplayFor(modelItem => item.PersonalCulture)</span>
-                        <span>Punctuality: @Html.DisplayFor(modelItem => item.Punctuality)</span>
-                    </div>
-                    <div class="message">
-                        <span>@Html.DisplayFor(modelItem => item.Comment)</span>
-                    </div>
+        <div class="dialogbox">
+            <div class="body">
+                <div class="info">
+                    <span>Username: @Html.DisplayFor(modelItem => item.Username)</span>
+                    <span>Date: @Html.DisplayFor(modelItem => item.Date)</span>
+                    <span>Driving Safety: @Html.DisplayFor(modelItem => item.DrivingSafety)</span>
+                    <span>Personal Culture: @Html.DisplayFor(modelItem => item.PersonalCulture)</span>
+                    <span>Punctuality: @Html.DisplayFor(modelItem => item.Punctuality)</span>
+                </div>
+                <div class="message">
+                    <span>@Html.DisplayFor(modelItem => item.Comment)</span>
                 </div>
             </div>
+        </div>
 
-        }
-    </div>
+    }
+</div>

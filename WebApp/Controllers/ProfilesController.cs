@@ -44,9 +44,9 @@ namespace WebApp.Controllers
         [Authorize]
         public IActionResult MyProfile()
         {
-            var vm = generator.ConvertAppUserToViewModel(repository.GetById(accountManager.GetUserId(User)));
+             var vm = generator.ConvertAppUserToViewModel(repository.GetById(accountManager.GetUserId(User)));
 
-            return View(vm);        
+            return RedirectToAction("Index", "Home");
         }
 
         [Authorize]
@@ -223,17 +223,16 @@ namespace WebApp.Controllers
         [Authorize]
         public IActionResult DriverProfile(string driverId,string driverUserName)
         {
-            List<RatesAndComment> rates;
-
             if (driverId == null && driverUserName != null)
             {
                 driverId = repository.GetUserIdByUserName(driverUserName);
             }
             else
             {
-                return Content("Error driverId and driverUserName are both null. Please contact administration.");
+                driverId = accountManager.GetUserId(HttpContext.User);
             }
-            rates = ratesAndCommentRepository.GetList(new RatesAndCommentByDriverId(driverId)).ToList();
+
+            var rates = ratesAndCommentRepository.GetList(new RatesAndCommentByDriverId(driverId)).ToList();
 
             DriverProfileViewModel model = new DriverProfileViewModel
             {
@@ -242,6 +241,7 @@ namespace WebApp.Controllers
             model.SetListOfRatesAndComments(rates,repository);
             model.SetAverages();
 
+            ViewBag.UserName = accountManager.GetUserName(HttpContext.User);
             return View("DriverProfile",model);
         }
     }
