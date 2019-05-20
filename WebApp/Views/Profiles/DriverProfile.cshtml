@@ -33,6 +33,13 @@
 <p>Punctuality Average Rates: @Model.PunctualityAverage</p>
 <p>Number of Votes: @Model.NumberOfVotes</p>
 
+@if (Model.ApplicationUserViewModel.UserName.Equals(ViewBag.Username))
+{
+    <input type="button"
+           value="Edit"
+           onclick="location.href= '@Url.Action("ProfileEdit")'" />
+}
+
 <div style="height:450px;width:500px;overflow-y:scroll;margin-left:200px">
 
     @foreach (var item in Model.RatesAndCommentList)
