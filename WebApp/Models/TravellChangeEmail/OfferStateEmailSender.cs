@@ -37,7 +37,7 @@ namespace WebApp.Models.TravellChangeEmail
         {
             string msgType = stateTypeDict[stateChange];
 
-            emailService.SendMail("Uper", username, msgType, bodyProvider.GetBody());
+            emailService.SendMail("Uper", username, msgType, bodyProvider.GetBody(stateChange));
         }
     }
 }
