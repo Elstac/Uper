@@ -7,6 +7,10 @@
     {
       "Name": "HyperlinkConfirmation",
       "Template": "<h1>Hi {Name}</h1>\n<p>Please use <a href={Link}>this link</a> {Purpose}</p>\n"
+    },
+    {
+      "Name": "RequestStateChanged",
+      "Template": "<h1>Hi {Name}</h1>\n<p>Your request state have benn chaged from {OldState} to {NewState}</p>\n<p>Please check <a href={Link}>offers details</a></p>"
     }
   ]
 }
