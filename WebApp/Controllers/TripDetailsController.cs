@@ -15,6 +15,7 @@ using Syncfusion.Pdf.Graphics;
 using System.IO;
 using Syncfusion.Drawing;
 using WebApp.Models.HtmlNotifications;
+using WebApp.Models.TravellChangeEmail;
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebApp.Controllers
@@ -32,6 +33,7 @@ namespace WebApp.Controllers
         private IFileManager pngFileManager;
         private IPdfCreator pdfCreator;
         private INotificationProvider notificationProvider;
+        private IOfferStateEmailSender stateEmailSender;
 
         public TripDetailsController(
             ITripDetailsViewModelProvider generator,
@@ -43,7 +45,8 @@ namespace WebApp.Controllers
             IFileReader<string> fileReader,
             IFileManagerFactory fileManagerFactory,
             IPdfCreator pdfCreator,
-            INotificationProvider notificationProvider)
+            INotificationProvider notificationProvider,
+            IOfferStateEmailSender stateEmailSender)
         {
             this.generator = generator;
             this.accountManager = accountManager;
@@ -53,6 +56,7 @@ namespace WebApp.Controllers
             this.applicationUserRepository = applicationUserRepository;
             this.fileReader = fileReader;
             this.notificationProvider = notificationProvider;
+            this.stateEmailSender = stateEmailSender;
 
             fileManager = fileManagerFactory.GetManager(FileType.Json);
             pngFileManager = fileManagerFactory.GetManager(FileType.Png);

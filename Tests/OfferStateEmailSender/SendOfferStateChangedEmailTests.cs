@@ -3,6 +3,7 @@ using Moq;
 using WebApp.Models.TravellChangeEmail;
 using WebApp.Services;
 using WebApp.Models.EmailConfirmation;
+using WebApp.Data;
 
 namespace Tests.OfferStateEmailSenderTests
 {
@@ -77,6 +78,36 @@ namespace Tests.OfferStateEmailSenderTests
             sender.SendOfferStateChangedEmail("usernameX", "linkY", OfferStateChange.Deleted);
 
             bodyProviderMock.Verify(mp => mp.GetBody("usernameX","linkY",OfferStateChange.Deleted));
+        }
+
+        [Fact]
+        public void SendEmailToEveryUserIfUserListProvided()
+        {
+            var arr = new ApplicationUser[]
+            {
+                new ApplicationUser
+                {
+                    UserName = "A"
+                },
+                new ApplicationUser
+                {
+                    UserName = "B"
+                },
+                new ApplicationUser
+                {
+                    UserName = "C"
+                },
+            };
+
+            sender.SendOfferStateChangedEmail(
+                arr,
+                "linkY",
+                OfferStateChange.Deleted);
+
+            foreach (var user in arr)
+            {
+                serviceMock.Verify(sm => sm.SendMail(It.IsAny<string>(), user.UserName, It.IsAny<string>(), It.IsAny<IMessageBodyDictionary>()));
+            }
         }
     }
 }

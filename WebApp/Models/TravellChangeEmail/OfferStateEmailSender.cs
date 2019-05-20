@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using WebApp.Data;
 using WebApp.Models.EmailConfirmation;
 using WebApp.Services;
 public enum OfferStateChange
@@ -12,6 +13,7 @@ namespace WebApp.Models.TravellChangeEmail
     public interface IOfferStateEmailSender
     {
         void SendOfferStateChangedEmail(string username, string urlToTrip, OfferStateChange stateChange);
+        void SendOfferStateChangedEmail(IEnumerable<ApplicationUser> users, string urlToTrip, OfferStateChange stateChange);
     }
 
     public class OfferStateEmailSender : IOfferStateEmailSender
@@ -38,6 +40,14 @@ namespace WebApp.Models.TravellChangeEmail
             string msgType = stateTypeDict[stateChange];
 
             emailService.SendMail("Uper", username, msgType, bodyProvider.GetBody(username,urlToTrip,stateChange));
+        }
+
+        public void SendOfferStateChangedEmail(IEnumerable<ApplicationUser> users, string urlToTrip, OfferStateChange stateChange)
+        {
+            foreach (var user in users)
+            {
+                SendOfferStateChangedEmail(user.UserName, urlToTrip, stateChange);
+            }
         }
     }
 }
