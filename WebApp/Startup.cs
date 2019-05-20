@@ -25,6 +25,7 @@ using Microsoft.AspNetCore.Authorization;
 using WebApp.Models.HtmlNotifications;
 using Microsoft.AspNetCore.SignalR;
 using WebApp.Models.TripDetailViewModelProvider;
+using WebApp.Models.TravellChangeEmail;
 
 namespace WebApp
 {
@@ -131,6 +132,8 @@ namespace WebApp
             services.AddTransient<IIncludeManager, IncludeManager>();
             services.AddTransient<IPdfCreator, PdfCreator>();
             services.AddTransient<ITripDetailsViewModelConverter, TripDetailsViewModelConverter>();
+            services.AddTransient<IOfferStateEmailSender, OfferStateEmailSender>();
+            services.AddTransient<IMessageBodyProvider, OfferStateMessageProvider>();
             
 
             services.AddSingleton<IIncludeChainProvider>(sp =>

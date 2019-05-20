@@ -15,6 +15,8 @@ using Syncfusion.Pdf.Graphics;
 using System.IO;
 using Syncfusion.Drawing;
 using WebApp.Models.HtmlNotifications;
+using WebApp.Models.TravellChangeEmail;
+using System.Linq;
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebApp.Controllers
@@ -32,6 +34,7 @@ namespace WebApp.Controllers
         private IFileManager pngFileManager;
         private IPdfCreator pdfCreator;
         private INotificationProvider notificationProvider;
+        private IOfferStateEmailSender stateEmailSender;
 
         public TripDetailsController(
             ITripDetailsViewModelProvider generator,
@@ -43,7 +46,8 @@ namespace WebApp.Controllers
             IFileReader<string> fileReader,
             IFileManagerFactory fileManagerFactory,
             IPdfCreator pdfCreator,
-            INotificationProvider notificationProvider)
+            INotificationProvider notificationProvider,
+            IOfferStateEmailSender stateEmailSender)
         {
             this.generator = generator;
             this.accountManager = accountManager;
@@ -53,6 +57,7 @@ namespace WebApp.Controllers
             this.applicationUserRepository = applicationUserRepository;
             this.fileReader = fileReader;
             this.notificationProvider = notificationProvider;
+            this.stateEmailSender = stateEmailSender;
 
             fileManager = fileManagerFactory.GetManager(FileType.Json);
             pngFileManager = fileManagerFactory.GetManager(FileType.Png);
@@ -124,6 +129,12 @@ namespace WebApp.Controllers
             {
                 fileManager.RemoveFile(td.MapId, "wwwroot/images/maps/");
             }
+
+            var passengers = from user in td.Passangers
+                             select user.User;
+
+            stateEmailSender.SendOfferStateChangedEmail(passengers, GetDetailsURL(tripId), OfferStateChange.Deleted);
+
             tripUserRepository.RemoveTripUsers(tripId);
             tripDetailsRepository.Remove(td);
 
@@ -146,9 +157,11 @@ namespace WebApp.Controllers
         public IActionResult RemoveUserFromTrip(int tripId,string username)
         {
             List<TripUser> toRm = tripUserRepository.GetList(new TripUserByUsernameAndTripId(tripId,username)) as List<TripUser>;
+
+            stateEmailSender.SendOfferStateChangedEmail(toRm[0].User, GetDetailsURL(tripId), OfferStateChange.UserRemoved);
+
             tripUserRepository.Remove(toRm[0]);
             return RedirectToAction("index", "TripDetails", new { id = tripId });
-
         }
 
         [Authorize(Policy = "DriverOnly")]
@@ -156,7 +169,7 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult ConfirmRequest(int tripId, string username)
         {
-            var tu = tripUserRepository.GetList(new TripUserByUsernameAndTripId(tripId,username)) as List<TripUser>;
+            var tu = tripUserRepository.GetList(new TripUserByUsernameAndTripId(tripId, username)) as List<TripUser>;
 
             if (tu == null)
                 return BadRequest(new { error = "invalid user ot trip id" });
@@ -164,8 +177,16 @@ namespace WebApp.Controllers
             tu[0].Accepted = true;
             tripUserRepository.Update(tu[0]);
 
+            stateEmailSender.SendOfferStateChangedEmail(tu[0].User, GetDetailsURL(tripId), OfferStateChange.RequestAccepted);
+
             return RedirectToAction("index", "TripDetails", new { id = tripId });
         }
+
+        private string GetDetailsURL(int tripId)
+        {
+            return Url.Action("Index", "TripDetails", new { id = tripId}, Request.Scheme);
+        }
+
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
