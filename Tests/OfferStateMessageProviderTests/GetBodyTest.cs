@@ -37,5 +37,14 @@ namespace Tests.OfferStateMessageProviderTests
             Assert.Equal("Pending", @out.GetReplacement("OldState"));
             Assert.Equal("Deleted", @out.GetReplacement("NewState"));
         }
+
+        [Fact]
+        public void AddOldSateAsAcceptedAndNewStateAsRemovedIfUserRemoved()
+        {
+            var @out = messageProvider.GetBody("username", "link", OfferStateChange.UserRemoved);
+
+            Assert.Equal("Accepted", @out.GetReplacement("OldState"));
+            Assert.Equal("Removed", @out.GetReplacement("NewState"));
+        }
     }
 }
