@@ -187,78 +187,78 @@
     
     @if(type == ViewerType.Driver)
     {
-        <div class="Management">
-            <div class="joinRequests">
-                <text style="font-size:20px; font-weight:bold">Join Requests:</text>
-                @if (Model.RequestsUsernames.Count != 0)
+    <div class="Management">
+        <div class="joinRequests">
+            <text style="font-size:20px; font-weight:bold">Join Requests:</text>
+            @if (Model.RequestsUsernames.Count != 0)
+            {
+                i = 1;
+                @foreach (var pas in Model.RequestsUsernames)
                 {
-                    i = 1;
-                    @foreach (var pas in Model.RequestsUsernames)
-                    {
-                        <form asp-action="ConfirmRequest" asp-controller="TripDetails" method="post" asp-route-tripId="@Model.TripId" asp-route-username="@pas" asp-antiforgery="true">
-                            <div class="passenger" onclick="location.href='@Url.Action(
+                    <form asp-action="ConfirmRequest" asp-controller="TripDetails" method="post" asp-route-tripId="@Model.TripId" asp-route-username="@pas" asp-antiforgery="true">
+                        <div class="passenger" onclick="location.href='@Url.Action(
                                                                       action:"DriverProfile",
                                                                       controller:"Profiles",
                                                                       values: new
                                                                       {
                                                                           driverUserName = pas
                                                                       })'">
-                                >
-                                @i. @pas
-                            </div>
-                            @if (Model.IsActive == "true")
-                            {
-                                <input type="submit" value="Accept" class="btn btn-success accept" />
-                            }
-                        </form>
-                        i++;
-                    }
+                            >
+                            @i. @pas
+                        </div>
+                        @if (Model.IsActive == "true")
+                        {
+                            <input type="submit" value="Accept" class="btn btn-success accept" />
+                        }
+                    </form>
+                    i++;
                 }
-                else
+            }
+            else
+            {
+                <div>
+                    There are no join reqeusts pending.
+                </div>
+            }
+        </div>
+
+        <div class="passengersManagement">
+            <text style="font-size:20px; font-weight:bold">Manage Passengers:</text>
+            @if (Model.PassangersUsernames.Count != 0)
+            {
+                i = 1;
+                @foreach (var pas in Model.PassangersUsernames)
                 {
-                    <div>
-                        There are no join reqeusts pending.
-                    </div>
-                }
-            </div>
-            
-            <div class="passengersManagement">
-                <text style="font-size:20px; font-weight:bold">Manage Passengers:</text>
-                @if (Model.PassangersUsernames.Count != 0)
-                {
-                    i = 1;
-                    @foreach (var pas in Model.PassangersUsernames)
-                    {
-                        <form asp-action="RemoveUserFromTrip" asp-controller="TripDetails" method="post" asp-route-tripId="@Model.TripId" asp-route-username="@pas" asp-antiforgery="true">
-                            <div class="passenger" onclick="location.href='@Url.Action(
+                    <form asp-action="RemoveUserFromTrip" asp-controller="TripDetails" method="post" asp-route-tripId="@Model.TripId" asp-route-username="@pas" asp-antiforgery="true">
+                        <div class="passenger" onclick="location.href='@Url.Action(
                                                                   action:"DriverProfile",
                                                                   controller:"Profiles",
                                                                   values: new
                                                                   {
                                                                       driverUserName = pas
                                                                   })'">
-                                @i. @pas
-                            </div>
-                            @if (Model.IsActive == "true")
-                            {
-                                <input type="submit" value="Remove" class="btn btn-danger remove" />
-                            }
-                        </form>
-                        i++;
-                    }
+                            @i. @pas
+                        </div>
+                        @if (Model.IsActive == "true")
+                        {
+                            <input type="submit" value="Remove" class="btn btn-danger remove" />
+                        }
+                    </form>
+                    i++;
                 }
-                else
-                {
-                    <div>
-                        There are no other passengers on this trip.
-                    </div>
-                }
-            </div>
-
-            <div class="deleteTrip" >
-                 > Delete Trip < 
-            </div>
+            }
+            else
+            {
+                <div>
+                    There are no other passengers on this trip.
+                </div>
+            }
         </div>
+
+        <form asp-action="Remove" asp-controller="TripDetails" method="post" asp-route-tripId="@Model.TripId" asp-antiforgery="true">
+            <input type="submit" class="deleteTrip" value="Delete Trip" />
+        </form>
+    </div>
 
     }
 </div>
