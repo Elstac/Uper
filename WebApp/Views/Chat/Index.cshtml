@@ -1,6 +1,6 @@
 ﻿
 @model IEnumerable<WebApp.Data.Entities.ChatEntry>
-
+    <link rel="stylesheet" href="~/css/Chat.css" type="text/css">
 <div class="container">
     <div class="row">&nbsp;</div>
     <div class="row">
@@ -8,7 +8,7 @@
         <div class="col-6">
             <form class="form-inline">
                 <div class="input-prepend input-append">
-                    <textarea name="group-message" id="group-message-text" placeholder="Type a message" rows="4" cols="120"></textarea>
+                    <textarea name="group-message" id="group-message-text" placeholder="Type a message" rows="4" cols="120" ></textarea>
                     <input type="hidden" name="group-name" id="group-name" value="@ViewBag.TripId" />
                     <input type="hidden" name="user-name" id="user-name" value="@ViewBag.UserName" />
                     <input type="button" id="groupmsg" class="btn" value="Send" />
@@ -23,14 +23,15 @@
             <hr />
         </div>
     </div>
-    <div style="height:600px;width:1200px;overflow-y:scroll">
+    <div style="height:600px;width:1200px;overflow-y:scroll;overflow-x:auto">
         <div class="row">
             <div class="col-6">&nbsp;</div>
             <div class="col-6">
                 @foreach (var item in Model)
-                {
-                    <ul> @Html.DisplayFor(modelItem => item.UserName): @Html.DisplayFor(modelItem => item.Message)</ul>
-
+                { 
+                    <ul>
+                    @Html.DisplayFor(modelItem => item.UserName): @Html.DisplayFor(modelItem => item.Message)
+                    </ul>
                 }
             </div>
         </div>

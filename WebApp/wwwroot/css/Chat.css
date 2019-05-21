@@ -1,0 +1,14 @@
+﻿textarea {
+    resize: none;
+}
+ul {
+    position: relative;
+    max-width: 500px;
+    height: auto;
+    margin: 20px 10px;
+    padding: 5px;
+    display: inline-block;
+    word-wrap: break-word;
+    display: inline-block;
+    display:block;
+}
