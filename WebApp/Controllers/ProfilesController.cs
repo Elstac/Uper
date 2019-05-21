@@ -228,7 +228,7 @@ namespace WebApp.Controllers
 
             DriverProfileViewModel model = new DriverProfileViewModel
             {
-            ApplicationUserViewModel = generator.ConvertAppUserToViewModel(repository.GetById(driverId)),
+            ApplicationUserViewModel = generator.ConvertAppUserToViewModel(repository.GetById(driverId))
             };
             model.SetListOfRatesAndComments(rates,repository);
             model.SetAverages();
