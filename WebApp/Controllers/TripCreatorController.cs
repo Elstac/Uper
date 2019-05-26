@@ -10,6 +10,7 @@ using WebApp.Data.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.Models.FileManagement;
 using WebApp.Models.Factories;
+using WebApp.Models.HtmlNotifications;
 
 namespace WebApp.Controllers
 {
@@ -18,15 +19,18 @@ namespace WebApp.Controllers
         protected IAccountManager accountManager;
         protected ITripDetailsRepository tripDetailsRepository;
         private IFileManager fileManager;
+        private INotificationProvider htmlNotification;
 
         public TripCreatorController(
             IAccountManager _accountManager, 
             ITripDetailsRepository _tripDetailsRepository,
-            IFileManagerFactory _fileManagerFactory)
+            IFileManagerFactory _fileManagerFactory,
+            INotificationProvider _htmlNotification)
         {
             accountManager = _accountManager;
             tripDetailsRepository = _tripDetailsRepository;
             fileManager = _fileManagerFactory.GetManager(FileType.Json);
+            htmlNotification = _htmlNotification;
         }
         /// <summary>
         /// Default HTTPGet 
@@ -56,16 +60,19 @@ namespace WebApp.Controllers
             if (!String.IsNullOrWhiteSpace(answer))
             {
                 switch (answer)
-                {
+                { 
                     case "Accept":
-                        if (ModelState.IsValid && model.IsValid(model))
+                        var message = model.IsValid(model);
+                        if (ModelState.IsValid && message.Length == 0)
                         {
+                            htmlNotification.SetNotification(HttpContext.Session, "res-suc", "All fields are correctly filled!");
                             ViewData["mapData"] = model.MapData;
                             return View("ConfirmationPositive", model);
                         }
                         else
                         {
-                            return View("ValidationError");
+                            htmlNotification.SetNotification(HttpContext.Session, "res-fail", message);
+                            return View("Index");
                         }
                     case "Decline":
                         return RedirectToAction("Index", "Home");
@@ -105,6 +112,7 @@ namespace WebApp.Controllers
                         }
 
                         tripDetailsRepository.Add(tripDetails);
+                        htmlNotification.SetNotification(HttpContext.Session, "res-suc", "Trip was succesfully created!");
                         return RedirectToAction("Index", "Home");
                     case "Decline":
                         return View("Index");
