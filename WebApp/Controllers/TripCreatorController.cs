@@ -71,7 +71,7 @@ namespace WebApp.Controllers
                         else
                         {
                             htmlNotification.SetNotification(HttpContext.Session, "res-fail", message);
-                            return View("Index");
+                            return View("Index",model);
                         }
                     case "Decline":
                         return RedirectToAction("Index", "Home");
