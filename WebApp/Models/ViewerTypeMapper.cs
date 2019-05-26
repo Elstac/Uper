@@ -24,7 +24,7 @@ namespace WebApp.Models
             {
                 foreach (var pass in tripDetails.Passangers)
                 {
-                    if (pass.User == user && pass.Accepted == true)
+                    if (pass.User == user)
                         return ViewerType.Passanger;
                 }
             }
