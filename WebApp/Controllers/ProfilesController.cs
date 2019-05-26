@@ -10,6 +10,7 @@ using System.Linq;
 using WebApp.Data.Entities;
 using WebApp.ViewModels;
 using WebApp.Models.TripDetailViewModelProvider;
+using X.PagedList;
 
 namespace WebApp.Controllers
 {
@@ -213,7 +214,7 @@ namespace WebApp.Controllers
 
 
         [Authorize]
-        public IActionResult DriverProfile(string driverId,string driverUserName)
+        public IActionResult DriverProfile(string driverId,string driverUserName, int? page)
         {
             if (driverId == null && driverUserName != null)
             {
@@ -232,6 +233,11 @@ namespace WebApp.Controllers
             };
             model.SetListOfRatesAndComments(rates,repository);
             model.SetAverages();
+
+            page = page ?? 1;
+            int pageSize = 10;
+            int pageNumber = page ?? 1;
+            model.PagedRatesAndCommentList = model.RatesAndCommentList.ToPagedList(pageNumber,pageSize);
 
             ViewBag.UserName = accountManager.GetUserName(HttpContext.User);
             return View("DriverProfile",model);
