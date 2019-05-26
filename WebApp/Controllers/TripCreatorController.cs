@@ -65,7 +65,6 @@ namespace WebApp.Controllers
                         var message = model.IsValid(model);
                         if (ModelState.IsValid && message.Length == 0)
                         {
-                            htmlNotification.SetNotification(HttpContext.Session, "res-suc", "All fields are correctly filled!");
                             ViewData["mapData"] = model.MapData;
                             return View("ConfirmationPositive", model);
                         }
