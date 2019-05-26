@@ -92,15 +92,11 @@
 
     @if (Model.IsActive == "true" && (ViewBag.PassangerAccepted == true || type == ViewerType.Driver))
     {
-        <div class="chatButton" onclick="location.href = '@Url.Action(
-          action: "Index",
-          controller: "Chat",
-          values: new
-          {
-              tripId = Model.TripId
-          }))'">
-            Chat
+    <form asp-action="Index" asp-controller="Chat" method="post" asp-route-tripId="@Model.TripId" asp-antiforgery="true">
+        <div>
+            <input class="chatButton" type="submit" value="Chat" />
         </div>
+    </form>
     }
 
     <form asp-action="GeneratePdf" asp-controller="TripDetails" method="post" asp-route-tripId="@Model.TripId" asp-antiforgery="true">

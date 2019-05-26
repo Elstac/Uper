@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Data.Repositories;
 using WebApp.Data.Specifications;
@@ -19,6 +20,10 @@ namespace WebApp.Controllers
             this.accountManager = accountManager;
             this.chatEntryRepository = chatEntryRepository;
         }
+
+        [Authorize(Policy = "DriverAndPassangerOnly")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Index(int tripId)
         {
             ViewBag.UserName = accountManager.GetUserName(HttpContext.User);

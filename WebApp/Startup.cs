@@ -105,6 +105,10 @@ namespace WebApp
                 options.AddPolicy("PassangerOnly",
                     policy => policy.Requirements.Add(new ViewerTypeRequirement(
                         new ViewerType[] { ViewerType.Passanger })));
+
+                options.AddPolicy("DriverAndPassangerOnly",
+                    policy => policy.Requirements.Add(new ViewerTypeRequirement(
+                        new ViewerType[] { ViewerType.Driver, ViewerType.Passanger })));
             });
 
             #region SetupDI
