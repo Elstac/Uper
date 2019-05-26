@@ -62,7 +62,7 @@ namespace WebApp.Controllers
                 switch (answer)
                 { 
                     case "Accept":
-                        var message = model.IsValid(model);
+                        var message = model.GetErrorMessage(model);
                         if (ModelState.IsValid && message.Length == 0)
                         {
                             ViewData["mapData"] = model.MapData;

@@ -72,7 +72,7 @@ namespace WebApp.ViewModels
         /// <returns>
         /// Retruns true if data is valid, or false if is not
         /// </returns>
-        public string IsValid(TripCreatorViewModel model)
+        public string GetErrorMessage(TripCreatorViewModel model)
         {
             float Cost_;
             StringBuilder IsValid = new StringBuilder();
