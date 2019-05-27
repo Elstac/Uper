@@ -31,8 +31,10 @@ namespace WebApp.Data
                     {
                         new TripUser
                         {
+                            
                             Trip = new TripDetails
                             {
+                                DriverId = "dawajtojuzsiekameruje",
                                 StartingAddress = new Address
                                 {
                                     City = "1.5m"
@@ -119,6 +121,9 @@ namespace WebApp.Data
 
             for (int i = 0; i < tripList.Count(); i++)
             {
+                var trip = tripList.ToList()[i];
+                trip.DriverId = i.ToString();
+
                 users.Add(new ApplicationUser
                 {
                     Id = i.ToString(),
@@ -130,7 +135,7 @@ namespace WebApp.Data
                     {
                         new TripUser
                         {
-                            Trip = tripList.ToList()[i]
+                            Trip = trip
                         }
                     }
                 });
@@ -149,6 +154,7 @@ namespace WebApp.Data
                 {
                     Comment ="Super kierowca polecam",
                     DriverId = user.Id,
+                    UserId = "dawajtojuzsiekameruje",
                     Punctuality = 5,
                     PersonalCulture = 5,
                     DrivingSafety = 5
