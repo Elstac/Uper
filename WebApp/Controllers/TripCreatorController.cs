@@ -10,6 +10,7 @@ using WebApp.Data.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.Models.FileManagement;
 using WebApp.Models.Factories;
+using WebApp.Models.HtmlNotifications;
 
 namespace WebApp.Controllers
 {
@@ -18,15 +19,21 @@ namespace WebApp.Controllers
         protected IAccountManager accountManager;
         protected ITripDetailsRepository tripDetailsRepository;
         private IFileManager fileManager;
+        private INotificationProvider htmlNotification;
+        private ITripTimeCollisionChecker tripTimeCollisionChecker;
 
         public TripCreatorController(
             IAccountManager _accountManager, 
             ITripDetailsRepository _tripDetailsRepository,
-            IFileManagerFactory _fileManagerFactory)
+            IFileManagerFactory _fileManagerFactory,
+            INotificationProvider _htmlNotification,
+            ITripTimeCollisionChecker tripTimeCollisionChecker)
         {
             accountManager = _accountManager;
             tripDetailsRepository = _tripDetailsRepository;
             fileManager = _fileManagerFactory.GetManager(FileType.Json);
+            htmlNotification = _htmlNotification;
+            this.tripTimeCollisionChecker = tripTimeCollisionChecker;
         }
         /// <summary>
         /// Default HTTPGet 
@@ -56,16 +63,26 @@ namespace WebApp.Controllers
             if (!String.IsNullOrWhiteSpace(answer))
             {
                 switch (answer)
-                {
+                { 
                     case "Accept":
-                        if (ModelState.IsValid && model.IsValid(model))
+                        var message = model.GetErrorMessage(model);
+                        if (ModelState.IsValid && message.Length == 0)
                         {
-                            ViewData["mapData"] = model.MapData;
-                            return View("ConfirmationPositive", model);
+                            if(!tripTimeCollisionChecker.IsColliding(accountManager.GetUserId(HttpContext.User),model.Date,model.DateEnd))
+                            {
+                                ViewData["mapData"] = model.MapData;
+                                return View("ConfirmationPositive", model);
+                            }
+                            else
+                            {
+                                htmlNotification.SetNotification(HttpContext.Session, "res-fail", "One of your trips is colliding with trip you are trying to create!!!");
+                                return View("Index");
+                            }
                         }
                         else
                         {
-                            return View("ValidationError");
+                            htmlNotification.SetNotification(HttpContext.Session, "res-fail", message);
+                            return View("Index");
                         }
                     case "Decline":
                         return RedirectToAction("Index", "Home");
@@ -105,6 +122,7 @@ namespace WebApp.Controllers
                         }
 
                         tripDetailsRepository.Add(tripDetails);
+                        htmlNotification.SetNotification(HttpContext.Session, "res-suc", "Trip was succesfully created!");
                         return RedirectToAction("Index", "Home");
                     case "Decline":
                         return View("Index");

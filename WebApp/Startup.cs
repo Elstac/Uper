@@ -105,6 +105,10 @@ namespace WebApp
                 options.AddPolicy("PassangerOnly",
                     policy => policy.Requirements.Add(new ViewerTypeRequirement(
                         new ViewerType[] { ViewerType.Passanger })));
+
+                options.AddPolicy("DriverAndPassangerOnly",
+                    policy => policy.Requirements.Add(new ViewerTypeRequirement(
+                        new ViewerType[] { ViewerType.Driver, ViewerType.Passanger })));
             });
 
             #region SetupDI
@@ -134,7 +138,8 @@ namespace WebApp
             services.AddTransient<ITripDetailsViewModelConverter, TripDetailsViewModelConverter>();
             services.AddTransient<IOfferStateEmailSender, OfferStateEmailSender>();
             services.AddTransient<IMessageBodyProvider, OfferStateMessageProvider>();
-            
+            services.AddTransient<ITripTimeCollisionChecker, TripTimeCollisionChecker>();
+
 
             services.AddSingleton<IIncludeChainProvider>(sp =>
             {
