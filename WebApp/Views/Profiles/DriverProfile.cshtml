@@ -86,7 +86,7 @@
         @if (Model.RatesAndCommentList.Count() >= 11)
         {
             <div style="margin-left:5px;font-size:18px">
-                Page @(Model.PagedRatesAndCommentList.PageCount < Model.PagedRatesAndCommentList.PageSize ? 0 : Model.PagedRatesAndCommentList.PageSize) of @Model.PagedRatesAndCommentList.PageCount
+                Page @(Model.PagedRatesAndCommentList.PageNumber) of @Model.PagedRatesAndCommentList.PageCount
             </div>
             <div style="margin-left:5px">
                 @Html.PagedListPager(Model.PagedRatesAndCommentList, page => Url.Action("DriverProfile",
