@@ -40,9 +40,9 @@ in testDB.db file. You can check database using sqlite browser ex. https://sqlit
 **SqlServer**|Use TestSqlServerConnection connection string|
 **Sqlite**| TestSqliteConnection|
 
-##Smtp Client
+## Smtp Client
 
-To configure Smtp client simply add passwd.json file to root project directory and save your gmail smtp client credentials
+To configure Smtp client simply add **passwd.json** file to WebApp directory and write your gmail smtp client credentials
 ```
 {
   "Username": "gmail username",
