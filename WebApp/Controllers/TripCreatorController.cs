@@ -20,17 +20,20 @@ namespace WebApp.Controllers
         protected ITripDetailsRepository tripDetailsRepository;
         private IFileManager fileManager;
         private INotificationProvider htmlNotification;
+        private ITripTimeCollisionChecker tripTimeCollisionChecker;
 
         public TripCreatorController(
             IAccountManager _accountManager, 
             ITripDetailsRepository _tripDetailsRepository,
             IFileManagerFactory _fileManagerFactory,
-            INotificationProvider _htmlNotification)
+            INotificationProvider _htmlNotification,
+            ITripTimeCollisionChecker tripTimeCollisionChecker)
         {
             accountManager = _accountManager;
             tripDetailsRepository = _tripDetailsRepository;
             fileManager = _fileManagerFactory.GetManager(FileType.Json);
             htmlNotification = _htmlNotification;
+            this.tripTimeCollisionChecker = tripTimeCollisionChecker;
         }
         /// <summary>
         /// Default HTTPGet 
@@ -65,13 +68,21 @@ namespace WebApp.Controllers
                         var message = model.GetErrorMessage(model);
                         if (ModelState.IsValid && message.Length == 0)
                         {
-                            ViewData["mapData"] = model.MapData;
-                            return View("ConfirmationPositive", model);
+                            if(!tripTimeCollisionChecker.IsColliding(accountManager.GetUserId(HttpContext.User),model.Date,model.DateEnd))
+                            {
+                                ViewData["mapData"] = model.MapData;
+                                return View("ConfirmationPositive", model);
+                            }
+                            else
+                            {
+                                htmlNotification.SetNotification(HttpContext.Session, "res-fail", "One of your trips is colliding with trip you are trying to create!!!");
+                                return View("Index");
+                            }
                         }
                         else
                         {
                             htmlNotification.SetNotification(HttpContext.Session, "res-fail", message);
-                            return View("Index",model);
+                            return View("Index");
                         }
                     case "Decline":
                         return RedirectToAction("Index", "Home");

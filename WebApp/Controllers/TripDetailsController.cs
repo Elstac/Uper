@@ -35,7 +35,8 @@ namespace WebApp.Controllers
         private IPdfCreator pdfCreator;
         private INotificationProvider notificationProvider;
         private IOfferStateEmailSender stateEmailSender;
-
+        private INotificationProvider htmlNotification;
+        private ITripTimeCollisionChecker tripTimeCollisionChecker;
         public TripDetailsController(
             ITripDetailsViewModelProvider generator,
             IAccountManager accountManager,
@@ -47,7 +48,9 @@ namespace WebApp.Controllers
             IFileManagerFactory fileManagerFactory,
             IPdfCreator pdfCreator,
             INotificationProvider notificationProvider,
-            IOfferStateEmailSender stateEmailSender)
+            IOfferStateEmailSender stateEmailSender,
+            INotificationProvider htmlNotification,
+            ITripTimeCollisionChecker tripTimeCollisionChecker)
         {
             this.generator = generator;
             this.accountManager = accountManager;
@@ -58,10 +61,11 @@ namespace WebApp.Controllers
             this.fileReader = fileReader;
             this.notificationProvider = notificationProvider;
             this.stateEmailSender = stateEmailSender;
-
+            this.htmlNotification = htmlNotification;
             fileManager = fileManagerFactory.GetManager(FileType.Json);
             pngFileManager = fileManagerFactory.GetManager(FileType.Png);
             this.pdfCreator = pdfCreator;
+            this.tripTimeCollisionChecker = tripTimeCollisionChecker;
         }
 
         /// <summary>
@@ -118,12 +122,20 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Join(int tripId)
         {
-            TripUser tripUser = new TripUser {
-                TripId = tripId,
-                UserId = accountManager.GetUserId(HttpContext.User)
-            };
-
-            tripUserRepository.Add(tripUser);
+            
+            if (!tripTimeCollisionChecker.IsColliding(tripId, accountManager.GetUserId(HttpContext.User)))
+            {
+                TripUser tripUser = new TripUser
+                {
+                    TripId = tripId,
+                    UserId = accountManager.GetUserId(HttpContext.User)
+                };
+                tripUserRepository.Add(tripUser);
+            }
+            else
+            {
+                htmlNotification.SetNotification(HttpContext.Session, "res-fail", "One of your trips is colliding with trip you are trying to join!!!");
+            }
             return RedirectToAction("index", "TripDetails", new { id = tripId });
         }
 
@@ -180,6 +192,15 @@ namespace WebApp.Controllers
 
             if (tu == null)
                 return BadRequest(new { error = "invalid user ot trip id" });
+
+            //Check if user trying to join is not in different trip at the same time
+            if(tripTimeCollisionChecker.IsColliding(tripId,tu[0].UserId))
+            {
+                htmlNotification.SetNotification(HttpContext.Session, "res-fail",
+                    "User you are trying to accept is in another trip at the same time as your trip. Please report this error message to administration");
+                tripUserRepository.Remove(tu[0]);
+                return RedirectToAction("index", "TripDetails", new { id = tripId });
+            }
 
             int accepted = 0;
             foreach(TripUser tripUser in td.Passangers)

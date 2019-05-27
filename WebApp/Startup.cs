@@ -138,7 +138,8 @@ namespace WebApp
             services.AddTransient<ITripDetailsViewModelConverter, TripDetailsViewModelConverter>();
             services.AddTransient<IOfferStateEmailSender, OfferStateEmailSender>();
             services.AddTransient<IMessageBodyProvider, OfferStateMessageProvider>();
-            
+            services.AddTransient<ITripTimeCollisionChecker, TripTimeCollisionChecker>();
+
 
             services.AddSingleton<IIncludeChainProvider>(sp =>
             {
