@@ -6,7 +6,7 @@ Uper
 
 |    Package    |Version       |
 |:--------------|:------------:|
-**Microsoft.EntityFrameworkCore.Sqlite 2.2.4|
+**Microsoft.EntityFrameworkCore.Sqlite**| 2.2.4|
 **Xunit** |2.4.1|
 **Moq** |4.10.1|
 **Microsoft.AspNetCore.Identity**| 2.2.0|
