@@ -37,8 +37,8 @@ in testDB.db file. You can check database using sqlite browser ex. https://sqlit
 
 |BuildType|Description|
 |:--------|:---------:|
-**SqlServer**|Use TestSqlServerConnection connection string|
-**Sqlite**| TestSqliteConnection|
+**SqlServer**|Use TestSqlServerConnection connection string for sqlserver|
+**Sqlite**| Use TestSqliteConnection string for sqlie|
 
 ## Smtp Client
 
