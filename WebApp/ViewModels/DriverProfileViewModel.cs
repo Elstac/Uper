@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using WebApp.Data.Entities;
 using WebApp.Data.Repositories;
+using X.PagedList;
 
 namespace WebApp.ViewModels
 {
@@ -9,6 +10,7 @@ namespace WebApp.ViewModels
     {
         public ApplicationUserViewModel ApplicationUserViewModel {get ;set; }
         public List<RatesAndCommentsViewModel> RatesAndCommentList {get; set ;}
+        public IPagedList<RatesAndCommentsViewModel> PagedRatesAndCommentList { get; set; }
 
         public float DrivingSafetyAverage { get; set; }
         public float PersonalCultureAverage { get; set; }
@@ -34,16 +36,30 @@ namespace WebApp.ViewModels
         public void SetAverages()
         {
             this.NumberOfVotes = RatesAndCommentList.Count;
-            foreach(var rat in RatesAndCommentList)
-            {
-                DrivingSafetyAverage += rat.DrivingSafety;
-                PersonalCultureAverage += rat.PersonalCulture;
-                PunctualityAverage += rat.Punctuality;
-            }
 
-            DrivingSafetyAverage /= NumberOfVotes;
-            PersonalCultureAverage /= NumberOfVotes;
-            PunctualityAverage /= NumberOfVotes;
+            if (NumberOfVotes == 0)
+            {
+                DrivingSafetyAverage = 0;
+                PersonalCultureAverage = 0;
+                PunctualityAverage = 0;
+            }
+            else
+            {
+                foreach (var rat in RatesAndCommentList)
+                {
+                    DrivingSafetyAverage += rat.DrivingSafety;
+                    PersonalCultureAverage += rat.PersonalCulture;
+                    PunctualityAverage += rat.Punctuality;
+                }
+
+                DrivingSafetyAverage /= NumberOfVotes;
+                PersonalCultureAverage /= NumberOfVotes;
+                PunctualityAverage /= NumberOfVotes;
+
+                Math.Round(DrivingSafetyAverage, 2);
+                Math.Round(PersonalCultureAverage, 2);
+                Math.Round(PunctualityAverage, 2);
+            }
         }
     }
 }

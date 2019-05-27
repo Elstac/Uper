@@ -1,4 +1,5 @@
 ﻿@model WebApp.ViewModels.DriverProfileViewModel
+@using X.PagedList.Mvc.Core;
 @{
     ViewData["Title"] = "DriverProfile";
 
@@ -10,55 +11,98 @@
         <p>
             Your email address need confirmation.
             @Html.ActionLink(
-            linkText: "Use this link",
-            actionName: "SendConfirmationEmail",
-            controllerName: "EmailConfirm",
-            routeValues: new { returnUrl = $"{Context.Request.Host + Context.Request.Path}" })
+         linkText: "Use this link",
+         actionName: "SendConfirmationEmail",
+         controllerName: "EmailConfirm",
+         routeValues: new { returnUrl = $"{Context.Request.Host + Context.Request.Path}" })
             to send confirmation email again.
         </p>
     </div>
 }
 
-
-<h2>DriverProfile</h2>
-
-<h2>Info:</h2>
-<p>Name: @Model.ApplicationUserViewModel.Name @Model.ApplicationUserViewModel.Surname</p>
-<p>UserName: @Model.ApplicationUserViewModel.UserName</p>
-<p>Email: @Model.ApplicationUserViewModel.Email</p>
-<p>PhoneNumber: @Model.ApplicationUserViewModel.PhoneNumber</p>
-<p>Description: @Model.ApplicationUserViewModel.Description</p>
-<p>Driving Safety Average Rates: @Model.DrivingSafetyAverage</p>
-<p>Personal Culture Average Rates: @Model.PersonalCultureAverage </p>
-<p>Punctuality Average Rates: @Model.PunctualityAverage</p>
-<p>Number of Votes: @Model.NumberOfVotes</p>
-
-@if (Model.ApplicationUserViewModel.UserName.Equals(ViewBag.Username))
-{
-    <input type="button"
-           value="Edit"
-           onclick="location.href= '@Url.Action("ProfileEdit")'" />
-}
-
-<div style="height:450px;width:500px;overflow-y:scroll;margin-left:200px">
-
-    @foreach (var item in Model.RatesAndCommentList)
+<div class="left-align">
+    @if (Model.ApplicationUserViewModel.Name != null || Model.ApplicationUserViewModel.Surname != null)
     {
-
-        <div class="dialogbox">
-            <div class="body">
-                <div class="info">
-                    <span>Username: @Html.DisplayFor(modelItem => item.Username)</span>
-                    <span>Date: @Html.DisplayFor(modelItem => item.Date)</span>
-                    <span>Driving Safety: @Html.DisplayFor(modelItem => item.DrivingSafety)</span>
-                    <span>Personal Culture: @Html.DisplayFor(modelItem => item.PersonalCulture)</span>
-                    <span>Punctuality: @Html.DisplayFor(modelItem => item.Punctuality)</span>
-                </div>
-                <div class="message">
-                    <span>@Html.DisplayFor(modelItem => item.Comment)</span>
-                </div>
-            </div>
+        <div class="name">
+            <div>
+                @Model.ApplicationUserViewModel.Name @Model.ApplicationUserViewModel.Surname@{ }
+            </div><font style="font-size:25px; margin-top:0px"> @Model.ApplicationUserViewModel.UserName </font>
         </div>
+                    }
+                    else
+                    {
+        <div class="name">
+            @Model.ApplicationUserViewModel.UserName
+        </div>
+                    }@{ }
 
+    @if (Model.ApplicationUserViewModel.Description != null)
+    {
+        <div class="Description">
+
+            <div style="font-size:24px">
+                About me
+            </div>
+            @Model.ApplicationUserViewModel.Description
+        </div>
+    }
+
+    <div class="rating">
+        Driving Safety: @Model.DrivingSafetyAverage<br/>
+        Personal Culture: @Model.PersonalCultureAverage<br/>
+        Punctuality: @Model.PunctualityAverage<br/>
+        <font style="font-size: 14px;">Number of Votes: @Model.NumberOfVotes</font>
+    </div>
+    
+    @if (Model.ApplicationUserViewModel.UserName.Equals(ViewBag.Username))
+    {
+        <input type="button"
+               value="Edit"
+               class="btn btn-default editBtn"
+               onclick="location.href= '@Url.Action("ProfileEdit")'" />
     }
 </div>
+
+<div class="right-align">
+    @if (Model.RatesAndCommentList.Count() != 0)
+    {
+        @foreach (var item in Model.PagedRatesAndCommentList)
+        {
+            <div class="dialogbox">
+                <div class="body">
+                    <div class="info">
+                        <span>Username: @Html.DisplayFor(modelItem => item.Username)</span>
+                        <span>Date: @Html.DisplayFor(modelItem => item.Date)</span>
+                        <span>Driving Safety: @Html.DisplayFor(modelItem => item.DrivingSafety)</span>
+                        <span>Personal Culture: @Html.DisplayFor(modelItem => item.PersonalCulture)</span>
+                        <span>Punctuality: @Html.DisplayFor(modelItem => item.Punctuality)</span>
+                    </div>
+                    <div class="message">
+                        <span>@Html.DisplayFor(modelItem => item.Comment)</span>
+                    </div>
+                </div>
+            </div>
+        }
+        @if (Model.RatesAndCommentList.Count() >= 11)
+        {
+            <div style="margin-left:5px;font-size:18px">
+                Page @(Model.PagedRatesAndCommentList.PageCount < Model.PagedRatesAndCommentList.PageSize ? 0 : Model.PagedRatesAndCommentList.PageSize) of @Model.PagedRatesAndCommentList.PageCount
+            </div>
+            <div style="margin-left:5px">
+                @Html.PagedListPager(Model.PagedRatesAndCommentList, page => Url.Action("DriverProfile",
+                    new
+                         {
+                             page,
+                             driverUserName = Model.ApplicationUserViewModel.UserName
+                    }))
+            </div>
+        }
+    }
+    else
+    {
+        <div style="font-size:16px;padding:5px">
+            There are no comments left.
+        </div>
+    }
+</div>
+
