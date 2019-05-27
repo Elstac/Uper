@@ -235,9 +235,7 @@ namespace WebApp.Controllers
             model.SetAverages();
 
             page = page ?? 1;
-            int pageSize = 10;
-            int pageNumber = page ?? 1;
-            model.PagedRatesAndCommentList = model.RatesAndCommentList.ToPagedList(pageNumber,pageSize);
+            model.PagedRatesAndCommentList = model.RatesAndCommentList.ToPagedList((int)page,10);
 
             ViewBag.UserName = accountManager.GetUserName(HttpContext.User);
             return View("DriverProfile",model);
