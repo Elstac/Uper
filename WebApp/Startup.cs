@@ -66,8 +66,18 @@ namespace WebApp
             }
             else if(buildType == "azure")
             {
-                services.AddDbContext<ApplicationContext>(options =>
+               services.AddDbContext<ApplicationContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("AzureDBConnection")));
+            }
+            else if(buildType == "test")
+            {
+                services.AddDbContext<ApplicationContext>(op =>
+                {
+                    op.UseSqlite(Configuration.GetConnectionString("FileName = testDB.db"));
+                });
+
+                var sp = services.BuildServiceProvider();
+                ApplicationContextSeed.Seed(sp.GetService<ApplicationContext>());
             }
             #endregion
 
