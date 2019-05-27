@@ -9,7 +9,7 @@ namespace WebApp.Data
 {
     public class ApplicationContextSeed
     {
-        public static async Task SeedAsync(ApplicationContext context,UserManager<ApplicationUser> userManager)
+        public static void Seed(ApplicationContext context)
         {
             if (!context.TripDetails.Any())
             {
@@ -20,10 +20,7 @@ namespace WebApp.Data
             if (!context.Users.Any())
             {
                 var users = GetUsers("Bob", "Klop", context.TripDetails.ToList());
-                foreach (var user in users)
-                {
-                    await userManager.CreateAsync(user, user.UserName);
-                }
+                context.Users.AddRange(users);
 
                 context.Users.Add(new ApplicationUser
                 {
