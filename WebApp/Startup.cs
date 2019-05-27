@@ -69,11 +69,11 @@ namespace WebApp
                services.AddDbContext<ApplicationContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("AzureDBConnection")));
             }
-            else if(buildType == "test")
+            else if(buildType == "testconnection")
             {
                 services.AddDbContext<ApplicationContext>(op =>
                 {
-                    op.UseSqlite(Configuration.GetConnectionString("FileName = testDB.db"));
+                    op.UseSqlite("FileName = testDB.db");
                 });
 
                 var sp = services.BuildServiceProvider();

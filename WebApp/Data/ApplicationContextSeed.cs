@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using WebApp.Data.Entities;
 
 namespace WebApp.Data
@@ -11,6 +10,8 @@ namespace WebApp.Data
     {
         public static void Seed(ApplicationContext context)
         {
+            context.Database.Migrate();
+
             if (!context.TripDetails.Any())
             {
                 context.AddRange(GetTrips());
@@ -120,6 +121,7 @@ namespace WebApp.Data
             {
                 users.Add(new ApplicationUser
                 {
+                    Id = i.ToString(),
                     Name = baseName,
                     Surname = baseLastName,
                     UserName = baseName + i,
