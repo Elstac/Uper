@@ -2,7 +2,7 @@
 
 Uper
 
-#Used libraries/ nuget packages
+# Used libraries/ nuget packages
 
 |    Package    |Version       |
 |:--------------|:------------:|
@@ -20,3 +20,32 @@ Uper
 **Syncfusion.Pdf.Net.Core** |17.1.0.48|
 **Microsoft.VisualStudio.Web.CodeGeneration.Design** | 2.2.3|
 
+# Installation
+
+Clone project from this repository.
+
+# Configuration
+
+## Database
+
+### Predefined database
+
+To use database filled with predefined data change filed **BuildType** to "testconnection". All date will be saved
+in testDB.db file. You can check database using sqlite browser ex. https://sqlitebrowser.org/
+
+### Own database
+
+|BuildType|Description|
+|:--------|:---------:|
+**SqlServer**|Use TestSqlServerConnection connection string|
+**Sqlite**| TestSqliteConnection|
+
+##Smtp Client
+
+To configure Smtp client simply add passwd.json file to root project directory and save your gmail smtp client credentials
+```
+{
+  "Username": "gmail username",
+  "Password": "gmail password"
+}
+```
