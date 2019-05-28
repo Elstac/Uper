@@ -193,15 +193,6 @@ namespace WebApp.Controllers
             if (tu == null)
                 return BadRequest(new { error = "invalid user ot trip id" });
 
-            //Check if user trying to join is not in different trip at the same time
-            if(tripTimeCollisionChecker.IsColliding(tripId,tu[0].UserId))
-            {
-                htmlNotification.SetNotification(HttpContext.Session, "res-fail",
-                    "User you are trying to accept is in another trip at the same time as your trip. Please report this error message to administration");
-                tripUserRepository.Remove(tu[0]);
-                return RedirectToAction("index", "TripDetails", new { id = tripId });
-            }
-
             int accepted = 0;
             foreach(TripUser tripUser in td.Passangers)
             {
