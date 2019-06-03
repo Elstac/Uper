@@ -38,7 +38,7 @@ namespace WebApp.Data.Specifications
             bool Smoking,
             int? Seats)
         {
-            var pred = PredicateBuilder.New<TripDetails>(c => true);
+            var pred = PredicateBuilder.New<TripDetails>(c => c.Date > DateTime.Now );
             if (!String.IsNullOrWhiteSpace(StartCity))
             {
                 pred = pred.And(c => c.StartingAddress.City.ToUpper() == StartCity.ToUpper());
