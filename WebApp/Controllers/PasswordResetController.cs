@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebApp.Data;
@@ -63,9 +64,26 @@ namespace WebApp.Controllers
 
         public async Task<IActionResult> ChangePasswordAsync(string id, string token, string newPassword)
         {
-            await passwordResetFactory.CreateConfirmator().ConfirmEmailAsync(id, token, newPassword);
+            try
+            {
+                await passwordResetFactory.CreateConfirmator().ConfirmEmailAsync(id, token, newPassword);
+            }
+            catch (Exception)
+            {
+                notificationProvider.SetNotification(
+                HttpContext.Session,
+                "res-fail",
+                "Error occurs while changing password");
 
-            return Content("Password changed successfully");
+                return RedirectToRoute("Home");
+            }
+
+            notificationProvider.SetNotification(
+                HttpContext.Session,
+                "res-suc",
+                "Password changed successfully");
+
+            return RedirectToAction("SignIn", "Login");
         }
     }
 }
