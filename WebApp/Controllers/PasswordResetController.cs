@@ -46,7 +46,12 @@ namespace WebApp.Controllers
 
             if (userList.Count == 0)
             {
-                return RedirectToAction("Profiles", "Index");
+                notificationProvider.SetNotification(
+                    HttpContext.Session,
+                    "res-fail",
+                    "Invalid email address");
+
+                return RedirectToAction("Index", "PasswordReset");
             }
 
             var user = userList[0];
