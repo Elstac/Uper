@@ -250,10 +250,12 @@
                 </div>
             }
         </div>
-
-        <form asp-action="Remove" asp-controller="TripDetails" method="post" asp-route-tripId="@Model.TripId" asp-antiforgery="true">
-            <input type="submit" class="deleteTrip" value="Delete Trip" />
-        </form>
+        @if (Model.IsActive == "true")
+        {
+            <form asp-action="Remove" asp-controller="TripDetails" method="post" asp-route-tripId="@Model.TripId" asp-antiforgery="true">
+                <input type="submit" class="deleteTrip" value="Delete Trip" />
+            </form>
+        }
     </div>
 
     }
